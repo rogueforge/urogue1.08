@@ -1875,4 +1875,17 @@
 1)	monsters.c is laid out again, and its menu read from the window
 2)	ToDo is TODO
 
+1.07, Nov 5, 04
+1)	buying at the trading post resets the blessed or cursed choice,
+	and selling no longer crashes (Mike Gorse)
+2)	saved characters are kept in the home directory and numbered 1
+	to 10 everywhere (Mike Gorse)
+3)	the screen is put back after an inventory, and backspace or
+	delete both erase (Mike Gorse)
+4)	interrupt is handled (Mike Gorse)
+5)	crashes on a new level and in the storage checker fixed (Mike
+	Gorse)
+6)	a selective inventory with nothing in it leaves the screen clean
+7)	the flags work where a long is 64 bits
+
 -------	End of File ------

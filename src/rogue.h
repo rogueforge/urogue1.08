@@ -371,19 +371,19 @@
 
 /* on - check if a monster flag is on */
 #define on(th, flag) \
-        ((th).t_flags[(flag >> FLAGSHIFT) & FLAGINDEX] & (flag << 4))
+        ((th).t_flags[(flag >> FLAGSHIFT) & FLAGINDEX] & (flag & FLAGMASK))
 
 /* off - check if a monster flag is off */
 #define off(th, flag) \
-        (!((th).t_flags[(flag >> FLAGSHIFT) & FLAGINDEX] & (flag << 4)))
+        (!((th).t_flags[(flag >> FLAGSHIFT) & FLAGINDEX] & (flag & FLAGMASK)))
 
 /* turn_on - turn on a monster flag */
 #define turn_on(th, flag) \
-        ( (th).t_flags[(flag >> FLAGSHIFT) & FLAGINDEX] |= (flag << 4))
+        ( (th).t_flags[(flag >> FLAGSHIFT) & FLAGINDEX] |= (flag & FLAGMASK))
 
 /* turn_off - turn off a monster flag */
 #define turn_off(th, flag) \
-        ( (th).t_flags[(flag >> FLAGSHIFT) & FLAGINDEX] &= ~(flag << 4))
+        ( (th).t_flags[(flag >> FLAGSHIFT) & FLAGINDEX] &= ~(flag & FLAGMASK))
 
 #define SAME_POS(c1,c2) ( (c1.x == c2.x) && (c1.y == c2.y) )
 
