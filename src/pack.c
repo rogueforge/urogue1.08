@@ -385,12 +385,11 @@ inventory(struct linked_list *container, int type)
     if ((cnt = count_bag(container, type, NULL)) == 0)
         msg("You don't have any %s.", name_type(type));
     else
+    {
         apply_to_bag(container, type, NULL, baf_print_item, &type);
-
-    end_line();
-
-    if (cnt > 1)
+        end_line();
         msg("");
+    }
 
     return;
 }
