@@ -194,16 +194,22 @@ status(int display)
 */
 
 void
-wait_for(int ch)
+w_wait_for(WINDOW *w, int ch)
 {
     char    c;
 
     if (ch == '\n')
-        while ((c = wgetch(cw)) != '\n' && c != '\r')
+        while ((c = wgetch(w)) != '\n' && c != '\r')
             continue;
     else
-        while (wgetch(cw) != ch)
+        while (wgetch(w) != ch)
             continue;
+}
+
+void
+wait_for(int ch)
+{
+    w_wait_for(cw, ch);
 }
 
 /*
@@ -261,12 +267,11 @@ add_line(const char *fmt, ...)
     {
         if ( (fmt != NULL) && (*fmt != '\0') )
             vmsg(fmt, ap);
-
         line_cnt++;
     }
     else
     {
-        if (line_cnt >= LINES - 2 || fmt == NULL) /* end 'o page */
+        if ( (line_cnt >= LINES - 2) || (fmt == NULL)) /* end 'o page */
         {
             if (fmt == NULL && !newpage && inv_type == INV_OVER)
             {
@@ -276,7 +281,7 @@ add_line(const char *fmt, ...)
                 mvwaddstr(tw, line_cnt, 0, spacemsg);
                 wstandend(tw);
                 touchwin(tw);
-                wrefresh(tw);
+                wrefresh(tw); 
                 wait_for(' ');
                 delwin(tw);
                 touchwin(cw);
@@ -287,7 +292,7 @@ add_line(const char *fmt, ...)
                 mvwaddstr(hw, LINES - 1, 0, spacemsg);
                 wstandend(hw);
                 wrefresh(hw);
-                wait_for(' ');
+                w_wait_for(hw, ' ');
                 touchwin(cw);
                 wclear(hw);
             }
