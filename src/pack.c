@@ -459,40 +459,61 @@ get_object(struct linked_list *container, char *purpose, int type, int (*bff_p)(
 
     while (obj_p == NULL)
     {
-        msg("What do you want to %s (* for list)?", purpose);
-        response = wgetch(cw);
-        ESCAPE_EXIT(response);
-
-        if (response == '*')
-        {
-            mpos = 0;
-            apply_to_bag(container, type, bff_p, baf_print_item, &type);
-            end_line();
-            msg("What do you want to %s (* for list)?", purpose);
-            response = wgetch(cw);  /* want real response */
-        }
-
         if (type == 0)
         {
-            sel_type = response;
-            sel_id = wgetch(cw);
-            ESCAPE_EXIT(sel_id);
-        }
-        else
-        {
-            sel_type = type;
+            msg("What kind of item <%s> do you want to %s (* for list)?", type_list, purpose);
 
-            if (is_member(type_list, response))
-                response = wgetch(cw);
-
+            response = wgetch(cw);
             ESCAPE_EXIT(response);
-            sel_id = response;
+            msg("");
+
+            if (response == '*')
+            {
+                add_line("! Potion");
+                add_line("? Scroll");
+                add_line("= Ring");
+                add_line("/ Stick");
+                add_line("] Armor");
+                add_line(") Weapon");
+                add_line(": Food");
+                end_line();
+                continue;
+            }
+
+
+            if (!is_member(type_list, response)) { beep();
+               continue; }
+
+
+            if (count_bag(container, response, NULL) == 0)
+            {
+                msg("You don't have any %s.", name_type(response));
+                continue;
+            }
+
+            type = response;
         }
 
-        obj_p =  scan_bag(container, sel_type,unprint_id(&sel_id));
+        while(obj_p == NULL)
+        {
+            msg("What item do you want to %s (* for list)?", purpose);
+            response = wgetch(cw);
+            msg("");
+            ESCAPE_EXIT(response);
 
-        if (obj_p == NULL)
-            msg("Couldn't find %c%c", sel_type, sel_id);
+            if (response == '*')
+            {
+                mpos = 0;
+                apply_to_bag(container, type, bff_p, baf_print_item, &type);
+                end_line();
+                continue;
+            }
+
+            sel_type = type;
+            sel_id = response;
+
+            obj_p = scan_bag(container, sel_type,unprint_id(&sel_id));
+        }
     }
 
     mpos = 0;

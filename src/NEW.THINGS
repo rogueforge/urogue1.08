@@ -1888,4 +1888,10 @@
 6)	a selective inventory with nothing in it leaves the screen clean
 7)	the flags work where a long is 64 bits
 
+1.07, Nov 6, 04
+1)	a list of several pages no longer clears the screen
+2)	the trading post redraws its heading after each screen
+3)	choosing an item lists the kinds there are to choose from, and
+	says when there are none
+
 -------	End of File ------
