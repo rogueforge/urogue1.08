@@ -1862,4 +1862,13 @@
 	case
 6)	most of the other files are laid out again
 
+1.07, Apr 28, 00
+1)	every key is read from the window it is asked for in, and
+	readchar() is gone
+2)	^L redraws the screen as ^R does
+3)	stored characters are numbered from 1
+4)	the tombstone waits for return
+5)	a thing at the trading post can be worth nothing
+6)	"You found a ..." ends with a period
+
 -------	End of File ------
