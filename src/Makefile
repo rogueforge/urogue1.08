@@ -99,7 +99,7 @@ CFILES		  = armor.c \
 		weapons.c \
 		wizard.c
 
-MISC=           Makefile README.TXT
+MISC=           Makefile README NEW.THINGS TODO
 
 CC    = gcc
 CFLAGS= -O3
@@ -115,42 +115,42 @@ clean:
 
 dist.src:
 	make clean
-	tar cf $(DISTNAME)-src.tar $(CFILES) $(HDRS) $(MISC)
+	tar cf $(DISTNAME)-src.tar $(CFILES) $(HDRS) $(MISC) -C .. LICENSE
 	gzip -f $(DISTNAME)-src.tar
 
 dist.irix:
 	make clean
 	make CC=cc CFLAGS="-woff 1116 -O3" urogue
-	tar cf $(DISTNAME)-irix.tar urogue README.TXT
+	tar cf $(DISTNAME)-irix.tar urogue README -C .. LICENSE
 	gzip -f $(DISTNAME)-irix.tar
 
 dist.aix:
 	make clean
 	make CC=xlc CFLAGS="-qmaxmem=16768 -O3 -qstrict" urogue
-	tar cf $(DISTNAME)-aix.tar urogue README.TXT
+	tar cf $(DISTNAME)-aix.tar urogue README -C .. LICENSE
 	gzip -f $(DISTNAME)-aix.tar
 
 dist.linux:
 	make clean
 	make urogue
-	tar cf $(DISTNAME)-linux.tar urogue README.TXT
+	tar cf $(DISTNAME)-linux.tar urogue README -C .. LICENSE
 	gzip -f $(DISTNAME)-linux.tar
 
 dist.interix:
 	make clean
 	make urogue
-	tar cf $(DISTNAME)-interix.tar urogue README.TXT
+	tar cf $(DISTNAME)-interix.tar urogue README -C .. LICENSE
 	gzip -f $(DISTNAME)-interix.tar
 
 dist.cygwin:
 	make clean
 	make urogue
-	tar cf $(DISTNAME)-cygwin.tar urogue.exe README.TXT
+	tar cf $(DISTNAME)-cygwin.tar urogue.exe README -C .. LICENSE
 	gzip -f $(DISTNAME)-cygwin.tar
 
 dist.djgpp:
 	make clean
 	make LDFLAGS="-L$(DJDIR)/LIB" CRLIB="-lpdcurses" urogue
 	rm -f $(DISTNAME)-djgpp.zip
-	zip $(DISTNAME)-djgpp.zip urogue.exe README.TXT
+	zip -j $(DISTNAME)-djgpp.zip urogue.exe README ../LICENSE
 
