@@ -1871,4 +1871,8 @@
 5)	a thing at the trading post can be worth nothing
 6)	"You found a ..." ends with a period
 
+1.07, Apr 29, 00
+1)	monsters.c is laid out again, and its menu read from the window
+2)	ToDo is TODO
+
 -------	End of File ------
