@@ -46,9 +46,6 @@ prayer(void)
 
     msg("You are surrounded by orange smoke...");
 
-    pstats.s_hpt = max_stats.s_hpt;
-    pstats.s_power = max_stats.s_power;
-
     if (rnd(3) == 0)
         luck--;
 
@@ -93,6 +90,9 @@ prayer(void)
     if (chance == 0)
     {
         msg("The heavens open and glorious radiance surrounds you!");
+
+        pstats.s_hpt = max_stats.s_hpt;
+        pstats.s_power = max_stats.s_power;
 
         if (is_godly)
             times = 8;
