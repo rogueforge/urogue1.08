@@ -1900,4 +1900,8 @@
 2)	"a stack of things."
 3)	simpler Makefile, with targets to pack the releases
 
+1.07, Feb 14, 05
+1)	urogue.6 is in the distribution, formatted as urogue.cat
+2)	released as 1.0.7
+
 -------	End of File ------

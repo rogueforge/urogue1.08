@@ -355,7 +355,7 @@ int mem_validate(void *ptr)
 		}
 
 		/* point to size bytes */
-		mem_temp = (char *)ptr - sizeof(size_t);
+		mem_temp = (unsigned char *)ptr - sizeof(size_t);
 
 		/* get user size */
 		mem_size = *(size_t *)mem_temp;
@@ -371,7 +371,7 @@ int mem_validate(void *ptr)
 	}
 
 	/* check the header bytes */
-	mem_temp = (char *) ptr - FENCE_SIZE;
+	mem_temp = (unsigned char *) ptr - FENCE_SIZE;
 	if (memdebug_level > 0)
 		fprintf(trace_file, "+++ Real pointer at %p\n", mem_temp);
 
@@ -393,7 +393,7 @@ int mem_validate(void *ptr)
 
 
 	/* now point to where trailer should be */
-	mem_temp = (char *)ptr + i;
+	mem_temp = (unsigned char *)ptr + i;
 	for (i = 0; i < FENCE_SIZE; i++)
 		if (*mem_temp++ != 145) {
 			if (memdebug_level > 0) {
