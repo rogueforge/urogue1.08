@@ -330,7 +330,7 @@ void *mem_realloc(const void *ptr, const size_t new_size)
 /* if statement boolean expressions */
 int mem_validate(void *ptr)
 {
-	char *mem_temp = (char *)ptr;
+	unsigned char *mem_temp = (unsigned char *)ptr;
 	size_t mem_size;
 	long i;
 
