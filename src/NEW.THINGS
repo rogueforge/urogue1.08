@@ -1848,4 +1848,7 @@
 2)	thieves, assassins and ninjas get back hit points as slowly as
 	fighters do
 
+1.07, Apr 26, 00
+1)	list.c and monsdata.c are laid out again
+
 -------	End of File ------
