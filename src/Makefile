@@ -111,7 +111,7 @@ urogue:	$(OBJS) $(MAKEFILE)
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(CRLIB) -o $@
 
 clean:		
-	rm -f $(OBJS) urogue a.out core *.map urogue.exe
+	rm -f $(OBJS) urogue a.out core *.map urogue.exe urogue.cat 
 
 dist.src:
 	make clean
@@ -149,7 +149,7 @@ dist.interix:
 dist.cygwin:
 	make clean
 	make urogue
-        groff -P-c -man -Tascii urogue.6 | sed -e 's/.\x08//g' > urogue.cat
+	groff -P-c -man -Tascii urogue.6 | sed -e 's/.\x08//g' > urogue.cat
 	tar cf $(DISTNAME)-cygwin.tar urogue.exe urogue.cat README -C .. LICENSE
 	gzip -f $(DISTNAME)-cygwin.tar
 
