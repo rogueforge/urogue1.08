@@ -288,7 +288,7 @@ add_line(const char *fmt, ...)
                 wstandend(hw);
                 wrefresh(hw);
                 wait_for(' ');
-                clearok(cw, TRUE);
+                touchwin(cw);
                 wclear(hw);
             }
             newpage = TRUE;
@@ -388,7 +388,7 @@ get_string(char *buffer, WINDOW *win)
     {
         if (c == -1)
             continue;
-        else if (c == '\b')
+        else if ((c == '\b') || (c == 0x7f))
         {
             if (sp > buf)
             {
