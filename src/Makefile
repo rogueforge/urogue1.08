@@ -111,7 +111,7 @@ urogue:	$(OBJS) $(MAKEFILE)
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(CRLIB) -o $@
 
 clean:		
-	rm -f $(OBJS) urogue a.out core *.map
+	rm -f $(OBJS) urogue a.out core *.map urogue.exe
 
 dist.src:
 	make clean
@@ -121,36 +121,41 @@ dist.src:
 dist.irix:
 	make clean
 	make CC=cc CFLAGS="-woff 1116 -O3" urogue
-	tar cf $(DISTNAME)-irix.tar urogue README -C .. LICENSE
+	nroff -man urogue.6 | colcrt - > urogue.cat
+	tar cf $(DISTNAME)-irix.tar urogue urogue.cat README -C .. LICENSE
 	gzip -f $(DISTNAME)-irix.tar
 
 dist.aix:
 	make clean
 	make CC=xlc CFLAGS="-qmaxmem=16768 -O3 -qstrict" urogue
-	tar cf $(DISTNAME)-aix.tar urogue README -C .. LICENSE
+	nroff -man urogue.6 | colcrt - > urogue.cat
+	tar cf $(DISTNAME)-aix.tar urogue urogue.cat README -C .. LICENSE
 	gzip -f $(DISTNAME)-aix.tar
 
 dist.linux:
 	make clean
 	make urogue
-	tar cf $(DISTNAME)-linux.tar urogue README -C .. LICENSE
+	groff -man urogue.6 | sed -e 's/.\x08//g' > urogue.cat
+	tar cf $(DISTNAME)-linux.tar urogue urogue.cat README -C .. LICENSE
 	gzip -f $(DISTNAME)-linux.tar
 
 dist.interix:
 	make clean
 	make urogue
-	tar cf $(DISTNAME)-interix.tar urogue README -C .. LICENSE
+	groff -P-b -P-u -man -Tascii urogue.6 > urogue.cat
+	tar cf $(DISTNAME)-interix.tar urogue urogue.cat README -C .. LICENSE
 	gzip -f $(DISTNAME)-interix.tar
 
 dist.cygwin:
 	make clean
 	make urogue
-	tar cf $(DISTNAME)-cygwin.tar urogue.exe README -C .. LICENSE
+        groff -P-c -man -Tascii urogue.6 | sed -e 's/.\x08//g' > urogue.cat
+	tar cf $(DISTNAME)-cygwin.tar urogue.exe urogue.cat README -C .. LICENSE
 	gzip -f $(DISTNAME)-cygwin.tar
 
 dist.djgpp:
 	make clean
 	make LDFLAGS="-L$(DJDIR)/LIB" CRLIB="-lpdcurses" urogue
+	groff -man -Tascii urogue.6 | sed -e 's/.\x08//g' > urogue.cat
 	rm -f $(DISTNAME)-djgpp.zip
-	zip -j $(DISTNAME)-djgpp.zip urogue.exe README ../LICENSE
-
+	zip -j $(DISTNAME)-djgpp.zip urogue.exe urogue.cat README ../LICENSE
