@@ -1842,4 +1842,10 @@
 1)	ident.c, passages.c and things.c are laid out again with four
 	space indents and braces on lines of their own
 
+1.07, Apr 25, 00
+1)	armor.c, bag.c, daemon.c, daemons.c and encumb.c are laid out
+	again
+2)	thieves, assassins and ninjas get back hit points as slowly as
+	fighters do
+
 -------	End of File ------
