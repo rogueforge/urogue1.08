@@ -9,44 +9,45 @@
  * understanding the code.
  */
 
-static char sccsid[] = "%W% %G%";
-
 #include "rogue.h"
-/*
- * has_defensive_spell() has monster cast a defensive spell. Any flags added
- * here must also be in player_powers[].
- */
 
-int has_defensive_spell(struct thing th)
+/*
+    has_defensive_spell()
+        has monster cast a defensive spell.
+        Any flags added here must also be in player_powers[].
+*/
+
+int
+has_defensive_spell(struct thing th)
 {
     if (on(th, HASOXYGEN))
-	return (TRUE);
+        return(TRUE);
     if (on(th, CANFLY))
-	return (TRUE);
+        return(TRUE);
     if (on(th, CANINWALL))
-	return (TRUE);
+        return(TRUE);
     if (on(th, CANREFLECT))
-	return (TRUE);
+        return(TRUE);
     if (on(th, CANSEE))
-	return (TRUE);
+        return(TRUE);
     if (on(th, HASMSHIELD))
-	return (TRUE);
+        return(TRUE);
     if (on(th, HASSHIELD))
-	return (TRUE);
+        return(TRUE);
     if (on(th, ISHASTE))
-	return (TRUE);
+        return(TRUE);
     if (on(th, ISREGEN))
-	return (TRUE);
+        return(TRUE);
     if (on(th, ISDISGUISE))
-	return (TRUE);
+        return(TRUE);
     if (on(th, ISINVIS))
-	return (TRUE);
+        return(TRUE);
     if (on(th, NOCOLD))
-	return (TRUE);
+        return(TRUE);
     if (on(th, NOFIRE))
-	return (TRUE);
+        return(TRUE);
     if (on(th, ISELECTRIC))
-	return (TRUE);
+        return(TRUE);
 
-    return (FALSE);
+    return(FALSE);
 }
