@@ -189,6 +189,8 @@ main(int argc, char *argv[])
     oldrp = roomin(hero);
     after = TRUE;
 
+    signal(SIGINT, quit_handler);
+
     while(playing)
     {
         do_daemons(BEFORE);
