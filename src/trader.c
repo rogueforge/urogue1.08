@@ -123,6 +123,8 @@ buy_more:
         if (itemtype == '\0')
         {
             mpos = 0;
+	    wmove(hw,10,0);
+	    wclrtobot(hw);
             mvwaddstr(hw, 11, 0, "WHAT\tTYPE\n! Potion\n? Scroll\n"
                                  "= Ring\n/ Stick\n] Armor\n) Weapon\n: Food");
 
@@ -352,7 +354,7 @@ buy_more:
     obj->o_count = 1;
     obj->o_weight = 0;
     obj->o_dplus = obj->o_hplus = 0;
-	cur_worth = 0;
+    cur_worth = 0;
 
     if (!is_spell)
     {
@@ -366,6 +368,7 @@ buy_more:
             touchwin(hw);
             wrefresh(hw);
 
+	    blessed = cursed = FALSE;
             switch (wgetch(hw))
             {
                 case ESCAPE:
@@ -467,9 +470,9 @@ buy_more:
         wstandend(hw);
         wclrtoeol(hw);
         touchwin(hw);
+	wrefresh(hw);
 		wait_for(' ');
 		discard(item);
-        wrefresh(hw);
         itemtype = '\0';
         goto buy_more;
     }
@@ -565,13 +568,13 @@ sell_it(void)
     }
 
     rem_pack(obj);
-    discard(item);
     purse += cur_worth; /* give him his money */
     ++num_transactions;
     effective_purse += cur_worth;
 
     sprintf(buf, "Sold %s.  Hit space to continue.",
         inv_name(obj, LOWERCASE));
+    discard(item);
 
     mvwaddstr(hw, 13, 0, buf);
     wclrtoeol(hw);
