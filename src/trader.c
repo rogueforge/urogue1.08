@@ -22,6 +22,18 @@ static unsigned long cur_worth;     /* How much the shop item costs */
 */
 
 void
+display_postinfo(void)
+{
+    wclear(hw);
+    wstandout(hw);
+    mvwaddstr(hw, 0, COLS / 2 - 30,
+        "Welcome to Friendly Fiend's Flea Market" );
+    wstandend(hw);
+    wclrtoeol(hw);
+    trans_line();   
+}
+
+void
 do_post(void)
 {
     int bad_letter = FALSE;
@@ -33,18 +45,10 @@ do_post(void)
 
     for (;;)
     {
-        wclear(hw);
-
         if (!open_market())
             return;
 
-        wstandout(hw);
-        mvwaddstr(hw, 0, COLS / 2 - 30,
-            "Welcome to Friendly Fiend's Flea Market" );
-
-        wstandend(hw);
-        wclrtoeol(hw);
-        trans_line();   
+        display_postinfo();
 
         if (bad_letter)
         {
@@ -83,7 +87,11 @@ do_post(void)
                 break;
 
             case 'I':
+                wclear(hw);
+                wrefresh(hw);
                 inventory(pack, 0);
+                msg(" ");
+                msg("");
                 break;
 
             case 'l':
@@ -116,6 +124,8 @@ buy_it(int itemtype, int flags)
 
 buy_more:
 
+    display_postinfo();
+
     do
     {
         array_size = 0;
@@ -124,7 +134,7 @@ buy_more:
         {
             mpos = 0;
 	    wmove(hw,10,0);
-	    wclrtobot(hw);
+	    wclrtoeol(hw);
             mvwaddstr(hw, 11, 0, "WHAT\tTYPE\n! Potion\n? Scroll\n"
                                  "= Ring\n/ Stick\n] Armor\n) Weapon\n: Food");
 
@@ -133,6 +143,7 @@ buy_more:
 
             mvwaddstr(hw, 9, 0, "What type of item do you want? ");
             wclrtobot(hw);
+            wclrtoeol(hw);
             touchwin(hw);
             wrefresh(hw);
             itemtype = wgetch(hw);
@@ -211,12 +222,15 @@ buy_more:
     {
         const struct magic_item   *m_item;
 
+        display_postinfo();
+
         mpos = 0;
         sprintf(buf, "Which kind of %s do you wish to have (* for list)? ",
             things[which_type].mi_name);
 
         mvwaddstr(hw, 9, 0, buf);
         wclrtoeol(hw);
+        
         touchwin(hw);
         wrefresh(hw);
         buf[0] = '\0';
@@ -530,11 +544,14 @@ sell_it(void)
     struct linked_list  *item;
     char buf[2 * LINELEN];
 
+    wclear(cw);
+
     if ((item = get_item("sell", 0)) == NULL)
         return;
 
     obj = OBJPTR(item);
     msg("");
+    display_postinfo();
     touchwin(hw);
     wrefresh(hw);
 
@@ -588,6 +605,8 @@ sell_it(void)
         Laud or condemn the object
 */
 
+extern char *inv_name();
+
 void
 describe_it(struct object *obj)
 {
@@ -637,6 +656,7 @@ describe_it(struct object *obj)
     sprintf(buf, "It's a%s %s worth %d pieces of gold.",
         vowelstr(charp), charp, cur_worth);
 
+    mvwaddstr(hw, 10, 0, inv_name(obj, TRUE));
     mvwaddstr(hw, 11, 0, buf);
     wclrtoeol(hw);
 }
