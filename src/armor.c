@@ -6,170 +6,192 @@
  * This file contains misc functions for dealing with armor
  */
 
-static char sccsid[] = "%W% %G%";
-
 #include "rogue.h"
 
 /*
- * wear() - The player wants to wear something, so let him/her put it on. 
- */
+    wear()
+        The player wants to wear something, so let him/her put it on.
+*/
 
-void wear(void)
+void
+wear(void)
 {
     struct object *obj;
 
-    if (cur_armor != NULL) {
-	msg("You are already wearing some.");
-	after = FALSE;
-	return;
+    if (cur_armor != NULL)
+    {
+        msg("You are already wearing some.");
+
+        after = FALSE;
+
+        return;
     }
 
     /* What does player want to wear? */
 
     if ((obj = get_object(pack, "wear", ARMOR, NULL)) == NULL)
-	return;
+        return;
 
     wear_ok(&player, obj, MESSAGE);
     waste_time();
+
     cur_armor = obj;
     obj->o_flags |= ISKNOW;
+
     msg("You are now wearing %s.", inv_name(obj, TRUE));
+
     return;
 }
 
 /*
- * take_off() Get the armor off of the players back 
- */
+    take_off()
+        Get the armor off of the players back
+*/
 
-void take_off(void)
+void
+take_off(void)
 {
-    struct object *obj;
+    struct object   *obj;
 
-    if ((obj = cur_armor) == NULL) {
-	msg("You aren't wearing armor!");
-	return;
+    if ((obj = cur_armor) == NULL)
+    {
+        msg("You aren't wearing armor!");
+        return;
     }
+
     if (!dropcheck(cur_armor))
-	return;
+        return;
+
     msg("You were wearing %c%c) %s.", ARMOR, print_letters[get_ident(obj)],
-	inv_name(obj, LOWERCASE));
+        inv_name(obj, LOWERCASE));
+
     cur_armor = NULL;
-    if (on(player, STUMBLER)) {
-	msg("Your foot feels a lot better now.");
-	turn_off(player, STUMBLER);
+
+    if (on(player, STUMBLER))
+    {
+        msg("Your foot feels a lot better now.");
+        turn_off(player, STUMBLER);
     }
 }
 
 /*
- * wear_ok() - enforce player class armor restrictions 
- */
+    wear_ok()
+        enforce player class armor restrictions
+*/
 
-int wear_ok(struct thing *wearee, struct object *obj, int print_message)
+int
+wear_ok(struct thing *wearee, struct object *obj, int print_message)
 {
-    int which = obj->o_which;
-    int ret_val = TRUE;
+    int which      = obj->o_which;
+    int ret_val    = TRUE;
     int class_type = wearee->t_ctype;
 
     if (obj->o_type != ARMOR)
-	return (FALSE);
+        return(FALSE);
     else
-	switch (class_type) {
-	case C_MAGICIAN:	/* cannot wear metal */
-	case C_ILLUSION:
-	    switch (which) {
-	    case RING_MAIL:
-	    case SCALE_MAIL:
-	    case PADDED_ARMOR:
-	    case CHAIN_MAIL:
-	    case BRIGANDINE:
-	    case SPLINT_MAIL:
-	    case GOOD_CHAIN:
-	    case PLATE_MAIL:
-	    case PLATE_ARMOR:
-		ret_val = FALSE;
-		break;
-	    default:
-		break;
-	    }
+        switch (class_type)
+        {
+            case C_MAGICIAN: /* cannot wear metal */
+            case C_ILLUSION:
+                switch (which)
+                {
+                    case RING_MAIL:
+                    case SCALE_MAIL:
+                    case PADDED_ARMOR:
+                    case CHAIN_MAIL:
+                    case BRIGANDINE:
+                    case SPLINT_MAIL:
+                    case GOOD_CHAIN:
+                    case PLATE_MAIL:
+                    case PLATE_ARMOR:
+                        ret_val = FALSE;
+                        break;
+                    default:
+                        break;
+                }
 
-	case C_THIEF:		/* cannot clank around */
-	case C_ASSASIN:
-	case C_NINJA:
-	    switch (which) {
-	    case CHAIN_MAIL:
-	    case BRIGANDINE:
-	    case SPLINT_MAIL:
-	    case GOOD_CHAIN:
-	    case PLATE_MAIL:
-	    case PLATE_ARMOR:
-		ret_val = FALSE;
-		break;
-	    default:
-		break;
-	    }
+            case C_THIEF:    /* cannot clank around */
+            case C_ASSASIN:
+            case C_NINJA:
+                switch (which)
+                {
+                    case CHAIN_MAIL:
+                    case BRIGANDINE:
+                    case SPLINT_MAIL:
+                    case GOOD_CHAIN:
+                    case PLATE_MAIL:
+                    case PLATE_ARMOR:
+                        ret_val = FALSE;
+                        break;
+                    default:
+                        break;
+                }
 
-	case C_CLERIC:		/* cannot wear plate */
-	case C_DRUID:
-	    switch (which) {
-	    case PLATE_MAIL:
-	    case PLATE_ARMOR:
-	    case MITHRIL:
-		ret_val = FALSE;
-		break;
-	    default:
-		break;
-	    }
+            case C_CLERIC:   /* cannot wear plate */
+            case C_DRUID:
+                switch (which)
+                {
+                    case PLATE_MAIL:
+                    case PLATE_ARMOR:
+                    case MITHRIL:
+                        ret_val = FALSE;
+                        break;
+                    default:
+                        break;
+                }
 
-	case C_FIGHTER:		/* wear anything */
-	case C_RANGER:
-	    break;
+            case C_FIGHTER: /* wear anything */
+            case C_RANGER:
+                break;
 
-	case C_PALADIN:		/* cannot wear common stuff */
-	    switch (which) {
-	    case SOFT_LEATHER:
-	    case CUIRBOLILLI:
-	    case HEAVY_LEATHER:
-	    case STUDDED_LEATHER:
-	    case PADDED_ARMOR:
-	    case BRIGANDINE:
-		ret_val = FALSE;
-		break;
-	    default:
-		break;
-	    }
+            case    C_PALADIN:  /* cannot wear common stuff */
+                switch (which)
+                {
+                    case SOFT_LEATHER:
+                    case CUIRBOLILLI:
+                    case HEAVY_LEATHER:
+                    case STUDDED_LEATHER:
+                    case PADDED_ARMOR:
+                    case BRIGANDINE:
+                        ret_val = FALSE;
+                        break;
+                    default:
+                        break;
+                }
 
-	case C_MONSTER:
-	    break;
+            case C_MONSTER:
+                break;
 
-	default:		/* Unknown class */
-	    debug("Unknown class %d.", class_type);
-	    break;
-	}
+            default:      /* Unknown class */
+                debug("Unknown class %d.", class_type);
+                break;
+        }
 
     if (ret_val == FALSE && print_message == MESSAGE)
-	switch (class_type) {
-	case C_MAGICIAN:
-	case C_ILLUSION:
-	    msg("You cannot regenerate spell points while wearing that!");
-	    break;
+        switch (class_type)
+        {
+            case C_MAGICIAN:
+            case C_ILLUSION:
+                msg("You cannot regenerate spell points while wearing that!");
+                break;
 
-	case C_THIEF:
-	case C_ASSASIN:
-	case C_NINJA:
-	    msg("Don't expect to be stealthy while wearing that!");
-	    break;
+            case C_THIEF:
+            case C_ASSASIN:
+            case C_NINJA:
+                msg("Don't expect to be stealthy while wearing that!");
+                break;
 
-	case C_CLERIC:
-	case C_DRUID:
-	case C_PALADIN:
-	    msg("Your god strongly disapproves of your wearing that!");
-	    break;
+            case C_CLERIC:
+            case C_DRUID:
+            case C_PALADIN:
+                msg("Your god strongly disapproves of your wearing that!");
+                break;
 
-	case C_FIGHTER:
-	case C_RANGER:
-	case C_MONSTER:
-	    break;
-	}
+            case C_FIGHTER:
+            case C_RANGER:
+            case C_MONSTER:
+                break;
+        }
 
-    return (ret_val);
+    return(ret_val);
 }
