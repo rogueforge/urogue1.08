@@ -308,7 +308,8 @@ read_scroll(struct thing *reader, int which, int flags)
                     switch (nch = ch = mvwinch(hw, i, j))
                     {
                         case SECRETDOOR:
-                            mvaddch(i, j, nch = DOOR);
+                            nch = DOOR;
+                            mvaddch(i, j, nch);
                             break;
 
                         case '-':

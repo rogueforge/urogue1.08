@@ -1202,7 +1202,7 @@ extern void doadd(const char *fmt, va_list ap);
 extern char readchar(void);
 extern void status(int display);
 extern void wait_for(int ch);
-extern void show_win(WINDOW *scr, const char *message);
+extern void show_win(WINDOW *scr, char *message);
 extern void restscr(WINDOW *scr);
 extern void add_line(const char *fmt, ...);
 extern void end_line(void);
@@ -1524,9 +1524,9 @@ extern int  save_resurrect(int bonus);
 extern const char *monstern;
 extern const struct h_list helpstr[];
 extern const char *cnames[][15];      /* Character level names */
-extern const char *spacemsg;
-extern const char *morestr;
-extern const char *retstr;
+extern char *spacemsg;
+extern char *morestr;
+extern char *retstr;
 
 /* state.c */
 

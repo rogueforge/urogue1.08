@@ -218,7 +218,7 @@ wait_for(int ch)
 */
 
 void
-show_win(WINDOW *scr, const char *message)
+show_win(WINDOW *scr, char *message)
 {
     mvwaddstr(scr, 0, 0, message);
     touchwin(scr);

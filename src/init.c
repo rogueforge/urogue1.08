@@ -98,9 +98,9 @@ char *ws_type[MAXSTICKS];    /* Is it a wand or a staff      */
 char *guess_items[MAXMAGICTYPES][MAXMAGICITEMS]; /* guess magic is          */
 int   know_items[MAXMAGICTYPES][MAXMAGICITEMS];  /* flag knowlede of magic  */
 
-const char *spacemsg = "--Press SPACE to continue--";
-const char *morestr  = "--More--";
-const char *retstr   = "[Press RETURN to continue]";
+char *spacemsg = "--Press SPACE to continue--";
+char *morestr  = "--More--";
+char *retstr   = "[Press RETURN to continue]";
 
 /* 15 named levels */
 

@@ -32,8 +32,15 @@ static void get_chr_filename(char *filename, int size)
  
     home = getenv("HOME");
 
-    if (home) 
-        snprintf(filename, size, "%s/urogue.chr", home);
+    if (home) {
+        if (strlen(home) < (size - 12) )
+        {
+            strcpy(filename, home);
+            strcat(filename,"/urogue.chr");
+        }
+        else
+	    strncpy(filename,"urogue.chr",size);
+    }    
     else 
         strcpy(filename, "urogue.chr");
 }
