@@ -15,7 +15,7 @@ new_level(LEVTYPE ltype)
     int rm, i, cnt;
     struct linked_list  *item, *nitem;
     struct thing    *tp;
-    struct linked_list  *fpack;
+    struct linked_list  *fpack = NULL;
     int     going_down = TRUE;
     coord   stairs;
 
