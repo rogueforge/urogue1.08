@@ -1851,4 +1851,15 @@
 1.07, Apr 26, 00
 1)	list.c and monsdata.c are laid out again
 
+1.07, Apr 27, 00
+1)	the version is 1.06a
+2)	the menus for artifacts, traps, teleporting and the wizard's
+	password are read from the window they are shown in
+3)	the maze's lines and columns are urlines and urcols, apart from
+	the names curses uses
+4)	the Makefile uses cc and -lcurses
+5)	the summoning of a familiar by scroll is moved into the cursed
+	case
+6)	most of the other files are laid out again
+
 -------	End of File ------
