@@ -1838,4 +1838,8 @@
 1)	the screen is touched before it is redrawn, and the trading post
 	clears the lines it writes
 
+1.07, Apr 24, 00
+1)	ident.c, passages.c and things.c are laid out again with four
+	space indents and braces on lines of their own
+
 -------	End of File ------
