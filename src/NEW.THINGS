@@ -1894,4 +1894,10 @@
 3)	choosing an item lists the kinds there are to choose from, and
 	says when there are none
 
+1.07, Feb 12, 05
+1)	thieves, assassins and ninjas get back hit points as quickly as
+	before
+2)	"a stack of things."
+3)	simpler Makefile, with targets to pack the releases
+
 -------	End of File ------

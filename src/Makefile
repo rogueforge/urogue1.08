@@ -1,39 +1,10 @@
-# SCCSID %W% %G%
-
-COMPFLAGS	  = 
-
-CFLAGS		  = $(COMPFLAGS)
-PFLAGS		  = $(COMPFLAGS)
-FFLAGS		  = $(COMPFLAGS)
-CCFLAGS 	  = $(COMPFLAGS)
-CXXFLAGS	  = $(COMPFLAGS)
-
-DEST		  = /usr/games
-
-# Uncomment this if you want system header files to be expanded
 #
-SYSHDRS 	  =
+# Makefile for urogue
+#
 
-EXTHDRS 	  =
+DISTNAME=urogue1.0.7
 
 HDRS		  = dict.h dictutil.h rogue.h
-
-INSTALL 	  = install
-
-CC		  = cc
-
-LD		  = cc
-
-LDFLAGS 	  = $(COMPFLAGS) -L/usr/lib
-
-LIBS		  = -lcurses
-
-LINTLIBS	  =
-
-LINTFLAGS	  = -Nn10000 $(CFLAGS)
-
-MAKEFILE	  = Makefile
-
 OBJS		  = armor.o \
 		artifact.o \
 		bag.o \
@@ -82,7 +53,7 @@ OBJS		  = armor.o \
 
 PROGRAM 	  = ur
 
-SRCS		  = armor.c \
+CFILES		  = armor.c \
 		artifact.c \
 		bag.c \
 		chase.c \
@@ -128,71 +99,58 @@ SRCS		  = armor.c \
 		weapons.c \
 		wizard.c
 
-all:		$(PROGRAM)
+MISC=           Makefile README.TXT
 
-$(PROGRAM):	$(OBJS) $(MAKEFILE)
-		$(LD) $(LDFLAGS) $(OBJS) $(LIBS) -o $(PROGRAM)
-		@echo "done"
+CC    = gcc
+CFLAGS= -O3
+CRLIB = -lcurses
+RM    = rm -f
+TAR   = tar
+
+urogue:	$(OBJS) $(MAKEFILE)
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) $(CRLIB) -o $@
 
 clean:		
-		@rm -f $(OBJS) $(PROGRAM) core *.map
+	rm -f $(OBJS) urogue a.out core *.map
 
-lint:		$(LINTLIBS) $(SRCS) $(HDRS) $(EXTHDRS)
-		lint $(LINTFLAGS) $(LINTLIBS) $(SRCS)
+dist.src:
+	make clean
+	tar cf $(DISTNAME)-src.tar $(CFILES) $(HDRS) $(MISC)
+	gzip -f $(DISTNAME)-src.tar
 
-tags:		$(HDRS) $(SRCS); @ctags $(HDRS) $(SRCS)
+dist.irix:
+	make clean
+	make CC=cc CFLAGS="-woff 1116 -O3" urogue
+	tar cf $(DISTNAME)-irix.tar urogue README.TXT
+	gzip -f $(DISTNAME)-irix.tar
 
-sccsget:
-		sccs get $(HDRS) $(SRCS) ToDo License.Txt History.Txt
+dist.aix:
+	make clean
+	make CC=xlc CFLAGS="-qmaxmem=16768 -O3 -qstrict" urogue
+	tar cf $(DISTNAME)-aix.tar urogue README.TXT
+	gzip -f $(DISTNAME)-aix.tar
 
-sccsedit:
-		sccs edit $(HDRS) $(SRCS) ToDo License.Txt History.Txt
+dist.linux:
+	make clean
+	make urogue
+	tar cf $(DISTNAME)-linux.tar urogue README.TXT
+	gzip -f $(DISTNAME)-linux.tar
 
-sccsdelta:
-		sccs delta $(HDRS) $(SRCS) ToDo License.Txt History.Txt
+dist.interix:
+	make clean
+	make urogue
+	tar cf $(DISTNAME)-interix.tar urogue README.TXT
+	gzip -f $(DISTNAME)-interix.tar
 
-###
-armor.o: rogue.h
-artifact.o: rogue.h
-bag.o: rogue.h
-chase.o: rogue.h
-command.o: rogue.h
-daemon.o: rogue.h
-daemons.o: rogue.h
-dict.o: dict.h dictutil.h
-dictutil.o: dict.h dictutil.h
-encumb.o: rogue.h
-fight.o: rogue.h
-getplay.o: rogue.h
-ident.o: rogue.h
-init.o: rogue.h
-io.o: rogue.h
-list.o: rogue.h 
-magic.o: rogue.h
-main.o: rogue.h
-maze.o: rogue.h
-memory.o: dict.h dictutil.h rogue.h
-misc.o: rogue.h
-monsdata.o: rogue.h
-monsters.o: rogue.h
-move.o: rogue.h
-newlvl.o: rogue.h
-options.o: rogue.h
-pack.o: rogue.h
-passages.o: rogue.h
-player.o: rogue.h
-potions.o: rogue.h
-random.o: rogue.h
-rings.o: rogue.h
-rip.o: rogue.h
-rogue.o: rogue.h
-rooms.o: rogue.h
-save.o: rogue.h
-scrolls.o: rogue.h
-status.o: rogue.h
-sticks.o: rogue.h
-things.o: rogue.h
-trader.o: rogue.h
-verify.o: rogue.h
-weapons.o: rogue.h
-wizard.o: rogue.h
+dist.cygwin:
+	make clean
+	make urogue
+	tar cf $(DISTNAME)-cygwin.tar urogue.exe README.TXT
+	gzip -f $(DISTNAME)-cygwin.tar
+
+dist.djgpp:
+	make clean
+	make LDFLAGS="-L$(DJDIR)/LIB" CRLIB="-lpdcurses" urogue
+	rm -f $(DISTNAME)-djgpp.zip
+	zip $(DISTNAME)-djgpp.zip urogue.exe README.TXT
+
