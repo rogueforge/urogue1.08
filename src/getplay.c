@@ -26,14 +26,29 @@
 
 static int def_array[MAXPDEF][MAXPATT];    /* Pre-def'd chars */
 
+static void get_chr_filename(char *filename, int size)
+{
+    const char *home;
+ 
+    home = getenv("HOME");
+
+    if (home) 
+        snprintf(filename, size, "%s/urogue.chr", home);
+    else 
+        strcpy(filename, "urogue.chr");
+}
+
 int
 geta_player(void)
 {
     int  i;
     FILE *fd;
     char pbuf[2 * LINELEN];
+    char filename[200];
 
-    if ((fd = fopen("urogue.chr", "r")) == NULL)
+    get_chr_filename(filename, sizeof(filename));
+
+    if ((fd = fopen(filename, "r")) == NULL)
         return(FALSE);
 
     fread(def_array, sizeof(def_array), 1, fd);
@@ -57,13 +72,13 @@ geta_player(void)
         wclrtoeol(hw);
         wrefresh(hw);
         get_string(pbuf, hw);
-        i = atoi(pbuf);
+        i = atoi(pbuf) - 1;
 
         if (i < 0 || i > MAXPDEF - 1)
         {
             wstandout(hw);
-            mvwaddstr(hw, 1, 0, "Please use the range 0 to");
-            wprintw(hw, " %d.", MAXPDEF - 1);
+            mvwaddstr(hw, 1, 0, "Please use the range 1 to");
+            wprintw(hw, " %d.", MAXPDEF);
             wstandend(hw);
             wclrtoeol(hw);
             wrefresh(hw);
@@ -103,6 +118,7 @@ puta_player(void)
 {
     FILE *fd;
     char    pbuf[2 * LINELEN];
+    char filename[200];
     short   i;
     char    *class = which_class(player.t_ctype);
 
@@ -170,7 +186,10 @@ puta_player(void)
 
     /* OK. Now let's write this stuff out! */
 
-    if ((fd = fopen("urogue.chr", "w")) == NULL)
+    get_chr_filename(filename, sizeof(filename));
+
+
+    if ((fd = fopen(filename, "w")) == NULL)
     {
         sprintf(pbuf, "I can't seem to open/create urogue.chr.");
         mvwaddstr(hw, 5, 5, pbuf);
