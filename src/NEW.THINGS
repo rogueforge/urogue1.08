@@ -1904,4 +1904,9 @@
 1)	urogue.6 is in the distribution, formatted as urogue.cat
 2)	released as 1.0.7
 
+1.07, Feb 25, 05
+1)	praying restores hit points and spell points only when the
+	prayer is answered (Tom Sanders)
+2)	the version is 1.07
+
 -------	End of File ------
