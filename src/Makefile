@@ -1,6 +1,6 @@
 # SCCSID %W% %G%
 
-COMPFLAGS	  =
+COMPFLAGS	  = 
 
 CFLAGS		  = $(COMPFLAGS)
 PFLAGS		  = $(COMPFLAGS)
@@ -20,9 +20,11 @@ HDRS		  = dict.h dictutil.h rogue.h
 
 INSTALL 	  = install
 
+CC		  = cc
+
 LD		  = cc
 
-LDFLAGS 	  = $(COMPFLAGS)
+LDFLAGS 	  = $(COMPFLAGS) -L/usr/lib
 
 LIBS		  = -lcurses
 
@@ -128,12 +130,12 @@ SRCS		  = armor.c \
 
 all:		$(PROGRAM)
 
-$(PROGRAM):	$(OBJS) $(LIBS) $(MAKEFILE)
+$(PROGRAM):	$(OBJS) $(MAKEFILE)
 		$(LD) $(LDFLAGS) $(OBJS) $(LIBS) -o $(PROGRAM)
 		@echo "done"
 
 clean:		
-		@rm -f $(OBJS) $(PROGRAM) core
+		@rm -f $(OBJS) $(PROGRAM) core *.map
 
 lint:		$(LINTLIBS) $(SRCS) $(HDRS) $(EXTHDRS)
 		lint $(LINTFLAGS) $(LINTLIBS) $(SRCS)
