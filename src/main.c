@@ -149,7 +149,7 @@ main(int argc, char *argv[])
     noecho();           /* Echo off */
     nonl();
 	
-	scale = (float) (LINES * COLS) / (80.0 * 25); /* get food right for     */
+	scale = (float) (LINES * COLS) / (80.0 * 25.0); /* get food right for     */
 	                                              /* different screen sizes */
 												  
 	food_left *= scale;

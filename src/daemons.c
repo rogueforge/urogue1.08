@@ -56,7 +56,7 @@ doctor(daemon_arg *who)
         case C_ASSASIN:
         case C_NINJA:
             turns_quiet = 16 - curp->s_lvl;
-            new_points = curp->s_lvl / 2 - 4;
+            new_points = curp->s_lvl / 2 - 1;
             break;
 
         case C_CLERIC:

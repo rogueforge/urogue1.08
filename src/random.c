@@ -8,7 +8,6 @@
 
 #include "rogue.h"
 
-
 void
 ur_srandom(unsigned x)
 {

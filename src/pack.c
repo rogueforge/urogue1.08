@@ -645,7 +645,7 @@ show_floor(void)
         obj = OBJPTR(item);
 
         if (obj->next_obj != NULL)
-		    msg("a stack o things.");
+		    msg("a stack of things.");
 		else if (obj->o_type == GOLD)
             msg("%d gold pieces.", obj->o_count);
         else
