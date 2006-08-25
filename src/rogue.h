@@ -77,7 +77,7 @@
 #define attach(a, b) _attach(&a, b)
 #define detach(a, b) _detach(&a, b)
 #define free_list(a) _free_list(&a)
-#ifndef __DJGPP__
+#ifndef max
 #define max(a, b) ((a) > (b) ? (a) : (b))
 #define min(a, b) ((a) < (b) ? (a) : (b))
 #endif

@@ -1909,4 +1909,7 @@
 	prayer is answered (Tom Sanders)
 2)	the version is 1.07
 
+1.08, Aug 24, 06
+1)	min() and max() are defined only where they are not already
+
 -------	End of File ------
