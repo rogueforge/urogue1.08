@@ -946,8 +946,10 @@ wake_monster(int y, int x)
         (on(*tp, ISSHADOW) && rnd(100) < 80) ||
         (on(*tp, ISINVIS) && off(player, CANSEE)))
 	{
-        int ch = mvwinch(stdscr, y, x);
-		/* incomplete - need to finish logic */
+	    /* 
+	    TODO: incomplete - need to finish logic
+	    int ch = mvwinch(stdscr, y, x); 
+	    */
 	}
 	
 
