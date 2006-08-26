@@ -1711,3 +1711,4 @@ extern void whatis(struct linked_list *what);
 extern void teleport(void);
 extern int passwd(void);
 
+#define NOOP(x) (x += 0)

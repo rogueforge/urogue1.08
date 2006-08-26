@@ -217,8 +217,10 @@ doctor_spell_points(struct thing *tp)
 */
 
 daemon
-rollwand(daemon_arg *arg) /*ARGSUSED*/
+rollwand(daemon_arg *arg)
 {
+    NOOP(arg);
+
     if ((rnd(6) == 0) && (player.t_ctype != C_THIEF ||
         (rnd(30) >= pstats.s_dext)))
     {
@@ -236,11 +238,13 @@ rollwand(daemon_arg *arg) /*ARGSUSED*/
 */
 
 daemon
-stomach(daemon_arg *arg) /*ARGSUSED*/
+stomach(daemon_arg *arg)
 {
     int oldfood, old_hunger;
     int amount;
     int power_scale;
+
+    NOOP(arg);
 
     old_hunger = hungry_state;
 
@@ -310,10 +314,12 @@ stomach(daemon_arg *arg) /*ARGSUSED*/
 */
 
 daemon
-runners(daemon_arg *arg) /*ARGSUSED*/
+runners(daemon_arg *arg)
 {
     struct linked_list  *item;
     struct thing        *tp;
+
+    NOOP(arg);
 
     for (item = mlist; item != NULL; item = next_mons)
     {
@@ -387,8 +393,10 @@ runners(daemon_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-swander(fuse_arg *arg) /*ARGSUSED*/
+swander(fuse_arg *arg)
 {
+    NOOP(arg);
+
     start_daemon(rollwand, 0, BEFORE);
     return;
 }
@@ -399,8 +407,10 @@ swander(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-unconfuse(fuse_arg *arg) /*ARGSUSED*/
+unconfuse(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, ISHUH);
     msg("You feel less confused now.");
     return;
@@ -412,8 +422,10 @@ unconfuse(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-unscent(fuse_arg *arg) /*ARGSUSED*/
+unscent(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, CANSCENT);
     msg("The smell of monsters goes away.");
 }
@@ -424,8 +436,10 @@ unscent(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-scent(fuse_arg *arg) /*ARGSUSED*/
+scent(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, ISUNSMELL);
     msg("You begin to smell the damp dungeon air again.");
 }
@@ -437,8 +451,10 @@ scent(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-unhear(fuse_arg *arg) /*ARGSUSED*/
+unhear(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, CANHEAR);
     msg("The sounds of monsters fades away.");
 }
@@ -449,8 +465,10 @@ unhear(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-hear(fuse_arg *arg) /*ARGSUSED*/
+hear(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, ISDEAF);
     msg("You can hear again.");
 }
@@ -472,8 +490,10 @@ hear(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-unsee(fuse_arg *arg) /*ARGSUSED*/
+unsee(fuse_arg *arg)
 {
+    NOOP(arg);
+
     if (!is_wearing(R_SEEINVIS))
     {
         turn_off(player, CANSEE);
@@ -487,8 +507,10 @@ unsee(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-unstink(fuse_arg *arg) /*ARGSUSED*/
+unstink(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, HASSTINK);
 }
 
@@ -498,8 +520,10 @@ unstink(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-unclrhead(fuse_arg *arg) /*ARGSUSED*/
+unclrhead(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, ISCLEAR);
     msg("The blue aura about your head fades away.");
 }
@@ -510,8 +534,10 @@ unclrhead(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-unphase(fuse_arg *arg) /*ARGSUSED*/
+unphase(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, CANINWALL);
 
     msg("Your dizzy feeling leaves you.");
@@ -526,8 +552,10 @@ unphase(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-sight(fuse_arg *arg) /*ARGSUSED*/
+sight(fuse_arg *arg)
 {
+    NOOP(arg);
+
     if (on(player, ISBLIND))
     {
         extinguish_fuse(sight);
@@ -543,8 +571,10 @@ sight(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-res_strength(fuse_arg *arg) /*ARGSUSED*/
+res_strength(fuse_arg *arg)
 {
+    NOOP(arg);
+
     if (lost_str)
     {
         chg_str(lost_str, FALSE, FALSE);
@@ -564,8 +594,10 @@ res_strength(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-nohaste(fuse_arg *arg) /*ARGSUSED*/
+nohaste(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, ISHASTE);
     msg("You feel yourself slowing down.");
 }
@@ -576,8 +608,10 @@ nohaste(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-noslow(fuse_arg *arg) /*ARGSUSED*/
+noslow(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, ISSLOW);
     msg("You feel yourself speeding up.");
 }
@@ -588,8 +622,10 @@ noslow(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-suffocate(fuse_arg *arg) /*ARGSUSED*/
+suffocate(fuse_arg *arg)
 {
+    NOOP(arg);
+
     death(D_SUFFOCATION);
 }
 
@@ -599,8 +635,10 @@ suffocate(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-cure_disease(fuse_arg *arg) /*ARGSUSED*/
+cure_disease(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, HASDISEASE);
 
     if (off(player, HASINFEST))
@@ -613,8 +651,10 @@ cure_disease(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-un_itch(fuse_arg *arg) /*ARGSUSED*/
+un_itch(fuse_arg *arg)
 {
+    NOOP(arg);
+
     if (lost_dext)
     {
         chg_dext(lost_dext, FALSE, FALSE);
@@ -629,8 +669,10 @@ un_itch(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-appear(fuse_arg *arg) /*ARGSUSED*/
+appear(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, ISINVIS);
     PLAYER = VPLAYER;
     msg("The tingling feeling leaves your body.");
@@ -643,8 +685,10 @@ appear(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-unelectrify(fuse_arg *arg) /*ARGSUSED*/
+unelectrify(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, ISELECTRIC);
     msg("The sparks and violet glow from your body fade away.");
     light(&hero);
@@ -656,8 +700,10 @@ unelectrify(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-unshero(fuse_arg *arg) /*ARGSUSED*/
+unshero(fuse_arg *arg)
 {
+    NOOP(arg);
+
     msg("Your feeling of invulnerability goes away.");
     turn_off(player, SUPERHERO);
     chg_str(-11, FALSE, FALSE);
@@ -673,8 +719,10 @@ unshero(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-unbhero(fuse_arg *arg) /*ARGSUSED*/
+unbhero(fuse_arg *arg)
 {
+    NOOP(arg);
+
     msg("Your feeling of invincibility goes away.");
     turn_off(player, SUPERHERO);
     chg_str(-10, FALSE, FALSE);
@@ -687,8 +735,10 @@ unbhero(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-undisguise(fuse_arg *arg) /*ARGSUSED*/
+undisguise(fuse_arg *arg)
 {
+    NOOP(arg);
+
     msg("Your skin feels itchy for a moment.");
     turn_off(player, ISDISGUISE);
     PLAYER = VPLAYER;
@@ -722,8 +772,10 @@ unsummon(fuse_arg *monny)
 */
 
 fuse
-ungaze(fuse_arg *arg) /*ARGSUSED*/
+ungaze(fuse_arg *arg)
 {
+    NOOP(arg);
+
     msg("The shiny particles swirl to the floor.");
     turn_off(player, CANREFLECT);
 }
@@ -734,8 +786,10 @@ ungaze(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-shero(fuse_arg *arg) /*ARGSUSED*/
+shero(fuse_arg *arg)
 {
+    NOOP(arg);
+
     msg("You feel normal again.");
     chg_str(2, FALSE, TRUE);
     chg_dext(2, FALSE, TRUE);
@@ -748,10 +802,12 @@ shero(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-wghtchk(fuse_arg *arg) /*ARGSUSED*/
+wghtchk(fuse_arg *arg)
 {
     int dropchk, err = TRUE;
     char    ch;
+
+    NOOP(arg);
 
     inwhgt = TRUE;
 
@@ -798,8 +854,10 @@ wghtchk(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-uncold(fuse_arg *arg) /*ARGSUSED*/
+uncold(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, NOCOLD);
 
     if (!is_wearing(R_COLDRESIST))
@@ -812,8 +870,10 @@ uncold(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-unhot(fuse_arg *arg) /*ARGSUSED*/
+unhot(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, NOFIRE);
 
     if (!is_wearing(R_FIRERESIST))
@@ -826,8 +886,10 @@ unhot(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-unfly(fuse_arg *arg) /*ARGSUSED*/
+unfly(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, CANFLY);
 
     if (!is_wearing(R_LEVITATION))
@@ -840,8 +902,10 @@ unfly(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-unbreathe(fuse_arg *arg) /*ARGSUSED*/
+unbreathe(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, HASOXYGEN);
 
     if (!is_wearing(R_BREATHE))
@@ -854,8 +918,10 @@ unbreathe(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-unregen(fuse_arg *arg) /*ARGSUSED*/
+unregen(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, ISREGEN);
 
     if (!is_wearing(R_REGEN))
@@ -868,8 +934,10 @@ unregen(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-unsupereat(fuse_arg *arg) /*ARGSUSED*/
+unsupereat(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, SUPEREAT);
     msg("You stop feeling so hungry.");
 }
@@ -880,8 +948,10 @@ unsupereat(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-unshield(fuse_arg *arg) /*ARGSUSED*/
+unshield(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, HASSHIELD);
     pstats.s_arm -= pstats.s_acmod;
     pstats.s_acmod = 0;
@@ -894,8 +964,10 @@ unshield(fuse_arg *arg) /*ARGSUSED*/
 */
 
 fuse
-unmshield(fuse_arg *arg) /*ARGSUSED*/
+unmshield(fuse_arg *arg)
 {
+    NOOP(arg);
+
     turn_off(player, HASMSHIELD);
     msg("The fog dissapates.");
 }
@@ -906,8 +978,10 @@ unmshield(fuse_arg *arg) /*ARGSUSED*/
 */
 
 void
-untruesee(fuse_arg *arg) /*ARGSUSED*/
+untruesee(fuse_arg *arg)
 {
+    NOOP(arg);
+
     if (!is_wearing(R_TRUESEE))
     {
         turn_off(player, CANTRUESEE);

@@ -872,9 +872,11 @@ static const char *nothings[] =
 };
 
 void
-nothing_message(int flags) /*ARGSUSED*/
+nothing_message(int flags)
 {
     int adverb = rnd(sizeof(nothings) / sizeof(char *));
+
+    NOOP(flags);   
 
     msg("Nothing %shappens.", nothings[adverb]);
 }

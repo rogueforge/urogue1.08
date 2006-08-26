@@ -11,6 +11,7 @@ static char sccsid[] = "%W% %G%";
 
 #include "dict.h"
 #include "dictutil.h"
+#include "rogue.h"
 
 int   trace;
 FILE  *ft;
@@ -177,7 +178,9 @@ int dict_toc_index( DICTIONARY *dict , char *toc_id )
 
 unsigned long compute_checksum( size_t size , char *block )
 {
-   return( 0 );
+    NOOP(size);
+    NOOP(block);
+    return( 0 );
 }
 
 /***********
