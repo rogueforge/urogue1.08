@@ -31,7 +31,7 @@ main(int argc, char *argv[])
     char    *env;
     time_t lowtime;
     time_t    now;
-    int rflag;
+    int rflag = 0;
     char *nm;
 	float scale;
 

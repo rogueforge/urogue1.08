@@ -1760,7 +1760,7 @@ add_dam(short str)
 int
 hung_dam(void)
 {
-    int howmuch;
+    int howmuch = 0;
 
     switch (hungry_state)
     {

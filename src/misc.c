@@ -20,7 +20,7 @@
 char *
 tr_name(char ch, char *trname)
 {
-    const char *s;
+    const char *s = NULL;
 
     if (trname == NULL)
         return(" Your found an error in UltraRogue #100.");
@@ -752,7 +752,7 @@ is_wearing(int type)
 int
 maze_view(int y, int x)
 {
-    int start, goal, delt, ycheck, xcheck, absy, absx;
+    int start, goal, delt, ycheck = 0, xcheck = 0, absy, absx;
     int row;
 
     /* Get the absolute value of y and x differences */
@@ -1083,7 +1083,7 @@ static char *f_plop[] =
 void
 feed_me(int hunger)
 {
-    char    *charp, *charp2;
+    char    *charp = NULL, *charp2 = NULL;
 
     switch (hunger)
     {

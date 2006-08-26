@@ -1124,7 +1124,7 @@ quaff(struct thing *quaffer, int which, int flags)
 void
 lower_level(int who)
 {
-    int fewer, nsides, i;
+    int fewer, nsides = 0, i;
 
     if (--pstats.s_lvl == 0)
     {

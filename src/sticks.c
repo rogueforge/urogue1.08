@@ -125,11 +125,11 @@ fix_stick(struct object *cur)
 void
 do_zap(struct thing *zapper, int which, unsigned long flags)
 {
-    struct linked_list  *item, *nitem;
+    struct linked_list  *item = NULL, *nitem;
     struct object   *obj, *nobj;
     struct room *rp;
-    struct thing    *tp;
-    char *mname;
+    struct thing    *tp = NULL;
+    char *mname = NULL;
     int y, x;
     int blessed = flags & ISBLESSED;
     int cursed = flags & ISCURSED;
@@ -313,7 +313,7 @@ do_zap(struct thing *zapper, int which, unsigned long flags)
                         /* duplicate randmonster() for now */
                         /* Eventually fix to take level     */
 
-                        int cur_level, range, i;
+                        int cur_level = 0, range, i;
 
                         if (blessed)
                             cur_level = level / 2;
@@ -597,7 +597,7 @@ do_zap(struct thing *zapper, int which, unsigned long flags)
         case WS_FIRE:
         case WS_COLD:
         {
-            char    *name;
+            char    *name = NULL;
             int damage;
             int ndice = 3 + pstats.s_lvl;
             int nsides;
@@ -1651,6 +1651,7 @@ monster_do_zap(struct thing *zapper, int which, int flags)
     int damage;
     int ndice, nsides;
     int ch;
+    char *bolt_name = NULL;
 
     switch(which)
     {

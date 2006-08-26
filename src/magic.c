@@ -701,7 +701,7 @@ void
 learn_new_spells(void)
 {
     struct spells   *sp;
-    int kludge;
+    int kludge = 0;
     char spellbuf[2*LINELEN];
 
     for (sp = player_spells; sp->sp_level != -1; sp++)

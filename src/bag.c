@@ -194,7 +194,7 @@ push_bag(linked_list **bag_pp, object *obj_p)
 struct object *
 scan_bag(linked_list *bag_p, int type, int id)
 {
-    object  *obj_p;
+    object  *obj_p = NULL;
 
     for (; bag_p != NULL; bag_p = next(bag_p))
     {

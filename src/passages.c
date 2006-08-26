@@ -21,7 +21,7 @@
 void
 do_passages(void)
 {
-    struct rdes *r1, *r2;
+    struct rdes *r1, *r2 = NULL;
     int i, j;
     int roomcount;
 
@@ -145,12 +145,12 @@ do_passages(void)
 void
 conn(int r1, int r2)
 {
-    struct room *rpf, *rpt;
+    struct room *rpf, *rpt = NULL;
     char    rmt;
-    int distance, turn_spot, turn_distance;
+    int distance = 0, turn_spot = 0, turn_distance = 0;
     int rm;
     char    direc;
-    coord   delt, curr, turn_delta, spos, epos;
+    coord   delt = {0,0}, curr, turn_delta = {0,0}, spos = {0,0}, epos = {0,0};
 
     if (r1 < r2)
     {

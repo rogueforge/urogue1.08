@@ -594,7 +594,7 @@ init_player(void)
     int special = rnd(100) < 20;
     struct linked_list  *item;
     struct object   *obj;
-    int which_armor, which_weapon;
+    int which_armor = 0, which_weapon = 0;
     int other_weapon_flags = 0;
 
     pstats.s_lvl = 1;

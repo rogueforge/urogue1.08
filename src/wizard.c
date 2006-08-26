@@ -68,7 +68,7 @@ whatis(struct linked_list *what)
 void
 teleport(void)
 {
-    struct room *new_rp, *old_rp = roomin(hero);
+    struct room *new_rp = NULL, *old_rp = roomin(hero);
 
     int rm, which;
     coord c;

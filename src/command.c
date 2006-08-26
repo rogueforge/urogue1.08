@@ -713,7 +713,7 @@ do_after_effects(void)
         else
         {   /* he blew it - make him pay */
 
-            int death_cause;
+            int death_cause = 0;
 
             switch (player.t_ctype)
             {
@@ -1219,7 +1219,7 @@ d_level(void)
 void
 u_level(void)
 {
-    char ch;
+    char ch = 0;
 
     if (has_artifact && ((ch = mvinch(hero.y, hero.x)) == STAIRS ||
                  (on(player, CANINWALL)
@@ -1264,7 +1264,7 @@ call(int mark)
     struct object    *obj;
     char             *elsewise;
     int item_type =   numthings;
-    char            **item_color;
+    char            **item_color = NULL;
 
     if (mark)
         obj = get_object(pack, "mark", 0, bff_markable);

@@ -520,7 +520,7 @@ new_monster(struct linked_list *item, int type, coord *cp, int max_monster)
 
         if (on(*tp, ISDISGUISE))
         {
-            char    mch;
+            char    mch = 0;
 
             if (tp->t_pack != NULL)
                 mch = (OBJPTR(tp->t_pack))->o_type;

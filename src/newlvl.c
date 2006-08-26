@@ -113,7 +113,7 @@ new_level(LEVTYPE ltype)
     {
         if (rnd(10) < level)
         {
-            char    ch;
+            char    ch = 0;
 
             i = ntraps = min(MAXTRAPS, rnd(level / 2) + 1);
 

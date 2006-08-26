@@ -57,7 +57,7 @@ static char sccsid[] = "%W% %G%";
 static unsigned long hash_string(const char *s)
 {
         unsigned long h = 0;
-        unsigned long g;
+        unsigned long g = 0;
 
         while (*s) {
                 h <<= 4;
@@ -548,7 +548,7 @@ STRING_ENTRY *dict_search(const DICTIONARY *dict, const char *s,
 *************************************************************************/
 DICTIONARY *dict_union( const DICTIONARY *dict1 , const DICTIONARY *dict2 )
 {
-        DICTIONARY    *dict;
+        DICTIONARY    *dict = NULL;
         STRING_ENTRY  *se, *se2;
         long          initial_string_count, initial_hash_chains, max_chain_length;
         long          i, string_index;
@@ -808,7 +808,7 @@ STRING_ENTRY *dict_scan_next(DICTIONARY *dict)
 *************************************************************************/
 DICTIONARY *dict_load(const char *fname)
 {
-        DICTIONARY       *dict;
+        DICTIONARY       *dict = NULL;
         int              code, index;
         FILE             *fi;
         int              ntoc;
@@ -922,7 +922,7 @@ err_exit:
 BOOLEANC dict_save( DICTIONARY *dict, const char *fname )
 {
         int   index, ret_code;
-        FILE  *fo;
+        FILE  *fo = NULL;
 
         /* Have to be pointing at a valid dictionary */
         if ( dict == NULL || dict->sig->check_value != DICT_VALIDATE )
@@ -1019,7 +1019,7 @@ DICTIONARY *dict_import( const char *dict_fname ,
         char           buffer[BUFLEN], ch;
         int            index, c, c0;
         long           number;
-        FILE           *fi;
+        FILE           *fi = NULL;
 
         /***********
         **  Dictionary setup.
@@ -1109,7 +1109,7 @@ err_exit:
 *************************************************************************/
 BOOLEANC dict_export( DICTIONARY *dict , const char *fname )
 {
-        FILE          *fp;
+        FILE          *fp = NULL;
         STRING_ENTRY  *se;
         int       i;
 

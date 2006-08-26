@@ -94,7 +94,7 @@ corr_move(int dy, int dx)
 {
     char    ch;
     short   legal = 0;  /* Number of legal alternatives */
-    int     y, x;       /* Holds legal new position */
+    int     y = 0, x = 0;   /* Holds legal new position */
     int    *ny, *nx;    /* Point to which direction to change */
 
     /* New position */
@@ -722,9 +722,9 @@ int
 be_trapped(struct thing *th, coord tc)
 {
     struct trap *tp;
-    char   ch, *mname;
+    char   ch, *mname = NULL;
     int    is_player = (th == &player), can_see = cansee(tc.y, tc.x);
-    struct linked_list  *mitem;
+    struct linked_list  *mitem = NULL;
 
     tp = trap_at(tc.y, tc.x);
     ch = tp->tr_type;
@@ -1672,7 +1672,7 @@ set_trap(struct thing *tp, int y, int x)
 {
     int is_player = (tp == &player);
     int selection = rnd(7) + 1;
-    char  ch, och;
+    char  ch = 0, och;
     int  thief_bonus = 0;
 
     switch(och = mvinch(y, x))

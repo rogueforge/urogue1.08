@@ -114,7 +114,7 @@ buy_it(int itemtype, int flags)
     int cursed = flags & ISCURSED;
     int is_spell = flags & SCR_MAGIC;
     int array_size; /* # of items within type */
-    int which_type; /* Which type to buy */
+    int which_type = 0; /* Which type to buy */
     int which_one;  /* Which one within type */
     int plus_or_minus = 0;  /* for magic items */
     const struct magic_item   *magic_array = NULL;

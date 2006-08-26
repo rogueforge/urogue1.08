@@ -30,7 +30,7 @@ do_chase(struct thing *th, int flee)
     int last_door = -1;     /* Door we just came from */
     int stoprun = FALSE;    /* TRUE means we are there */
     int rundoor;            /* TRUE means run to a door */
-    int hit_bad;            /* TRUE means hit bad monster */
+    int hit_bad = FALSE;    /* TRUE means hit bad monster */
     int mon_attack;         /* TRUE means find a monster to hit */
 
     int    sch;
@@ -384,7 +384,7 @@ chase(struct thing *tp, coord *ee, int flee)
     struct linked_list  *weapon;
     coord   *er = &tp->t_pos;
     coord shoot;
-    coord *shootit_dir;
+    coord *shootit_dir = NULL;
     int ch;
     char   mch;
     int    next_player = FALSE;
