@@ -38,7 +38,7 @@ int max_level;				/* Deepest player has gone */
 int lost_dext;				/* amount of lost dexterity */
 int no_command = 0;
 int level = 0;
-unsigned long purse = 0;
+long purse = 0;
 int inpack = 0;
 unsigned long total = 0;
 int see_dist = 3;
