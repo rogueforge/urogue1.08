@@ -152,7 +152,7 @@ void *mem_malloc(const size_t bytes)
 		long temp;
 
 		sprintf(key, "%p", mem_temp);
-		if (dict_insert(allocations, key, 1, bytes, mem_temp, &temp) == NULL) {
+		if (dict_insert(allocations, key, 1, (const unsigned long) bytes, mem_temp, &temp) == NULL) {
 			fprintf(trace_file, "!!! Insert of pointer tracking info failed\n");
 			abort();
 		}
@@ -312,7 +312,7 @@ void *mem_realloc(const void *ptr, const size_t new_size)
 		long temp;
 
 		sprintf(key, "%p", mem_temp);
-		if (dict_insert(allocations, key, 1, new_size, mem_temp, &temp) == NULL) {
+		if (dict_insert(allocations, key, 1, (const unsigned long)new_size, mem_temp, &temp) == NULL) {
 			fprintf(trace_file, "!!! Insert of pointer tracking info failed\n");
 			abort();
 		}
@@ -332,7 +332,7 @@ int mem_validate(void *ptr)
 {
 	unsigned char *mem_temp = (unsigned char *)ptr;
 	size_t mem_size;
-	long i;
+	size_t i;
 
 	/* NULL pointers are always valid */
 	if (ptr == NULL)

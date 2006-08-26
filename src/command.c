@@ -1337,7 +1337,7 @@ call(int mark)
         }
         else
         {
-            guess_items[item_type][obj->o_which] = new(strlen(prbuf) + 1);
+            guess_items[item_type][obj->o_which] = new_alloc(strlen(prbuf) + 1);
             strcpy(guess_items[item_type][obj->o_which], prbuf);
         }
     }

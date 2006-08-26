@@ -136,7 +136,7 @@ death(int monst)
 
         if (die)
         {
-            wmove(cw, mpos, 0);
+            wmove(cw, (int)mpos, 0);
             waddstr(cw, morestr);
             touchwin(cw);
             wrefresh(cw);
@@ -155,11 +155,11 @@ death(int monst)
     while (*dp)
         printw("%s\n", *dp++);
 
-    mvaddstr(14, 28 - ((strlen(whoami) + 1) / 2), whoami);
+    mvaddstr(14, 28 - ((int)(strlen(whoami) + 1) / 2), whoami);
     sprintf(buf, "%d+%ld Points", pstats.s_lvl, pstats.s_exp);
-    mvaddstr(15, 28 - ((strlen(buf) + 1) / 2), buf);
+    mvaddstr(15, 28 - ((int)(strlen(buf) + 1) / 2), buf);
     killer = killname(monst,buf);
-    mvaddstr(17, 28 - ((strlen(killer) + 1) / 2), killer);
+    mvaddstr(17, 28 - ((int)(strlen(killer) + 1) / 2), killer);
     mvaddstr(18, 28, (sprintf(prbuf, "%2d", lt->tm_year), prbuf));
     move(LINES - 1, 0);
 

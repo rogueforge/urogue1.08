@@ -954,7 +954,7 @@ init_names(void)
         }
 
         *--cp = (char) '\0';
-        s_names[i] = (char *) new(strlen(prbuf) + 1);
+        s_names[i] = (char *) new_alloc(strlen(prbuf) + 1);
 
         know_items[TYP_SCROLL][i] = FALSE;
         guess_items[TYP_SCROLL][i] = 0;

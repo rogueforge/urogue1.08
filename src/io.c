@@ -13,9 +13,9 @@
 
 char prbuf[2 * LINELEN];    /* Buffer for sprintfs                      */
 static char mbuf[2*LINELEN];  /* Current message buffer        */
-static int  newpos = 0;       /* index in mbuf to end of msg   */
+static size_t newpos = 0;       /* index in mbuf to end of msg   */
 
-int mpos = 0;                 /* 0  = Overwrite existing message */
+size_t mpos = 0;                 /* 0  = Overwrite existing message */
                               /* >0 = print --More-- at this pos */
                               /*      and wait for key           */
 
@@ -101,7 +101,7 @@ endmsg(void)
 
     if (mpos)
     {
-        wmove(cw, 0, mpos);
+        wmove(cw, 0, (int)mpos);
         wprintw(cw, (char *) morestr);
         wrefresh(cw);
         wait_for(' ');
@@ -395,7 +395,7 @@ get_string(char *buffer, WINDOW *win)
         {
             if (sp > buf)
             {
-                int i;
+                size_t i;
 
                 sp--;
 

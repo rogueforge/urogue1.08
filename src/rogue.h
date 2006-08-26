@@ -1211,7 +1211,7 @@ extern void seemsg(const char *fmt, ...);
 
 /* list.c */
 
-extern void *ur_alloc(unsigned int size);
+extern void *ur_alloc(size_t size);
 extern void  ur_free(void *buf_p);
 extern void  _detach(struct linked_list **list, struct linked_list *item);
 extern void  _attach(struct linked_list **list, struct linked_list *item);
@@ -1220,7 +1220,7 @@ extern void  _free_list(struct linked_list **ptr);
 extern void  discard(struct linked_list *item);
 extern void  throw_away(struct object *ptr);
 extern struct linked_list *new_item(int size);
-extern void *new(unsigned int size);
+extern void *new_alloc(size_t size);
 extern struct linked_list *new_list(void);
 
 /* magic.c */
@@ -1530,7 +1530,7 @@ extern char *retstr;
 
 /* state.c */
 
-extern int mpos;           /* Where cursor is on top line */
+extern size_t mpos;           /* Where cursor is on top line */
 extern struct trap    traps[];
 extern struct room    rooms[];      /* One for each room -- A level */
 extern struct thing   player;       /* The rogue */

@@ -1354,7 +1354,7 @@ sell(struct thing *tp)
 
     msg("The %s shows you his wares.", monsters[nummonst].m_name);
     wstandout(cw);
-    mvwaddstr(cw, 0, mpos, morestr);
+    mvwaddstr(cw, 0, (int)mpos, morestr);
     wstandend(cw);
     wrefresh(cw);
     wait_for(' ');

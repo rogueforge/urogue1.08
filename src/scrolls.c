@@ -1286,7 +1286,7 @@ read_scroll(struct thing *reader, int which, int flags)
 
             if (get_string(buf, cw) == NORM)
             {
-                guess_items[TYP_SCROLL][which] = new(strlen(buf) + 1);
+                guess_items[TYP_SCROLL][which] = new_alloc(strlen(buf) + 1);
                 strcpy(guess_items[TYP_SCROLL][which], buf);
             }
         }

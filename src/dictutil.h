@@ -16,7 +16,7 @@ static char dictutil_sccsid[] = "%W% %G%";
 extern int block_read(
         FILE  *fi,
         char  *buffer,
-        long  count,
+        size_t  count,
         long  offset );
 
 /*--------------------------------
@@ -25,13 +25,13 @@ extern int block_read(
 extern int block_write(
         FILE  *fo,
         char  *buffer,
-        long  count );
+        size_t  count );
 
 /*--------------------------------------
   Compute a checksum of a block of bytes
   --------------------------------------*/
 extern unsigned long compute_checksum(
-        int   size,
+        size_t size,
         char  *block );
 
 /*-----------------------------------------------------------------

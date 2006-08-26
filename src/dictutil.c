@@ -21,7 +21,7 @@ FILE  *ft;
 **  Return 0 on success; -1 on failure;
 ***********/
 
-int block_read( FILE *fi , char *buffer , long count , long offset )
+int block_read( FILE *fi , char *buffer , size_t count , long offset )
 {
    if ( fseek(fi,offset,SEEK_SET) == -1 )
       return( -1 );
@@ -36,7 +36,7 @@ int block_read( FILE *fi , char *buffer , long count , long offset )
 **  Return -1 on failure; 0 on success.
 ***********/
 
-int block_write( FILE *fo , char *buffer , long count )
+int block_write( FILE *fo , char *buffer , size_t count )
 {
    if ( fwrite(buffer,1,count,fo) != count )
       return( -1 );
@@ -175,7 +175,7 @@ int dict_toc_index( DICTIONARY *dict , char *toc_id )
 **  (Currently just returns 0.)
 ***********/
 
-unsigned long compute_checksum( int size , char *block )
+unsigned long compute_checksum( size_t size , char *block )
 {
    return( 0 );
 }
@@ -203,11 +203,11 @@ DICT_PARM_ENTRY *dict_make_parm_entry( char *id , unsigned long value )
 ***********/
 
 int dict_parm_index( DICTIONARY *dict , char *parm_id )
-{  int index;
+{  long index;
 
    for ( index = 0 ; index < dict->sig->nparms ; index++ ) {
            if ( strcmp( dict->parm[index].id , parm_id ) == 0 )
-                   return( index );
+                   return( (int) index );
    } /* endfor */
 
    return( -1 );
@@ -219,7 +219,8 @@ int dict_parm_index( DICTIONARY *dict , char *parm_id )
 ***********/
 
 BOOLEANC dict_reset_toc_offsets( DICTIONARY *dict )
-{  int  i, offset;
+{  int  i;
+   long offset;
 
    offset = sizeof(DICT_SIG)
           + dict->sig->toc_size * sizeof(DICT_TOC_ENTRY);

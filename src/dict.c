@@ -367,7 +367,7 @@ STRING_ENTRY *dict_insert(DICTIONARY *dict, char *s,
                 /* fill in starting values */
                 strcpy(&dict->string_array[dict->array_used], s);
                 dict->string_table[string_index].string_offset = dict->array_used;
-                dict->array_used += strlen(s) + 1;
+                dict->array_used += (long) strlen(s) + 1;
                 dict->string_table[string_index].count = 0 ;
                 dict->string_table[string_index].flags = DICT_NONE;
                 dict->string_table[string_index].any_ptr = any_ptr; /* (AK:04/04/95) */
