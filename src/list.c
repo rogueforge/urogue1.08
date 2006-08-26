@@ -25,7 +25,7 @@ static char errbuf[2 * LINELEN];
 void *
 ur_alloc(unsigned int size)
 {
-    char *buf_p, *tmp_p;
+    char *buf_p;
 
     total++;
 
@@ -110,8 +110,6 @@ _attach_after(linked_list **list_pp, linked_list *list_p, linked_list *new_p)
 
     if (next(list_p) != NULL)  /* something after this one? */
     {
-        linked_list *next_p;
-
         new_p->l_next = next(list_p);
         list_p->l_next->l_prev = new_p;
     }

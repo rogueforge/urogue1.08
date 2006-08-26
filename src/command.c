@@ -943,7 +943,6 @@ search(int is_thief)
 {
     int x, y;
     char ch;
-    char trname[1024];
 
     /*
      * Look all around the hero, if there is something hidden there, give

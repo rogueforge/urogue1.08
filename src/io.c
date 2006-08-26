@@ -120,8 +120,6 @@ endmsg(void)
 void
 doadd(const char *fmt, va_list ap)
 {
-    char buff[2048];
-	
     vsprintf(&mbuf[newpos], fmt, ap);
     newpos = strlen(mbuf);
 }
