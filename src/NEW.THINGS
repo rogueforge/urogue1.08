@@ -1912,4 +1912,9 @@
 1.08, Aug 24, 06
 1)	min() and max() are defined only where they are not already
 
+1.08, Aug 26, 06
+1)	builds without warnings: signed and unsigned, unused variables
+	and parameters, conversions, values that may not be set,
+	functions used before they are declared
+
 -------	End of File ------

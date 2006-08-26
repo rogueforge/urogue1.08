@@ -1618,6 +1618,7 @@ extern char score_file[];       /* Score file name */
 
 extern struct room  *oldrp;     /* Roomin(&oldpos) */
 
+extern int restore_file(FILE *savef);
 
 /* rooms.c */
 

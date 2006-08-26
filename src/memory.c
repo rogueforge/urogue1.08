@@ -3,6 +3,7 @@
 
 #include "dict.h"
 #include "memory.h"
+#include "rogue.h"
 
 static char sccsid[] = "%W%\t%G%";
 

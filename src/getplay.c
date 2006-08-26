@@ -10,6 +10,7 @@
 
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
 #include "rogue.h"
 
 #define I_STR       0
@@ -33,7 +34,7 @@ static void get_chr_filename(char *filename, int size)
     home = getenv("HOME");
 
     if (home) {
-        if (strlen(home) < (size - 12) )
+        if ((int)strlen(home) < (size - 12) )
         {
             strcpy(filename, home);
             strcat(filename,"/urogue.chr");
