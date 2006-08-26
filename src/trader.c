@@ -12,9 +12,9 @@
 #include <ctype.h>
 #include "rogue.h"
 
-static unsigned long effective_purse; /* Paladins have a 10% tithe */
+static long effective_purse; /* Paladins have a 10% tithe */
 static int num_transactions;
-static unsigned long cur_worth;     /* How much the shop item costs */
+static long cur_worth;     /* How much the shop item costs */
 
 /*
     do_post()

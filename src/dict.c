@@ -356,7 +356,7 @@ STRING_ENTRY *dict_insert(DICTIONARY *dict, char *s,
                 dict->entry_count++;
 
                 /* make sure there is room in the string array */
-                if (dict->array_used + strlen(s) + 1 > dict->array_size) {
+                if (dict->array_used + (long)strlen(s) + 1 > dict->array_size) {
                         dict->array_size = (dict->array_size * 6) / 5;
                         dict->string_array = (char *) realloc(dict->string_array,
                                 dict->array_size);

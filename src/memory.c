@@ -121,7 +121,7 @@ void *mem_malloc(const size_t bytes)
 
 	/* if allocation succeeded, set management data */
 	if (mem_temp != NULL) {
-		long i;
+		size_t i;
 		char *end;
 
 		/* do beginning marker bytes */

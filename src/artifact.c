@@ -166,7 +166,7 @@ void
 do_minor(struct object *tr)
 {
     int which;
-    unsigned long loss;
+    long loss;
 
     which = rnd(110);
 
@@ -1868,7 +1868,7 @@ void
 level_eval(void)
 {
     int cnt = 0;
-    unsigned long max_nasty = 0;
+    long max_nasty = 0;
     struct linked_list  *item;
     struct thing    *tp;
     char    *colour, *temp;

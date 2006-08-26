@@ -246,7 +246,7 @@ ulrnd(unsigned long range)
         roll a number of dice
 */
 
-unsigned int
+int
 roll(int number, int sides)
 {
     int dtotal = 0;

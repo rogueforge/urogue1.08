@@ -18,7 +18,7 @@ void
 doctor(daemon_arg *who)
 {
     struct thing *tp = who->thingptr;
-    unsigned long ohp;   /* turn off ISFLEE? */
+    long ohp;   /* turn off ISFLEE? */
     struct stats *curp;  /* current stats pointer */
     struct stats *maxp;  /* max stats pointer */
     short         turns_quiet, new_points;
@@ -331,7 +331,7 @@ runners(daemon_arg *arg) /*ARGSUSED*/
             tp->t_chasee = &player;
             tp->t_horde  = NULL;
 
-            if (tp->t_stats.s_hpt < ulrnd(tp->maxstats.s_hpt))
+            if (tp->t_stats.s_hpt < rnd(tp->maxstats.s_hpt))
                 turn_on(*tp, ISFLEE);
 
             if (cansee(tp->t_pos.y, tp->t_pos.x))

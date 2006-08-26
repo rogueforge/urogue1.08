@@ -953,10 +953,10 @@ attack(struct thing *mp, struct object *weapon, int thrown)
                 struct object   *obj;
 
                 lastpurse = purse;
-                purse = (purse > GOLDCALC) ? purse - (unsigned)GOLDCALC : 0L;
+                purse = (purse > GOLDCALC) ? purse - GOLDCALC : 0L;
 
                 if (!save(VS_MAGIC))
-                    purse = (purse > (4*GOLDCALC)) ? purse-(unsigned)(4*GOLDCALC) : 0L;
+                    purse = (purse > (4*GOLDCALC)) ? purse-(4*GOLDCALC) : 0L;
 
                 if (purse != lastpurse)
                 {

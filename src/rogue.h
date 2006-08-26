@@ -1307,7 +1307,7 @@ extern int   main(int argc, char *argv[]);
 extern void  fatal(char *s);
 extern int rnd(int range);
 extern unsigned long ulrnd(unsigned long range);
-extern unsigned int   roll(int number, int sides);
+extern int   roll(int number, int sides);
 
 /* maze.c */
 
@@ -1557,7 +1557,7 @@ extern char *release;       /* Release number of rogue */
 extern char *lastfmt;
 extern char *lastarg;
 extern unsigned long    total;      /* Total dynamic memory bytes */
-extern unsigned long    purse;      /* How much gold the rogue has */
+extern long purse;         /* How much gold the rogue has */
 extern int line_cnt;       /* Counter for inventory style */
 extern int newpage;
 extern int resurrect;      /* resurrection counter */
