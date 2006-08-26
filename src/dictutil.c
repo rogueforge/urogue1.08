@@ -68,13 +68,13 @@ void *dict_load_block( DICTIONARY *dict , char *toc_id ,
    if ( block == NULL ) {
       ptr = malloc( dt_entry->size );
       if ( trace > 3 ) {
-         fprintf( ft , "\ndict_load_block allocates %lx bytes at location %lx\n" ,
+         fprintf( ft , "\ndict_load_block allocates %lx bytes at location %p\n" ,
                    dt_entry->size , ptr );
       } /* endif */
    } else {
       ptr = block;
       if ( trace > 3 ) {
-         fprintf( ft , "\ndict_load_block uses memory at location %lx\n" , ptr );
+         fprintf( ft , "\ndict_load_block uses memory at location %p\n" , ptr );
       } /* endif */
    } /* endif */
    if ( ptr == NULL ) {
@@ -98,7 +98,7 @@ void *dict_load_block( DICTIONARY *dict , char *toc_id ,
    dt_entry->ptr = ptr;
 
    if ( trace > 3 ) {
-      fprintf( ft , "\nLoaded block\nTOC entry:    id:%s  offset:%lx  size:%lx  ptr:%lx  checksum:%lx  type:%d\n" ,
+      fprintf( ft , "\nLoaded block\nTOC entry:    id:%s  offset:%lx  size:%lx  ptr:%p  checksum:%lx  type:%d\n" ,
                dict->toc[index].id , dict->toc[index].offset ,
                dict->toc[index].size , dict->toc[index].ptr ,
                dict->toc[index].checksum , dict->toc[index].type );
@@ -145,7 +145,7 @@ BOOLEANC dict_save_block( DICTIONARY *dict , char *toc_id , FILE *fo )
    } /* endif */
 
    if ( trace > 3 ) {
-      fprintf( ft , "\nStored block\nTOC entry:           id:%s  offset:%lx  size:%lx  ptr:%lx  checksum:%lx  type:%d\n" ,
+      fprintf( ft , "\nStored block\nTOC entry:           id:%s  offset:%lx  size:%lx  ptr:%p  checksum:%lx  type:%d\n" ,
                dict->toc[index].id , dict->toc[index].offset ,
                dict->toc[index].size , dict->toc[index].ptr ,
                dict->toc[index].checksum , dict->toc[index].type );
