@@ -18,11 +18,11 @@
 */
 
 struct linked_list *
-summon_monster(short type, int familiar, int print_message)
+summon_monster(int type, int familiar, int print_message)
 {
     struct linked_list  *mp;
     struct thing    *tp;
-    short   monster;
+    int   monster;
 
     if (familiar && !is_wearing(R_WIZARD) && off(player, CANSUMMON))
     {
@@ -150,7 +150,7 @@ summon_monster(short type, int familiar, int print_message)
         grab - a throne room monster allowed
 */
 
-short
+int
 randmonster(int wander, int grab)
 {
     int mons_number, cur_level, range, i;
@@ -209,8 +209,8 @@ new_monster(struct linked_list *item, int type, coord *cp, int max_monster)
     struct thing    *tp;
     struct monster  *mp;
     char    *ip, *hitp;
-    short   i, min_intel, max_intel;
-    short   num_dice, num_sides = 8, num_extra = 0;
+    int   i, min_intel, max_intel;
+    int   num_dice, num_sides = 8, num_extra = 0;
     int eff_charisma = pstats.s_charisma;
     int eff_intel = pstats.s_intel;
 
@@ -224,7 +224,7 @@ new_monster(struct linked_list *item, int type, coord *cp, int max_monster)
     tp->t_doorgoal = -1;
     tp->t_pos = *cp;
     tp->t_oldpos = *cp;
-    tp->t_oldch = mvwinch(cw, cp->y, cp->x);
+    tp->t_oldch = CCHAR( mvwinch(cw, cp->y, cp->x) );
     mvwaddch(mw, cp->y, cp->x, tp->t_type);
     mp = &monsters[tp->t_index];
 
@@ -976,7 +976,7 @@ genocide(int flags)
     struct linked_list  *ip;
     struct thing    *mp;
     struct linked_list  *nip;
-    short   which_monst;
+    int    which_monst;
     int    blessed = flags & ISBLESSED;
     int    cursed = flags & ISCURSED;
 
@@ -1089,7 +1089,8 @@ void
 sell(struct thing *tp)
 {
     struct linked_list  *item;
-    int i, j, min_worth, nitems, goods, chance, which_item, w;
+    int i, j, min_worth, nitems, chance, which_item, w;
+    char goods;
     struct object   *obj;
     char    buffer[2 * LINELEN];
     char    dbuf[2 * LINELEN];
@@ -1356,7 +1357,7 @@ sell(struct thing *tp)
 
     msg("The %s shows you his wares.", monsters[nummonst].m_name);
     wstandout(cw);
-    mvwaddstr(cw, 0, (int)mpos, morestr);
+    mvwaddstr(cw, 0, mpos, morestr);
     wstandend(cw);
     wrefresh(cw);
     wait_for(' ');
@@ -1373,7 +1374,7 @@ sell(struct thing *tp)
             continue;
 
         wmove(hw, i + 2, 0);
-        sprintf(dbuf, "[%c] ", (char) ((short) 'a' + i));
+        sprintf(dbuf, "[%c] ", ('a' + i));
 
         switch(goods)
         {
@@ -1419,7 +1420,7 @@ sell(struct thing *tp)
 
     killed(NULL, item, NOMESSAGE, NOPOINTS);
 
-    which_item = (short) ((wgetch(cw) & 0177) - 'a');
+    which_item = (short) ((readchar() & 0177) - 'a');
 
     while (which_item < 0 || which_item >= nitems ||
         selection[which_item].worth > effective_purse)
@@ -1429,7 +1430,7 @@ sell(struct thing *tp)
 
         mvwaddstr(hw, 0, 0, "Please enter one of the listed items: ");
         wrefresh(hw);
-        which_item = (short) ((wgetch(cw) & 0177) - 'a');
+        which_item = (short) ((readchar() & 0177) - 'a');
     }
 
     if (purse > selection[which_item].worth)

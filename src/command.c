@@ -20,12 +20,12 @@
 void
 command(void)
 {
-    static int repcommand;     /* Command to repeat if we are repeating */
+    static char repcommand;     /* Command to repeat if we are repeating */
     static int fight_to_death; /* Flags if we are fighting to death     */
     static coord dir;          /* Last direction specified              */
 
     object  *obj;
-    int      ch;
+    char     ch;
     int      ntimes = 1; /* Number of player moves */
     coord    nullcoord;
 
@@ -112,7 +112,7 @@ command(void)
                 ch = repcommand;
             else
             {
-                ch = wgetch(cw);
+                ch = readchar();
 
                 if (mpos != 0 && !running)
                     msg("");    /* Erase message if its there */
@@ -142,7 +142,7 @@ command(void)
                 while (isdigit(ch))
                 {
                     count = count * 10 + (ch - '0');
-                    ch = wgetch(cw);
+                    ch = readcharw(cw);
                 }
                 repcommand = ch;
 
@@ -208,7 +208,7 @@ command(void)
                     case 'U':
                     case 'B':
                     case 'N':
-                        runch = tolower(ch);
+                        runch = (char) tolower(ch);
                         break;
                 }
 
@@ -439,7 +439,7 @@ command(void)
 
                     msg("Wizard command: ");
                     mpos = 0;
-                    ch = wgetch(cw);
+                    ch = readchar();
 
                     switch (ch)
                     {
@@ -539,7 +539,7 @@ command(void)
 
                         default:
                             msg("Illegal wizard command '%s', %d.",
-                                unctrl((char)ch), ch);
+                                unctrl(ch), ch);
                             count = 0;
                             break;
 
@@ -549,7 +549,7 @@ command(void)
 
                 default:
                     msg("Illegal command '%s', %d.",
-                        unctrl((char)ch), ch);
+                        unctrl(ch), ch);
                     count = 0;
                     after = FALSE;
                     break;
@@ -823,7 +823,7 @@ make_omnipotent(void)
         obj = OBJPTR(item);
         obj->o_flags |= ISKNOW;
         obj->o_weight =
-            armors[CRYSTAL_ARMOR].a_wght * 0.2;
+            (int) (armors[CRYSTAL_ARMOR].a_wght * 0.2);
         cur_armor = obj;
         add_pack(item, NOMESSAGE);
     }
@@ -910,14 +910,14 @@ quit(void)
 
     wrefresh(cw);
 
-    if (wgetch(cw) == 'y')
+    if (readchar() == 'y')
     {
         clear();
         wclear(cw);
         wrefresh(cw);
         move(LINES - 1, 0);
         wrefresh(stdscr);
-        score((long) pstats.s_exp, pstats.s_lvl, CHICKEN, 0);
+        score(pstats.s_exp, pstats.s_lvl, CHICKEN, 0);
         byebye();
     }
     else
@@ -957,7 +957,7 @@ search(int is_thief)
         {
             ch = winat(y, x);
 
-            if (isatrap((int)ch))
+            if (isatrap(ch))
             {
                 static char trname[1024]; /* temp scratch space */
                 struct trap *tp;
@@ -990,7 +990,7 @@ search(int is_thief)
             {
                 if (rnd(100) < 20 && !is_thief)
                 {
-                    mvaddch(y, x, (char) DOOR);
+                    mvaddch(y, x, DOOR);
                     count = 0;
                 }
             }
@@ -1010,7 +1010,7 @@ help(void)
     int cnt;
 
     msg("Character you want help for (* for all): ");
-    helpch = wgetch(cw);
+    helpch = readchar();
     mpos = 0;
 
     /*
@@ -1111,7 +1111,7 @@ identify(void)
     msg("What do you want identified? ");
     mpos = 0;
 
-    if ((ch = wgetch(cw)) == ESCAPE)
+    if ((ch = readchar()) == ESCAPE)
     {
         msg("");
         return;
@@ -1158,7 +1158,7 @@ identify(void)
         case STICK:      str = "wand or staff";                  break;
         default:         str = "unknown character";              break;
     }
-    msg("'%s'; %s", unctrl((char)ch), str);
+    msg("'%s'; %s", unctrl(ch), str);
 }
 
 /*
@@ -1221,7 +1221,7 @@ u_level(void)
 {
     char ch = 0;
 
-    if (has_artifact && ((ch = mvinch(hero.y, hero.x)) == STAIRS ||
+    if (has_artifact && ((ch = CCHAR(mvinch(hero.y, hero.x))) == STAIRS ||
                  (on(player, CANINWALL)
             && (is_wearing(R_LEVITATION) || on(player, CANFLY)))))
     {

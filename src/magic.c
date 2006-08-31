@@ -318,7 +318,7 @@ incant(struct thing *caster, coord dir)
                 continue;
             }
 
-            if (isupper((int) buf[0])) /* Uppercase Abbreviation */
+            if (isupper(buf[0])) /* Uppercase Abbreviation */
             {
                 for (i = 0; i <= num_spells; i++)
                 {
@@ -392,7 +392,7 @@ incant(struct thing *caster, coord dir)
             msg("Are you sure you want to try for that hard a %s? [n]",
                 spell_type);
 
-            answer = wgetch(cw);
+            answer = readchar();
 
             if (tolower(answer) != 'y')
             {

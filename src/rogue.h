@@ -807,13 +807,13 @@ struct stats
     int     s_lvl;      /* Level of mastery */
     int     s_arm;      /* Armor class */
     int     s_acmod;    /* Armor clss modifier */
-    short   s_power;    /* Spell points */
-    short   s_str;      /* Strength */
-    short   s_intel;    /* Intelligence */
-    short   s_wisdom;   /* Wisdom */
-    short   s_dext;     /* Dexterity */
-    short   s_const;    /* Constitution */
-    short   s_charisma; /* Charisma */
+    int     s_power;    /* Spell points */
+    int     s_str;      /* Strength */
+    int     s_intel;    /* Intelligence */
+    int     s_wisdom;   /* Wisdom */
+    int     s_dext;     /* Dexterity */
+    int     s_const;    /* Constitution */
+    int     s_charisma; /* Charisma */
 };
 
 /* Structure describing a fighting being (monster at initialization) */
@@ -854,12 +854,12 @@ typedef struct thing
     long       t_flags[16];    /* State word */
     int        t_turn;     /* If slowed, is it a turn to move */
     int        t_wasshot;  /* Was character shot last round? */
-    short      t_ctype;    /* Character type */
-    short      t_index;    /* Index into monster table */
-    short      t_no_move;  /* How long the thing can't move */
-    short      t_rest_hpt; /* used in hit point regeneration */
-    short      t_rest_pow; /* used in spell point regeneration */
-    short      t_doorgoal; /* What door are we heading to? */
+    int        t_ctype;    /* Character type */
+    int        t_index;    /* Index into monster table */
+    int        t_no_move;  /* How long the thing can't move */
+    int        t_rest_hpt; /* used in hit point regeneration */
+    int        t_rest_pow; /* used in spell point regeneration */
+    int        t_doorgoal; /* What door are we heading to? */
     char       t_type;     /* What it is */
     char       t_disguise; /* What mimic looks like */
     char       t_oldch;    /* Character that was where it was */
@@ -894,7 +894,7 @@ typedef struct object
     char        *o_hurldmg; /* Damage if thrown */
     long        o_flags;    /* Information about objects */
     long        ar_flags;   /* general flags */
-    int     o_type;     /* What kind of object it is */
+    char     o_type;     /* What kind of object it is */
     int     o_ident;    /* identifier for object */
     unsigned int     o_count;    /* Count for plural objects */
     int     o_which;    /* Which object of a type it is */
@@ -1135,7 +1135,7 @@ extern int  fight(coord *mp, struct object *weap, int thrown);
 extern int  attack(struct thing *mp, struct object *weapon, int thrown);
 extern int  mon_mon_attack(struct thing *attacker, struct linked_list *mon,
                            struct object *weapon, int thrown);
-extern int  swing(short class, int at_lvl, int op_arm, int wplus);
+extern int  swing(int class, int at_lvl, int op_arm, int wplus);
 extern void init_exp(void);
 extern int  next_exp_level(int print_message);
 extern void check_level(void);
@@ -1148,8 +1148,8 @@ extern int   save_throw(int which, struct thing *tp);
 extern int   save(int which);
 extern int   dext_plus(int dexterity);
 extern int   dext_prot(int dexterity);
-extern int   str_plus(short str);
-extern int   add_dam(short str);
+extern int   str_plus(int str);
+extern int   add_dam(int str);
 extern int   hung_dam(void);
 extern void  raise_level(void);
 extern void  thunk(struct object *weap, char *mname);
@@ -1200,6 +1200,7 @@ extern void addmsg(const char *fmt, ...);
 extern void endmsg(void);
 extern void doadd(const char *fmt, va_list ap);
 extern char readchar(void);
+extern char readcharw(WINDOW *scr);
 extern void status(int display);
 extern void wait_for(int ch);
 extern void show_win(WINDOW *scr, char *message);
@@ -1306,6 +1307,8 @@ extern FILE *fd_score;
 extern int   main(int argc, char *argv[]);
 extern void  fatal(char *s);
 extern int rnd(int range);
+extern unsigned char ucrnd(unsigned char range);
+extern short srnd(short range);
 extern unsigned long ulrnd(unsigned long range);
 extern int   roll(int number, int sides);
 
@@ -1361,8 +1364,8 @@ extern int nummonst;
 
 /* monsters.c */
 
-extern struct linked_list *summon_monster(short type, int familiar, int print_message);
-extern short randmonster(int wander, int grab);
+extern struct linked_list *summon_monster(int type, int familiar, int print_message);
+extern int randmonster(int wander, int grab);
 extern void new_monster(struct linked_list *item, int type, coord *cp, int max_monster);
 extern void wanderer(void);
 extern struct linked_list *wake_monster(int y, int x);
@@ -1374,14 +1377,14 @@ extern void carried_weapon(struct thing *owner, struct object *weapon);
 
 /* move.c */
 
-extern void do_run(int ch);
+extern void do_run(char ch);
 extern int  step_ok(int y, int x, int can_on_monst, struct thing *flgptr);
 extern void corr_move(int dy, int dx);
 extern void do_move(int dy, int dx);
 extern void light(coord *cp);
 extern int  blue_light(int flags);
 extern char  show(int y, int x);
-extern int  be_trapped(struct thing *th, coord tc);
+extern char be_trapped(struct thing *th, coord tc);
 extern void dip_it(void);
 extern struct trap *trap_at(int y, int x);
 extern void set_trap(struct thing *tp, int y, int x);
@@ -1530,7 +1533,7 @@ extern char *retstr;
 
 /* state.c */
 
-extern size_t mpos;           /* Where cursor is on top line */
+extern int mpos;           /* Where cursor is on top line */
 extern struct trap    traps[];
 extern struct room    rooms[];      /* One for each room -- A level */
 extern struct thing   player;       /* The rogue */
@@ -1665,7 +1668,7 @@ extern void add_obj(struct linked_list *item, int y, int x);
 extern int  drop(struct linked_list *item);
 extern int dropcheck(struct object *op);
 extern struct linked_list *new_thing(void);
-extern struct linked_list *spec_item(int type, int which, int hit, int damage);
+extern struct linked_list *spec_item(char type, int which, int hit, int damage);
 extern int pick_one(struct magic_item *magic, int nitems);
 extern char *blesscurse(long flags);
 extern int extras(void);
@@ -1676,7 +1679,7 @@ extern int is_member(char *list_p, int member);
 /* trader.c */
 
 extern void do_post(void);
-extern void buy_it(int itemtype, int flags);
+extern void buy_it(char itemtype, int flags);
 extern void sell_it(void);
 extern void describe_it(struct object *obj);
 extern int  open_market(void);
@@ -1713,3 +1716,4 @@ extern void teleport(void);
 extern int passwd(void);
 
 #define NOOP(x) (x += 0)
+#define CCHAR(x) ( (char) (x & A_CHARTEXT) )

@@ -281,7 +281,7 @@ add_pack(struct linked_list *item, int print_message)
 
     /* Check if there is room */
 
-    if (count_bag(pack, (int) obj->o_type, NULL) == max_print())
+    if (count_bag(pack, obj->o_type, NULL) == max_print())
     {
         msg("You have no room for more %s.", name_type(obj->o_type));
 
@@ -362,7 +362,7 @@ inventory(struct linked_list *container, int type)
     {
         msg("What kind of item <%s> to inventory (* for all)?",  type_list);
 
-        type = wgetch(cw);
+        type = readchar();
 
         if (type == ESCAPE)
         {
@@ -439,7 +439,8 @@ get_object(struct linked_list *container, char *purpose, int type, int (*bff_p)(
 {
     struct object   *obj_p = NULL;
     char sel_id;   /* selected type and id */
-    int  sel_type, response;
+    int  sel_type;
+    char response;
 
     if (container == NULL)
     {
@@ -463,7 +464,7 @@ get_object(struct linked_list *container, char *purpose, int type, int (*bff_p)(
         {
             msg("What kind of item <%s> do you want to %s (* for list)?", type_list, purpose);
 
-            response = wgetch(cw);
+            response = readchar();
             ESCAPE_EXIT(response);
             msg("");
 
@@ -497,7 +498,7 @@ get_object(struct linked_list *container, char *purpose, int type, int (*bff_p)(
         while(obj_p == NULL)
         {
             msg("What item do you want to %s (* for list)?", purpose);
-            response = wgetch(cw);
+            response = readchar();
             msg("");
             ESCAPE_EXIT(response);
 

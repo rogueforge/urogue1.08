@@ -77,7 +77,7 @@ teleport(void)
 
     c = hero;
 
-    mvwaddch(cw, hero.y, hero.x, (char)mvwinch(stdscr, hero.y, hero.x));
+    mvwaddch(cw, hero.y, hero.x, mvwinch(stdscr, hero.y, hero.x));
 
     if (is_wearing(R_TELCONTROL))
     {
@@ -86,7 +86,7 @@ teleport(void)
         touchwin(cw);
         wrefresh(cw);
 
-        which = (short) (wgetch(cw) & 0177);
+        which = (short) (readchar() & 0177);
 
         while (which != (short) ESCAPE && which != (short) LINEFEED
             && which != (short) CARRIAGE_RETURN)
@@ -117,7 +117,7 @@ teleport(void)
             wmove(cw, c.y, c.x);
             touchwin(cw);
             wrefresh(cw);
-            which = (short) (wgetch(cw) & 0177);
+            which = (short) (readchar() & 0177);
         }
 
         which = winat(c.y, c.x);
@@ -212,7 +212,7 @@ passwd(void)
     mpos = 0;
     sp = buf;
 
-    while ((c = (wgetch(cw) & 0177)) != '\n' && c != '\r' && c != '\033')
+    while ((c = (readchar() & 0177)) != '\n' && c != '\r' && c != '\033')
     {
         if (c == '\0')
             sp = buf;

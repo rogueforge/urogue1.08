@@ -186,7 +186,7 @@ do_zap(struct thing *zapper, int which, unsigned long flags)
     y = hero.y;
     x = hero.x;
 
-    while(shoot_ok((int)winat(y, x)))
+    while(shoot_ok(CCHAR(winat(y, x))))
     {
         y += delta.y;
         x += delta.x;
@@ -244,7 +244,7 @@ do_zap(struct thing *zapper, int which, unsigned long flags)
                       rp->r_pos.x, rp->r_pos.x + rp->r_max.x);
 
             if (blessed)
-                pstats.s_hpt *= 2.0 / 3.0;
+                pstats.s_hpt = (int) (pstats.s_hpt * 2.0 / 3.0);
 
             break;
 
@@ -421,11 +421,11 @@ do_zap(struct thing *zapper, int which, unsigned long flags)
                         mvwaddch(cw, y, x, tp->t_oldch);
 
                     chase_it(&tp->t_pos, &player);
-                    mvwaddch(mw, y, x, (char) ' ');
+                    mvwaddch(mw, y, x, ' ');
                     mvwaddch(mw, tp->t_pos.y, tp->t_pos.x, tp->t_oldch);
 
                     if (tp->t_pos.y != y || tp->t_pos.x != x)
-                        tp->t_oldch = mvwinch(cw, tp->t_pos.y, tp->t_pos.x);
+                        tp->t_oldch = CCHAR(mvwinch(cw, tp->t_pos.y, tp->t_pos.x));
                 }
             }
         }
@@ -701,12 +701,12 @@ do_zap(struct thing *zapper, int which, unsigned long flags)
                                 check_residue(lt);
                                 detach(mlist, ll);
                                 discard(ll);
-                                mvwaddch(mw, m2, m1, (char) ' ');
+                                mvwaddch(mw, m2, m1, ' ');
                             }
                         }
 
-                        mvaddch(m2, m1, (char) ' ');
-                        mvwaddch(cw, m2, m1, (char) ' ');
+                        mvaddch(m2, m1, ' ');
+                        mvwaddch(cw, m2, m1, ' ');
                     }
                 }
             }
@@ -989,7 +989,7 @@ do_zap(struct thing *zapper, int which, unsigned long flags)
                         ntraps + 1 < 2 * MAXTRAPS &&
                         mvwinch(cw, ob->o_pos.y, ob->o_pos.x) != ' ')
                     {
-                        mvwaddch(cw, ob->o_pos.y, ob->o_pos.x,(char)TRAPDOOR);
+                        mvwaddch(cw, ob->o_pos.y, ob->o_pos.x,TRAPDOOR);
                         touchwin(cw);
                         wrefresh(cw);
                     }
@@ -1010,7 +1010,7 @@ do_zap(struct thing *zapper, int which, unsigned long flags)
                     else if ((ch == FLOOR || ch == PASSAGE)
                          && ntraps + 1 < 2 * MAXTRAPS)
                     {
-                        mvaddch(ob->o_pos.y, ob->o_pos.x, (char) TRAPDOOR);
+                        mvaddch(ob->o_pos.y, ob->o_pos.x, TRAPDOOR);
                         traps[ntraps].tr_type = TRAPDOOR;
                         traps[ntraps].tr_flags = ISFOUND;
                         traps[ntraps].tr_show = TRAPDOOR;
@@ -1029,7 +1029,7 @@ do_zap(struct thing *zapper, int which, unsigned long flags)
                             ip = find_obj(ob->o_pos.y, ob->o_pos.x);
                         }
 
-                        mvaddch(ob->o_pos.y, ob->o_pos.x, (char)
+                        mvaddch(ob->o_pos.y, ob->o_pos.x,
                             (roomin(ob->o_pos) == NULL ? PASSAGE : FLOOR) );
                     }
                     continue;
@@ -1085,7 +1085,7 @@ do_zap(struct thing *zapper, int which, unsigned long flags)
                 else    /* Do all adjacent doors */
                     for (x = hero.x - 1; x <= hero.x + 1; x++)
                         for (y = hero.y - 1; y <= hero.y + 1; y++)
-                            switch((char) winat(y, x))
+                            switch(CCHAR( winat(y, x) ))
                             {
                                 case DOOR:
                                 case SECRETDOOR:
@@ -1110,7 +1110,7 @@ do_zap(struct thing *zapper, int which, unsigned long flags)
                     case SECRETDOOR:
                         if (which == WS_KNOCK)
                         {
-                            mvaddch(zap_loc.y, zap_loc.x, (char)DOOR);
+                            mvaddch(zap_loc.y, zap_loc.x, DOOR);
                             seemsg("A secret door stands revealed before you!");
 
                             if (is_stick)
@@ -1124,7 +1124,7 @@ do_zap(struct thing *zapper, int which, unsigned long flags)
 
                         if (which == WS_CLOSE)
                         {
-                            mvaddch(zap_loc.y, zap_loc.x, (char)SECRETDOOR);
+                            mvaddch(zap_loc.y, zap_loc.x, SECRETDOOR);
                             msg("You sucessfully block off the door.")
 ;
                             if (is_stick)
@@ -1331,7 +1331,7 @@ shoot_bolt(struct thing *shooter, coord start, coord dir, int get_points, int re
                         }
                         default:     /* A wall */
                         {
-                            char    chy = mvinch(pos.y - dir.y, pos.x + dir.x), chx = mvinch(pos.y + dir.y, pos.x - dir.x);
+                            char    chy = CCHAR( mvinch(pos.y - dir.y, pos.x + dir.x)), chx = CCHAR( mvinch(pos.y + dir.y, pos.x - dir.x) );
 
                             if (chy != WALL && chy != SECRETDOOR &&
                              chy != '-' && chy != '|')

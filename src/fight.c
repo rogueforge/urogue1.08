@@ -64,7 +64,7 @@ do_fight(coord dir, int tothedeath)
         return;
     }
 
-    if (isalpha((int)winat(hero.y + y, hero.x + x)))
+    if (isalpha(CCHAR(winat(hero.y + y, hero.x + x))))
     {
         after = fighting = TRUE;
         do_move(y, x);
@@ -412,7 +412,7 @@ fight(coord *mp, struct object *weap, int thrown)
                     if (isalpha(mvwinch(cw, tp->t_pos.y, tp->t_pos.x)))
                         mvwaddch(cw, tp->t_pos.y, tp->t_pos.x, tp->t_oldch);
 
-                    mvwaddch(mw, tp->t_pos.y, tp->t_pos.x, (char)' ');
+                    mvwaddch(mw, tp->t_pos.y, tp->t_pos.x, ' ');
 
                     /* Get a new position */
 
@@ -426,7 +426,7 @@ fight(coord *mp, struct object *weap, int thrown)
                     /* Put it there */
 
                     mvwaddch(mw, tp->t_pos.y, tp->t_pos.x, tp->t_type);
-                    tp->t_oldch = mvwinch(cw, tp->t_pos.y, tp->t_pos.x);
+                    tp->t_oldch = CCHAR( mvwinch(cw, tp->t_pos.y, tp->t_pos.x) );
                     seemsg("The %s seems to have disappeared!", mname);
                 }
             }
@@ -898,7 +898,7 @@ attack(struct thing *mp, struct object *weapon, int thrown)
                     msg("You smell an unpleasant odor.");
                 else
                 {
-                    short   odor_str = -(rnd(6) + 1);
+                    int   odor_str = -(rnd(6) + 1);
 
                     if (on(player, CANSCENT))
                     {
@@ -1204,7 +1204,7 @@ mon_mon_attack(struct thing *attacker, struct linked_list *mon, struct object *w
 */
 
 int
-swing(short class, int at_lvl, int op_arm, int wplus)
+swing(int class, int at_lvl, int op_arm, int wplus)
 {
     int res = rnd(20) + 1;
     int need;
@@ -1715,7 +1715,7 @@ static const int strtohit[] =
 };
 
 int
-str_plus(short str)
+str_plus(int str)
 {
     int ret_val = str;
 
@@ -1740,7 +1740,7 @@ static const int str_damage[] =
 };
 
 int
-add_dam(short str)
+add_dam(int str)
 {
     int ret_val = str;
 
@@ -1865,10 +1865,10 @@ remove_monster(coord *mp, struct linked_list *item)
     struct thing *tp = THINGPTR(item);
     char          ch = tp->t_oldch;
 
-    mvwaddch(mw, mp->y, mp->x, (char)' ');
+    mvwaddch(mw, mp->y, mp->x, ' ');
 
-    if ((int) ch < 33 || ch == ' ')
-        ch = mvwinch(stdscr, mp->y, mp->x);
+    if (ch < 33 || ch == ' ')
+        ch = CCHAR( mvwinch(stdscr, mp->y, mp->x) );
 
     if (cansee(mp->y, mp->x))
         mvwaddch(cw, mp->y, mp->x, ch);

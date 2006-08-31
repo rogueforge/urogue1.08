@@ -906,10 +906,10 @@ init_colors(void)
     {
         do
             str = rainbow[rnd(NCOLORS)];
-        while( !isupper((int)*str) );
+        while( !isupper(*str) );
 
         p_colors[i]    = strdup(str);
-        p_colors[i][0] = tolower((int)p_colors[i][0]);
+        p_colors[i][0] = (char) tolower(p_colors[i][0]);
 
         know_items[TYP_POTION][i]  = FALSE;
         guess_items[TYP_POTION][i] = NULL;
@@ -953,7 +953,7 @@ init_names(void)
             *cp++ = ' ';
         }
 
-        *--cp = (char) '\0';
+        *--cp = '\0';
         s_names[i] = (char *) new_alloc(strlen(prbuf) + 1);
 
         know_items[TYP_SCROLL][i] = FALSE;
@@ -983,10 +983,10 @@ init_stones(void)
     {
         do
             str = stones[rnd(NSTONES)];
-        while(!isupper((int)*str));
+        while(!isupper(*str));
 
         r_stones[i]    = strdup(str);
-        r_stones[i][0] = tolower((int) r_stones[i][0] );
+        r_stones[i][0] = (char) tolower( r_stones[i][0] );
 
         know_items[TYP_RING][i]  = FALSE;
         guess_items[TYP_RING][i] = NULL;
@@ -1017,21 +1017,21 @@ init_materials(void)
             {
                 str = metal[rnd(NMETAL)];
 
-                if (isupper((int)*str))
+                if (isupper(*str))
                     ws_type[i] = "wand";
             }
             else
             {
                 str = wood[rnd(NWOOD)];
 
-                if (isupper((int)*str))
+                if (isupper(*str))
                     ws_type[i] = "staff";
             }
         }
-        while(!isupper((int)*str));
+        while(!isupper(*str));
 
         ws_made[i] = strdup(str);
-        ws_made[i][0] = tolower( (int) ws_made[i][0] );
+        ws_made[i][0] = (char) tolower( ws_made[i][0] );
 
         know_items[TYP_STICK][i]  = FALSE;
         guess_items[TYP_STICK][i] = 0;
@@ -1059,6 +1059,6 @@ badcheck(char *name, struct magic_item *magic, int bound)
     printf("[Hit RETURN to continue]");
     fflush(stdout);
 
-    while ((wgetch(cw) & 0177) != '\n')
+    while ((readchar() & 0177) != '\n')
         continue;
 }

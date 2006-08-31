@@ -1917,4 +1917,7 @@
 	and parameters, conversions, values that may not be set,
 	functions used before they are declared
 
+1.08, Aug 30, 06
+1)	conversions that can lose data are written out
+
 -------	End of File ------

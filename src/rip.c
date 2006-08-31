@@ -22,8 +22,8 @@ static struct sc_ent
     long    sc_gold;
     int sc_flags;
     int sc_level;
-    short   sc_artifacts;
-    short   sc_monster;
+    int   sc_artifacts;
+    int   sc_monster;
 } top_ten[10];
 
 
@@ -136,7 +136,7 @@ death(int monst)
 
         if (die)
         {
-            wmove(cw, (int)mpos, 0);
+            wmove(cw, mpos, 0);
             waddstr(cw, morestr);
             touchwin(cw);
             wrefresh(cw);
@@ -165,13 +165,13 @@ death(int monst)
 
     mvaddstr(LINES - 1, 0, retstr);
 
-    while ((c = wgetch(stdscr)) != '\n' && c != '\r')
+    while ((c = readcharw(stdscr)) != '\n' && c != '\r')
         continue;
     idenpack();
     wrefresh(cw);
     refresh();
 
-    score((long) pstats.s_exp, pstats.s_lvl, KILLED, monst);
+    score(pstats.s_exp, pstats.s_lvl, KILLED, monst);
     byebye();
 }
 
@@ -225,12 +225,12 @@ score(long amount, int lvl, int flags, int monst) /*ARGSUSED*/
         scp->sc_score = 0L;
 
         for (i = 0; i < 76; i++)
-            scp->sc_name[i] = rnd(255);
+            scp->sc_name[i] = ucrnd(255);
 
         scp->sc_gold = 0L;
         scp->sc_flags = rnd(10);
         scp->sc_level = rnd(10);
-        scp->sc_monster = rnd(10);
+        scp->sc_monster = srnd(10);
         scp->sc_artifacts = 0;
     }
 
@@ -283,7 +283,7 @@ score(long amount, int lvl, int flags, int monst) /*ARGSUSED*/
                 scp->sc_level = level;
 				
             scp->sc_monster = monst;
-			scp->sc_artifacts = has_artifact;
+	    scp->sc_artifacts = has_artifact;
 
             sc2 = scp;
         }
@@ -468,9 +468,9 @@ total_winner(void)
     refresh();
 
     if (has_artifact == 255)
-        score((long) pstats.s_exp, pstats.s_lvl, TOTAL, 0);
+        score(pstats.s_exp, pstats.s_lvl, TOTAL, 0);
     else
-        score((long) pstats.s_exp, pstats.s_lvl, WINNER, 0);
+        score(pstats.s_exp, pstats.s_lvl, WINNER, 0);
 
     byebye();
 }

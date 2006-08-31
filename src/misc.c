@@ -118,7 +118,7 @@ look(int wakeup)
             ch = show(y, x);
 
             if (do_blank && (y != hero.y || x != hero.x) && ch == FLOOR)
-                mvwaddch(cw, y, x, (char) ' ');
+                mvwaddch(cw, y, x, ' ');
 
             /* Moving out of a corridor? */
 
@@ -169,9 +169,9 @@ look(int wakeup)
                         continue;
 
                     tp = THINGPTR(it);
-                    tp->t_oldch = mvinch(y, x);
+                    tp->t_oldch = CCHAR( mvinch(y, x) );
 
-                    if (isatrap((int) tp->t_oldch))
+                    if (isatrap(tp->t_oldch))
                     {
                         struct trap *trp = trap_at(y, x);
 
@@ -369,7 +369,7 @@ eat(void)
 {
     struct object   *obj;
     int amount;
-	float           scale = (float) (LINES * COLS) / (25.0 * 80.0);
+    float scale = (float) (LINES * COLS) / (25.0F * 80.0F);
 
     if ((obj = get_object(pack, "eat", FOOD, NULL)) == NULL)
         return;
@@ -377,7 +377,7 @@ eat(void)
     switch (obj->o_which)
     {
         case FD_RATION:
-            amount = scale * (HUNGERTIME + rnd(400) - 200);
+            amount = (int)(scale * (HUNGERTIME + rnd(400) - 200));
 
             if (rnd(100) > 70)
             {
@@ -390,34 +390,34 @@ eat(void)
             break;
 
         case FD_FRUIT:
-            amount = scale * (200 + rnd(HUNGERTIME));
+            amount = (int)(scale * (200 + rnd(HUNGERTIME)));
             msg("My, that was a yummy %s.", fruit);
             break;
 
         case FD_CRAM:
-            amount = scale * (rnd(HUNGERTIME / 2) + 600);
+            amount = (int)(scale * (rnd(HUNGERTIME / 2) + 600));
             msg("The cram tastes dry in your mouth.");
             break;
 
         case FD_CAKES:
-            amount = scale * ((HUNGERTIME / 3) + rnd(600));
+            amount = (int)(scale * ((HUNGERTIME / 3) + rnd(600)));
             msg("Yum, the honey cakes tasted good.");
             break;
 
         case FD_LEMBA:
-            amount = scale * ((HUNGERTIME / 2) + rnd(900));
+            amount = (int)(scale * ((HUNGERTIME / 2) + rnd(900)));
             quaff(&player, P_HEALING, ISNORMAL);
             break;
 
         case FD_MIRUVOR:
-            amount = scale * ((HUNGERTIME / 3) + rnd(500));
+            amount = (int)(scale * ((HUNGERTIME / 3) + rnd(500)));
             quaff(&player, P_HEALING, ISNORMAL);
             quaff(&player, P_RESTORE, ISNORMAL);
             break;
 
         default:
             msg("What a strange thing to eat!");
-            amount = scale * HUNGERTIME;
+            amount = (int)(scale * HUNGERTIME);
     }
     
     food_left += amount;
@@ -429,7 +429,7 @@ eat(void)
     }
     else if (food_left > scale * STOMACHSIZE)
     {
-        food_left = scale * STOMACHSIZE;
+        food_left = (int)(scale * STOMACHSIZE);
         msg("You feel satiated and too full to move.");
         no_command = HOLDTIME;
     }
@@ -650,7 +650,7 @@ get_dir(void)
     {
         gotit = TRUE;
 
-        switch (wgetch(cw))
+        switch (readchar())
         {
             case 'h':
             case 'H':
@@ -798,7 +798,7 @@ maze_view(int y, int x)
         else
             ycheck = start;
 
-        switch((int) winat(ycheck, xcheck))
+        switch(CCHAR(winat(ycheck, xcheck)))
         {
             case '|':
             case '-':

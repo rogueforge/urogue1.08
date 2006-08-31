@@ -62,7 +62,7 @@ do_post(void)
         mvwaddstr(hw, 6, 0, "Do you wish to buy, sell, inventory, or leave?");
         wrefresh(hw);
 
-        switch(wgetch(hw))
+        switch(readcharw(hw))
         {
             case 'b':
                 mvwaddstr(hw, 7, 0,
@@ -107,7 +107,7 @@ do_post(void)
 }
 
 void
-buy_it(int itemtype, int flags)
+buy_it(char itemtype, int flags)
 {
     int i;
     int blessed = flags & ISBLESSED;
@@ -146,7 +146,7 @@ buy_more:
             wclrtoeol(hw);
             touchwin(hw);
             wrefresh(hw);
-            itemtype = wgetch(hw);
+            itemtype = readcharw(hw);
         }
 
         switch(itemtype)
@@ -304,7 +304,7 @@ buy_more:
             continue;
         }
 
-        if (isdigit((int)buf[0]))
+        if (isdigit(buf[0]))
             which_one = atoi(buf);
         else
             switch (which_type)
@@ -383,7 +383,7 @@ buy_more:
             wrefresh(hw);
 
 	    blessed = cursed = FALSE;
-            switch (wgetch(hw))
+            switch (readcharw(hw))
             {
                 case ESCAPE:
                     discard(item);
@@ -496,7 +496,7 @@ buy_more:
     touchwin(hw);
     wrefresh(hw);
 
-    switch (wgetch(hw))
+    switch (readcharw(hw))
     {
         case ESCAPE:
         case 'n':
@@ -572,7 +572,7 @@ sell_it(void)
     touchwin(hw);
     wrefresh(hw);
 
-    switch( wgetch(hw) )
+    switch( readcharw(hw) )
     {
         case 'y':
             break;

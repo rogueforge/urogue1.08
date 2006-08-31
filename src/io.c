@@ -13,9 +13,9 @@
 
 char prbuf[2 * LINELEN];    /* Buffer for sprintfs                      */
 static char mbuf[2*LINELEN];  /* Current message buffer        */
-static size_t newpos = 0;       /* index in mbuf to end of msg   */
+static int newpos = 0;       /* index in mbuf to end of msg   */
 
-size_t mpos = 0;                 /* 0  = Overwrite existing message */
+int mpos = 0;                 /* 0  = Overwrite existing message */
                               /* >0 = print --More-- at this pos */
                               /*      and wait for key           */
 
@@ -101,7 +101,7 @@ endmsg(void)
 
     if (mpos)
     {
-        wmove(cw, 0, (int)mpos);
+        wmove(cw, 0, mpos);
         wprintw(cw, (char *) morestr);
         wrefresh(cw);
         wait_for(' ');
@@ -121,7 +121,7 @@ void
 doadd(const char *fmt, va_list ap)
 {
     vsprintf(&mbuf[newpos], fmt, ap);
-    newpos = strlen(mbuf);
+    newpos = (int) strlen(mbuf);
 }
 
 /*
@@ -187,6 +187,34 @@ status(int display)
 }
 
 /*
+ * readchar:
+ *	Flushes stdout so that screen is up to date and then returns
+ *	getchar().
+ */
+
+char
+readcharw(WINDOW *win)
+{
+    char ch;
+
+    ch = (char) wgetch(win);
+
+    if ((ch == 3) || (ch == 0))
+    {
+	quit();
+	return(27);
+    }
+
+    return(ch);
+}
+
+char
+readchar()
+{
+    return( readcharw(cw) );
+}
+
+/*
     wait_for()
         Sit around until the guy types the right key
 */
@@ -197,10 +225,10 @@ w_wait_for(WINDOW *w, int ch)
     char    c;
 
     if (ch == '\n')
-        while ((c = wgetch(w)) != '\n' && c != '\r')
+        while ((c = readcharw(w)) != '\n' && c != '\r')
             continue;
     else
-        while (wgetch(w) != ch)
+        while (readcharw(w) != ch)
             continue;
 }
 
@@ -373,8 +401,8 @@ seemsg(const char *fmt, ...)
 int
 get_string(char *buffer, WINDOW *win)
 {
-    char    *sp;
-    int c, oy, ox;
+    char    *sp, c;
+    int oy, ox;
     char    buf[2 * LINELEN];
 
     wrefresh(win);
@@ -382,16 +410,14 @@ get_string(char *buffer, WINDOW *win)
 
     /* loop reading in the string, and put it in a temporary buffer */
 
-    for (sp = buf; (c = wgetch(win)) != '\n' &&
+    for (sp = buf; (c = readcharw(win)) != '\n' &&
          c != '\r' &&
          c != '\033' &&
          c != '\007' &&
          sp < &buf[LINELEN - 1];
          wclrtoeol(win), wrefresh(win))
     {
-        if (c == -1)
-            continue;
-        else if ((c == '\b') || (c == 0x7f))
+	if ((c == '\b') || (c == 0x7f))
         {
             if (sp > buf)
             {
@@ -400,7 +426,7 @@ get_string(char *buffer, WINDOW *win)
                 sp--;
 
                 for (i = strlen(unctrl(*sp)); i; i--)
-                    waddch(win, (char) '\b');
+                    waddch(win, '\b');
             }
             continue;
         }
@@ -414,7 +440,7 @@ get_string(char *buffer, WINDOW *win)
             break;
 
         *sp++ = c;
-        waddstr(win, unctrl((char)c));
+        waddstr(win, unctrl(c));
     }
 
     *sp = '\0';
@@ -424,11 +450,11 @@ get_string(char *buffer, WINDOW *win)
 
     wmove(win, oy, ox);
     waddstr(win, buffer);
-    waddch(win, (char) '\n');
+    waddch(win, '\n');
     wrefresh(win);
 
     if (win == cw)
-        mpos += sp - buf;
+        mpos += (int)(sp - buf);
 
     if (c == '-')
         return(MINUS);

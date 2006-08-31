@@ -305,7 +305,7 @@ read_scroll(struct thing *reader, int which, int flags)
             for (i = 0; i < LINES; i++)
                 for (j = 0; j < COLS; j++)
                 {
-                    switch (nch = ch = mvwinch(hw, i, j))
+                    switch (nch = ch = CCHAR(mvwinch(hw, i, j)))
                     {
                         case SECRETDOOR:
                             nch = DOOR;
@@ -332,7 +332,7 @@ read_scroll(struct thing *reader, int which, int flags)
                             break;
 
                         default:
-                            if (!blessed || !isatrap((int)ch))
+                            if (!blessed || !isatrap(ch))
                                 nch = ' ';
                             else
                             {
@@ -380,7 +380,7 @@ read_scroll(struct thing *reader, int which, int flags)
                 {
                     rp = &rooms[rnd_room()];
                     rnd_pos(rp, &pos);
-                    mvwaddch(hw, pos.y, pos.x, (char) GOLD);
+                    mvwaddch(hw, pos.y, pos.x, GOLD);
                 }
                 overlay(hw, cw);
 
@@ -451,7 +451,7 @@ read_scroll(struct thing *reader, int which, int flags)
 
             if (blessed)
             {
-                ch = mvwinch(stdscr, hero.y, hero.x);
+                ch = CCHAR( mvwinch(stdscr, hero.y, hero.x) );
 
                 if (ch != FLOOR && ch != PASSAGE)
                 {
@@ -520,7 +520,7 @@ read_scroll(struct thing *reader, int which, int flags)
             break;
 
         case S_PETRIFY:
-            switch((char) mvinch(hero.y, hero.x))
+            switch(CCHAR(mvinch(hero.y, hero.x)))
             {
                 case TRAPDOOR:
                 case DARTTRAP:
@@ -550,7 +550,7 @@ read_scroll(struct thing *reader, int which, int flags)
                     }
 
                     msg("The dungeon begins to rumble and shake!");
-                    addch((char)WALL);
+                    addch(WALL);
 
                     if (on(player, CANINWALL))
                     {
@@ -591,7 +591,7 @@ read_scroll(struct thing *reader, int which, int flags)
                 case FLOOR:
                 case PASSAGE:
                     msg("The dungeon begins to rumble and shake!");
-                    addch((char)WALL);
+                    addch(WALL);
 
                     if (on(player, CANINWALL))
                     {
@@ -653,7 +653,7 @@ read_scroll(struct thing *reader, int which, int flags)
                 feel_message();
             else
             {
-                int itemtype;
+                char itemtype;
 
                 if (is_scroll)
                     know_items[TYP_SCROLL][S_MAKEITEMEM] = TRUE;
@@ -950,7 +950,7 @@ read_scroll(struct thing *reader, int which, int flags)
                 {
                     rp = &rooms[rnd_room()];
                     rnd_pos(rp, &pos);
-                    mvwaddch(hw, pos.y, pos.x, (char)FOOD);
+                    mvwaddch(hw, pos.y, pos.x, FOOD);
                 }
 
                 overlay(hw, cw);
@@ -982,7 +982,7 @@ read_scroll(struct thing *reader, int which, int flags)
                     if (cur->o_type == FOOD)
                     {
                         fcount += cur->o_count;
-                        mvwaddch(hw, cur->o_pos.y, cur->o_pos.x, (char)FOOD);
+                        mvwaddch(hw, cur->o_pos.y, cur->o_pos.x, FOOD);
 
                         if (roomin(cur->o_pos) == rp)
                             same_room = TRUE;
@@ -1002,7 +1002,7 @@ read_scroll(struct thing *reader, int which, int flags)
                         if (cur->o_type == FOOD)
                         {
                             fcount += cur->o_count;
-                            mvwaddch(hw, th->t_pos.y, th->t_pos.x, (char)FOOD);
+                            mvwaddch(hw, th->t_pos.y, th->t_pos.x, FOOD);
 
                             if (roomin(th->t_pos) == rp)
                                 same_room = TRUE;
@@ -1164,7 +1164,7 @@ read_scroll(struct thing *reader, int which, int flags)
 
         case S_SUMFAMILIAR:
         {
-            short type = 0;
+            int type = 0;
 
             if (on(player, HASFAMILIAR))
             {
@@ -1446,7 +1446,7 @@ monread(struct thing *reader, int which, int flags)
                 if (isalpha(mvwinch(cw, reader->t_pos.y, reader->t_pos.x)))
                     mvwaddch(cw, reader->t_pos.y, reader->t_pos.x, reader->t_oldch);
 
-                mvwaddch(mw, reader->t_pos.y, reader->t_pos.x, (char) ' ');
+                mvwaddch(mw, reader->t_pos.y, reader->t_pos.x, ' ');
 
                 /* Get a new position */
 
@@ -1460,7 +1460,7 @@ monread(struct thing *reader, int which, int flags)
                 /* Put it there */
 
                 mvwaddch(mw, reader->t_pos.y, reader->t_pos.x, reader->t_type);
-                reader->t_oldch = mvwinch(cw, reader->t_pos.y, reader->t_pos.x);
+                reader->t_oldch = CCHAR( mvwinch(cw, reader->t_pos.y, reader->t_pos.x) );
             }
             break;
 

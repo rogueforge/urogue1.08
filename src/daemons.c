@@ -21,7 +21,7 @@ doctor(daemon_arg *who)
     long ohp;   /* turn off ISFLEE? */
     struct stats *curp;  /* current stats pointer */
     struct stats *maxp;  /* max stats pointer */
-    short         turns_quiet, new_points;
+    int         turns_quiet, new_points;
 
     curp = &(tp->t_stats);
     maxp = &(tp->maxstats);
@@ -138,10 +138,10 @@ doctor(daemon_arg *who)
 void
 doctor_spell_points(struct thing *tp)
 {
-    short         turns_quiet, new_points;
+    int        turns_quiet, new_points;
     struct stats *curp;   /* current stats pointer */
     struct stats *maxp;   /* max stats pointer */
-    short         opower; /* current power */
+    int         opower; /* current power */
 
     curp = &(tp->t_stats);
     maxp = &(tp->maxstats);
@@ -280,7 +280,7 @@ stomach(daemon_arg *arg)
             turn_off(player, POWEREAT);
         }
 
-        power_scale = (int)(on(player, POWERDEXT) + on(player, POWERSTR) +
+        power_scale = (on(player, POWERDEXT) + on(player, POWERSTR) +
             on(player, POWERWISDOM) + on(player, POWERINTEL) +
             on(player, POWERCONST) + 1);
 
@@ -813,7 +813,7 @@ wghtchk(fuse_arg *arg)
 
     if (pstats.s_pack > pstats.s_carry)
     {
-        ch = mvwinch(stdscr, hero.y, hero.x);
+        ch = CCHAR( mvwinch(stdscr, hero.y, hero.x) );
 
         if ((ch != FLOOR && ch != PASSAGE))
         {

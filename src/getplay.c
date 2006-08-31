@@ -69,7 +69,7 @@ geta_player(void)
     mvwaddstr(hw, 0, 0, "Do you wish to select a character? ");
     wrefresh(hw);
 
-    if (wgetch(hw) != 'y')
+    if (readcharw(hw) != 'y')
         return FALSE;
 
     do
@@ -127,7 +127,7 @@ puta_player(void)
     FILE *fd;
     char    pbuf[2 * LINELEN];
     char filename[200];
-    short   i;
+    int   i;
     char    *class = which_class(player.t_ctype);
 
     sprintf(pbuf, "You have a %s with the following attributes:", class);
@@ -157,7 +157,7 @@ puta_player(void)
 
     wrefresh(hw);
 
-    if ((wgetch(hw) & 0177) != 'y')
+    if ((readcharw(hw) & 0177) != 'y')
         return;
 
     do
@@ -237,7 +237,7 @@ do_getplayer(void)
 
             mvwaddstr(hw, 0, 0, "What character class do you desire? ");
             wrefresh(hw);
-            char_type = wgetch(hw) - 'a';
+            char_type = readcharw(hw) - 'a';
 
             if (char_type < C_FIGHTER || char_type >= C_MONSTER)
             {
