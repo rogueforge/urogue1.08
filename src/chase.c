@@ -70,7 +70,9 @@ do_chase(struct thing *th, int flee)
     {
         struct linked_list  *mon_to_hit;
 
-        if ((mon_to_hit = f_mons_a(th->t_pos.y, th->t_pos.x, hit_bad)))
+	mon_to_hit = f_mons_a(th->t_pos.y, th->t_pos.x, hit_bad);
+
+        if (mon_to_hit)
         {
             mon_mon_attack(th, mon_to_hit, pick_weap(th), NOTHROWN);
             return;
@@ -562,18 +564,23 @@ chase(struct thing *tp, coord *ee, int flee)
         tp->t_nxtpos = *er;
         dist = DISTANCE(tp->t_nxtpos, *ee);
     }
-    else if (shootit_dir && on(*tp, CANSHOOT) && (weapon = get_hurl(tp)) &&
+    else if (shootit_dir && on(*tp, CANSHOOT)) 
+    {
+	weapon = get_hurl(tp);
+	
+	if (weapon &&
          (off(*tp, ISFLEE) || rnd(DISTANCE(*er, *ee)) > 2) &&
          (off(player, ISDISGUISE) || (rnd(tp->t_stats.s_lvl) > 6)))
-    {
-        /*
-            Should we shoot or throw something? fleeing monsters may to shoot
-            anyway if far enough away
-        */
+	{
+	    /*
+	        Should we shoot or throw something? fleeing monsters 
+		may to shoot anyway if far enough away
+	    */
 
-        missile(shootit_dir->y, shootit_dir->x, weapon, tp);
-        tp->t_nxtpos = *er;
-        dist = DISTANCE(tp->t_nxtpos, *ee);
+	    missile(shootit_dir->y, shootit_dir->x, weapon, tp);
+	    tp->t_nxtpos = *er;
+	    dist = DISTANCE(tp->t_nxtpos, *ee);
+	}
     }
     else
     {
@@ -943,7 +950,9 @@ find_shoot(struct thing *tp, coord *dir)
         {
             if (row > 0 && col > 0 && isalpha(mvwinch(mw, row, col)))
             {
-                if ((mon = find_mons(row, col)))
+		mon = find_mons(row, col);
+
+                if (mon)
                 {
                     ick = THINGPTR(mon);
                     xmon = ick->t_pos.x;

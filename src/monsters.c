@@ -53,7 +53,9 @@ summon_monster(int type, int familiar, int print_message)
 
     turn_on(player, SUMMONING);
 
-    if (!(mp = creat_mons(&player, monster, NOMESSAGE)))
+    mp = creat_mons(&player, monster, NOMESSAGE);
+
+    if (!mp)
     {
         msg("Summon failed.");
         turn_off(player, SUMMONING);

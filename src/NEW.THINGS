@@ -1920,4 +1920,7 @@
 1.08, Aug 30, 06
 1)	conversions that can lose data are written out
 
+1.08, Aug 31, 06
+1)	assignments inside conditions are written out
+
 -------	End of File ------

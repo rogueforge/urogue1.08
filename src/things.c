@@ -278,8 +278,10 @@ rem_obj(struct linked_list *item, int dis)
         attach(lvl_obj, llptr);
 
         op = OBJPTR(llptr);
-
-        if (op->next_obj = objptr->next_obj)
+	
+	op->next_obj = objptr->next_obj;
+        
+	if (op->next_obj)
             objptr->next_obj->l_prev = NULL;
 
         y = op->o_pos.y;

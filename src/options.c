@@ -61,7 +61,9 @@ option(void)
     {
         waddstr(hw, op->o_prompt);
 
-        if ((retval = (*op->o_getfunc)(&op->o_opt, hw)))
+	retval = (*op->o_getfunc)(&op->o_opt, hw);
+
+        if (retval)
             if (retval == QUIT)
                 break;
             else if (op > optlist)      /* MINUS */

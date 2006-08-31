@@ -31,7 +31,9 @@ swap_top(struct linked_list *top, struct linked_list *node)
     attach(lvl_obj, node);  /* and put it into the level */
     detach(lvl_obj, top);   /* Remove item from level */
 
-    if (obn->next_obj = obt->next_obj)
+    obn->next_obj = obt->next_obj;
+
+    if (obn->next_obj)
         obn->next_obj->l_prev = NULL;
 
     attach((obn->next_obj), top);

@@ -325,9 +325,12 @@ read_scroll(struct thing *reader, int which, int flags)
 
                                 lit = find_mons(i, j);
 
-                                if (lit && (it = THINGPTR(lit))
-                                    && it->t_oldch == ' ')
-                                    it->t_oldch = nch;
+				if (lit) {
+				    it = THINGPTR(lit);
+
+				    if (it && it->t_oldch == ' ')
+					it->t_oldch = nch;
+				}
                             }
                             break;
 
@@ -1137,7 +1140,9 @@ read_scroll(struct thing *reader, int which, int flags)
             else
                 mon_type = 0;
 
-            if ((llp = summon_monster((short) mon_type, NOFAMILIAR, NOMESSAGE)))
+	    llp = summon_monster((short) mon_type, NOFAMILIAR, NOMESSAGE);
+
+            if (llp)
             {
                 tp = THINGPTR(llp);
                 turn_on(*tp, WASSUMMONED);
