@@ -229,6 +229,7 @@ ring_eat(int hand)
             case R_REGEN:
             case R_VREGEN:
                 ret_val = rnd(pstats.s_lvl > 10 ? 10 : pstats.s_lvl);
+                break;
 
             case R_DIGEST:
 
