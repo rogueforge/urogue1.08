@@ -542,8 +542,8 @@ chase(struct thing *tp, coord *ee, int flee)
             breath = "fear gas";
         }
 
-        shoot_bolt(tp, *er, *shootit_dir, (tp == THINGPTR(fam_ptr)),
-               tp->t_index, breath, roll(tp->t_stats.s_lvl, 6));
+        shoot_bolt(tp, *er, *shootit_dir,
+               (fam_ptr != NULL && tp == THINGPTR(fam_ptr)), tp->t_index, breath, roll(tp->t_stats.s_lvl, 6));
 
         tp->t_nxtpos = *er;
 
