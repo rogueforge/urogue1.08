@@ -35,6 +35,7 @@ main(int argc, char *argv[])
 {
     int x;
     char    *env;
+    char    *seed;
     time_t lowtime;
     time_t    now;
     int rflag = 0;
@@ -93,7 +94,12 @@ main(int argc, char *argv[])
 		
 	lowtime = time(&now);
 	
-	dnum = (wizard && getenv("SEED") != NULL ? atoi( getenv("SEED")) : (int)lowtime);
+	seed = getenv("SEED");
+
+	if (seed != NULL && atoi(seed) > 0)
+	    dnum = atoi(seed);
+	else
+	    dnum = (int)lowtime;
 	
 	ur_srandom(dnum);
 
@@ -132,7 +138,7 @@ main(int argc, char *argv[])
         exit(0);
     }
 
-    if (wizard)
+    if (wizard || seed != NULL)
         printf("Hello %s, welcome to dungeon #%d", whoami, dnum);
     else
         printf("Hello %s, just a moment while I dig the dungeon...", whoami);
