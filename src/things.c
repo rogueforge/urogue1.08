@@ -120,6 +120,7 @@ inv_name(struct object *obj, int lowercase)
 
             if (obj->o_flags & ISSILVER)
                 sprintf(pb, "silver ");
+            pb = &prbuf[strlen(prbuf)];
 
             if (obj->o_flags & ISTWOH)
                 sprintf(pb, "two-handed ");
