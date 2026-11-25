@@ -22,6 +22,74 @@ static int  encwrite(char *start, long size, int outfd);
 static int  encread(char *start, long size, int infd);
 static int  putword(long word, int file);
 static long getword(int fd);
+static long save_size(void);
+
+/*
+ * A saved game is the game's variables from version to rg_edata and
+ * from rg_bss to rg_ebss: vers.c is linked first and alloc.c last.
+ */
+
+extern char __executable_start[], _end[];
+extern char rg_bss[], *const rg_edata, *const rg_ebss;
+extern void rg_rebase(char *text, char *end, char *data, char *edata,
+    char *bss, char *ebss);
+extern int  rg_restored(void);
+
+long save_stamp[2];                     /* tell one build from another */
+char save_win[3][MAXLINES][MAXCOLS];    /* stdscr, mw and cw */
+int  save_lines, save_cols;             /* and how big they were */
+
+#ifdef __SANITIZE_ADDRESS__
+#define NOCHECK __attribute__((no_sanitize_address))
+extern int rg_read(int fd, void *buf, size_t n);
+#define read    rg_read
+#else
+#define NOCHECK
+#endif
+
+/*
+    save_ok()
+        A saved game is the game's variables from version to rg_edata
+        and from rg_bss to rg_ebss.  See that they are where that takes
+        them to be, by one variable of each kind, and that save_win[]
+        has room for the screen.
+*/
+
+static int
+save_ok(void)
+{
+#ifdef MEMCHECK
+    return(FALSE);      /* the storage is memory.c's, not the game's */
+#endif
+    return((char *) &foodlev >= version && (char *) &foodlev < rg_edata &&
+        (char *) &save_lines >= rg_bss && (char *) &save_lines < rg_ebss &&
+        LINES <= MAXLINES && COLS <= MAXCOLS);
+}
+
+/*
+    save_wins()
+        Copy what is in the windows that hold the level to save_win[],
+        or back from it into the windows
+*/
+
+static void
+save_wins(int back)
+{
+    int i, y, x;
+    WINDOW *win;
+
+    for (i = 0; i < 3; i++)
+    {
+        win = (i == 0 ? stdscr : i == 1 ? mw : cw);
+
+        for (y = 0; y < LINES; y++)
+            for (x = 0; x < COLS; x++)
+                if (back)
+                    mvwaddch(win, y, x, (unsigned char) save_win[i][y][x]);
+                else
+                    save_win[i][y][x] = mvwinch(win, y, x) & A_CHARTEXT;
+    }
+}
 
 int
 save_game(void)
@@ -29,6 +97,11 @@ save_game(void)
     FILE *savefd;
     char    buf[2 * LINELEN];
     char    oldfile[2*LINELEN];
+    if (!save_ok())
+    {
+        msg("This rogue cannot save a game");
+        return(FALSE);
+    }
 
     /* get file name */
 
@@ -79,8 +152,8 @@ save_game(void)
 
 /*
     save_file()
-        Write out the game: everything from version[] up to the break,
-        encrypted
+        Write out the game, encrypted: its variables in two pieces, with
+        what the windows hold and stamps that tell this build from others
 */
 
 void
@@ -91,7 +164,13 @@ save_file(FILE *savefd)
     wmove(cw, LINES - 1, 0);
     wrefresh(cw);
     fflush(savefd);
-    encwrite(version, (char *) sbrk(0) - version, fd);
+    save_lines = LINES;
+    save_cols = COLS;
+    save_wins(FALSE);
+    save_stamp[0] = (long) main - (long) version;
+    save_stamp[1] = (long) rg_restored - (long) __executable_start;
+    encwrite(version, rg_edata - version, fd);
+    encwrite(rg_bss, rg_ebss - rg_bss, fd);
     fclose(savefd);
 }
 
@@ -100,14 +179,17 @@ restore(char *file)
 {
     int     infd;
     char    *sp;
-    char    buf[2 * LINELEN];
+    char    buf[2 * LINELEN], name[2 * LINELEN];
     struct stat sbuf;
+    int     y, x;
+    FILE    *score = fd_score;  /* main()'s, not the saved game's */
 
     if (strcmp(file, "-r") == 0)
-        file = file_name;
+        file = strcpy(name, file_name);
 
     if ((infd = open(file, O_RDONLY)) < 0)
     {
+        endwin();
         perror(file);
         return(FALSE);
     }
@@ -117,16 +199,73 @@ restore(char *file)
 
     if (strcmp(buf, version) != 0)
     {
+        endwin();
         printf("Save Game Version: %s\nReal Game Version: %s\n", buf, version);
         printf("Sorry, saved game is out of date.\n");
         return(FALSE);
     }
 
     fstat(infd, &sbuf);
+
+    if (sbuf.st_size != save_size())
+    {
+        endwin();
+        printf("Sorry, saved game is out of date.\n");
+        return(FALSE);
+    }
+
     fflush(stdout);
-    brk(version + sbuf.st_size);
     lseek(infd, 0L, SEEK_SET);
-    encread(version, (long) sbuf.st_size, infd);
+
+    if (encread(version, rg_edata - version, infd) != rg_edata - version ||
+        strcmp(buf, version) != 0 ||
+        encread(rg_bss, rg_ebss - rg_bss, infd) != rg_ebss - rg_bss)
+    {
+        endwin();
+        printf("Sorry, saved game is damaged.\n");
+        return(FALSE);
+    }
+
+    if (save_stamp[0] != (long) main - (long) version ||
+        save_stamp[1] != (long) rg_restored - (long) __executable_start)
+    {
+        endwin();
+        printf("Sorry, saved game is out of date.\n");
+        return(FALSE);
+    }
+
+    rg_rebase(__executable_start, _end, version, rg_edata, rg_bss, rg_ebss);
+
+    if (!rg_restored())
+    {
+        endwin();
+        printf("Sorry, saved game is damaged.\n");
+        return(FALSE);
+    }
+
+    fd_score = score;
+
+    /*
+     * The windows main() made are not the ones in the saved game,
+     * which are gone.  Make them again and put back what they held.
+     */
+
+    getmaxyx(stdscr, y, x);
+
+    if (y < save_lines || x < save_cols)
+    {
+        endwin();
+        printf("Sorry, this saved game needs a terminal with %d lines and "
+            "%d columns.\n", save_lines, save_cols);
+        return(FALSE);
+    }
+
+    LINES = save_lines;
+    COLS = save_cols;
+    cw = newwin(LINES, COLS, 0, 0);
+    mw = newwin(LINES, COLS, 0, 0);
+    hw = newwin(LINES, COLS, 0, 0);
+    save_wins(TRUE);
 
     /*
      * we do not close the file so that we will have a hold of the inode
@@ -138,6 +277,7 @@ restore(char *file)
 
     if (remove(file) < 0)
     {
+        endwin();
         printf("Cannot unlink file\n");
         return(FALSE);
     }
@@ -222,7 +362,7 @@ struct wb
  * Encwrite: write a buffer to a file using data encryption
  *****************************************************************/
 
-static int
+NOCHECK static int
 encwrite(char *start, long size, int outfd)
 {
     unsigned char *buf_p, *end_p;
@@ -265,7 +405,7 @@ encwrite(char *start, long size, int outfd)
  * Encread: read a block of encrypted text from a file descriptor
  *****************************************************************/
 
-static int
+NOCHECK static int
 encread(char *start, long size, int infd)
 {
     int length, ch;
@@ -325,4 +465,17 @@ getword(int fd)
         return(w.w1 ^ w.w2 ^ w.w3 ^ w.w4);
     else
         return(0);
+}
+
+/*
+    save_size()
+        How long a game saved by this build is: the two pieces of the
+        game's data, each with the seed, length and checksum encwrite()
+        puts around it
+*/
+
+static long
+save_size(void)
+{
+    return((rg_edata - version) + (rg_ebss - rg_bss) + 6 * sizeof(struct wb));
 }

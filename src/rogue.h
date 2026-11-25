@@ -12,6 +12,25 @@
 #include <stdarg.h>
 
 #include <curses.h>
+
+/*
+ * The game's storage comes from its own allocator, in alloc.c, so
+ * that a saved game holds all of it.
+ */
+
+#define malloc  rg_alloc
+#define calloc  rg_calloc
+#define free    rg_free
+#define strdup  rg_strdup
+
+extern void *rg_alloc(size_t nbytes);
+extern void *rg_calloc(size_t n, size_t size);
+extern void  rg_free(void *cp);
+extern char *rg_strdup(const char *s);
+
+#define MAXLINES    128     /* most screen lines a saved game holds */
+#define MAXCOLS     256     /* most screen columns a saved game holds */
+
 #define SHOTPENALTY 2       /* In line of sight of missile */
 #define DOORPENALTY 1       /* Moving out of current room */
 
