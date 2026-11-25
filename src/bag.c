@@ -361,10 +361,10 @@ bffron(object *obj_p, bag_arg *junk)
 
     return(cur_ring[LEFT_1] == obj_p || cur_ring[LEFT_2] == obj_p ||
         cur_ring[LEFT_3] == obj_p || cur_ring[LEFT_4] == obj_p ||
-        cur_ring[LEFT_5] ||
+        cur_ring[LEFT_5] == obj_p ||
         cur_ring[RIGHT_1] == obj_p || cur_ring[RIGHT_2] == obj_p ||
         cur_ring[RIGHT_3] == obj_p || cur_ring[RIGHT_4] == obj_p ||
-        cur_ring[RIGHT_5]);
+        cur_ring[RIGHT_5] == obj_p);
 }
 
 /*
