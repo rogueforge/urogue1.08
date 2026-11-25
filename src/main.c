@@ -75,7 +75,7 @@ main(int argc, char *argv[])
 
     /* Get default score file */
 
-    strcpy(score_file, SCOREFILE);
+    strncpy(score_file, SCOREFILE, 2 * LINELEN - 1);
 
     fd_score = fopen(score_file, "r+");
 
