@@ -56,7 +56,7 @@ find_slot(fuse (*func)(fuse_arg *arg))
 */
 
 void
-start_daemon(daemon (*func)(daemon_arg *arg), void *arg, int whendo)
+start_daemon(daemon_t (*func)(daemon_arg *arg), void *arg, int whendo)
 {
     struct delayed_action *dev;
 
@@ -79,7 +79,7 @@ start_daemon(daemon (*func)(daemon_arg *arg), void *arg, int whendo)
 */
 
 void
-kill_daemon(daemon (*func)(daemon_arg *arg))
+kill_daemon(daemon_t (*func)(daemon_arg *arg))
 {
     int i;
     struct delayed_action *dev;
