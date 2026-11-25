@@ -376,7 +376,7 @@ runners(daemon_arg *arg)
             if (curr_mons)
             {
                 tp->t_turn ^= TRUE;
-                tp->t_wasshot ^= FALSE; /* Not shot anymore */
+                tp->t_wasshot = FALSE;  /* Not shot anymore */
             }
 
         }
