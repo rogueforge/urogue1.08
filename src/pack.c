@@ -58,8 +58,12 @@ get_all(struct linked_list *top)
 
         rem_obj(top, FALSE);
 
+        obt->next_obj = NULL;
         if (!add_pack(top, FALSE))
+        {
+            add_obj(top, hero.y, hero.x);
             return;
+        }
 
         top = node;
     }
