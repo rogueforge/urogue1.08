@@ -106,9 +106,11 @@ missile(int ydelta, int xdelta, struct linked_list *item, struct thing *tp)
         }
         else
         {
+            unsigned long flags = obj->o_flags;
+
             fall(&player, item, TRUE, TRUE);
 
-            if (obj->o_flags & CANRETURN)
+            if (flags & CANRETURN)
                 msg("You have %s.", inv_name(obj, LOWERCASE));
         }
     }
