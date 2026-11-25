@@ -526,7 +526,7 @@ incant(struct thing *caster, coord dir)
             msg("The Crown wordlessly corrected your %s.",
                 spell_type);
 
-        switch (message_flags & 0x1)
+        switch (message_flags & (CAST_CURSED | CAST_BLESSED))
         {
             case CAST_CURSED:
                 msg("You botched your '%s' %s.", cast_name,
