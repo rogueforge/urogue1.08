@@ -4,7 +4,7 @@
 
 DISTNAME=urogue1.0.7
 
-HDRS		  = dict.h dictutil.h rogue.h
+HDRS		  = dict.h dictutil.h memory.h rogue.h
 OBJS		  = armor.o \
 		artifact.o \
 		bag.o \
