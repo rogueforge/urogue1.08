@@ -132,7 +132,7 @@ ring_on(void)
     if (know_items[TYP_RING][obj->o_which] &&
         guess_items[TYP_RING][obj->o_which])
     {
-        mem_free(guess_items[TYP_RING][obj->o_which]);
+        ur_free(guess_items[TYP_RING][obj->o_which]);
         guess_items[TYP_RING][obj->o_which] = NULL;
     }
     else if (!know_items[TYP_RING][obj->o_which] &&
