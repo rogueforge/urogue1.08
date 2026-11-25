@@ -1252,7 +1252,7 @@ next_exp_level(int print_message)
     }
 
     if (print_message)
-        msg("You need %d more points to attain the %stitle of %s.",
+        msg("You need %ld more points to attain the %stitle of %s.",
             max_stats.s_exp - pstats.s_exp,
             (pstats.s_lvl > 14 ? "next " : ""),
             cnames[player.t_ctype][min(pstats.s_lvl, 14)]);
@@ -1516,7 +1516,7 @@ roll_em(struct thing *att_er, struct thing *def_er, struct object *weap, int thr
 
             def->s_hpt -= damage;   /* Do the damage */
 
-            debug("Hit %s for %d (%d) ",
+            debug("Hit %s for %d (%ld) ",
                   monsters[def_er->t_index].m_name, damage,
                   def_er->t_stats.s_hpt);
 

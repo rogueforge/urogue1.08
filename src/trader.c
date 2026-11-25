@@ -258,7 +258,7 @@ buy_more:
                     for(i=0,m_item=magic_array; i < array_size; i++, m_item++)
                         if (!is_spell && m_item->mi_worth > 0)
                         {
-                            sprintf(buf, "%3d) %8d %s", i, m_item->mi_worth,
+                            sprintf(buf, "%3d) %8ld %s", i, m_item->mi_worth,
                                 m_item->mi_name);
                             add_line(buf);
                         }
@@ -268,7 +268,7 @@ buy_more:
                     for (i = 0; i < array_size; i++)
                         if (!is_spell && armors[i].a_worth > 0)
                         {
-                            sprintf(buf, "%3d) %8d %s", i, armors[i].a_worth,
+                            sprintf(buf, "%3d) %8ld %s", i, armors[i].a_worth,
                                 armors[i].a_name);
 
                             add_line(buf);
@@ -279,7 +279,7 @@ buy_more:
                     for (i = 0; i < array_size; i++)
                         if (!is_spell && weaps[i].w_worth > 0)
                         {
-                            sprintf(buf, "%3d) %8d %s", i, weaps[i].w_worth,
+                            sprintf(buf, "%3d) %8ld %s", i, weaps[i].w_worth,
                                 weaps[i].w_name);
                             add_line(buf);
                         }
@@ -653,7 +653,7 @@ describe_it(struct object *obj)
     else
         charp = normal_d[rnd(sizeof(normal_d) / sizeof(char *))];
 
-    sprintf(buf, "It's a%s %s worth %d pieces of gold.",
+    sprintf(buf, "It's a%s %s worth %ld pieces of gold.",
         vowelstr(charp), charp, cur_worth);
 
     mvwaddstr(hw, 10, 0, inv_name(obj, TRUE));
@@ -801,11 +801,11 @@ trans_line(void)
     int adorned = is_wearing(R_ADORNMENT);
 
     if (level == 0 && purse > 0)
-        sprintf(buf, "You still have %d pieces of gold left.", purse);
+        sprintf(buf, "You still have %ld pieces of gold left.", purse);
     else if (purse == 0)
         sprintf(buf, "You have no money left.");
     else if (!wizard)
-        sprintf(buf, "You have %d transactions and %d gold pieces remaining.",
+        sprintf(buf, "You have %d transactions and %ld gold pieces remaining.",
             max(0, (adorned ? MAXPURCH + 4 : MAXPURCH) - num_transactions),
             effective_purse);
     else

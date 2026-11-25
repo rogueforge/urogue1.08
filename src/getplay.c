@@ -135,7 +135,7 @@ puta_player(void)
     wclrtoeol(hw);
 
     sprintf(pbuf,
-        "Int: %d Str: %d Wis: %d Dex: %d Con: %d Cha: %d Pow: %d Hpt: %d",
+        "Int: %d Str: %d Wis: %d Dex: %d Con: %d Cha: %d Pow: %d Hpt: %ld",
         pstats.s_intel,
         pstats.s_str,
         pstats.s_wisdom,

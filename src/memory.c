@@ -48,7 +48,7 @@ void mem_debug(const int level)
 		memdebug_level = 1;
 		break;
 	}
-	fprintf(trace_file, "fence size = %d\n", FENCE_SIZE);
+	fprintf(trace_file, "fence size = %lu\n", (unsigned long) FENCE_SIZE);
 }
 
 /* set memory tracking on or off */

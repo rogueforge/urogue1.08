@@ -455,7 +455,7 @@ do_zap(struct thing *zapper, int which, unsigned long flags)
 
             if (isalpha(ch))
             {
-                debug("Missiled %s for %d (%d)",
+                debug("Missiled %s for %d (%ld)",
                  mname, damage, tp->t_stats.s_hpt - damage);
 
                 if ((tp->t_stats.s_hpt -= damage) <= 0)
@@ -1594,7 +1594,7 @@ shoot_bolt(struct thing *shooter, coord start, coord dir, int get_points, int re
 
                 mname = on(player, ISBLIND) ? "monster" : monsters[tp->t_index].m_name;
 
-                debug("Zapped %s for %d (%d)",
+                debug("Zapped %s for %d (%ld)",
                       mname, take_that[x], tp->t_stats.s_hpt - take_that[x]);
 
                 if ((tp->t_stats.s_hpt -= take_that[x]) <= 0)
