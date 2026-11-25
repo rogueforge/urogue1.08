@@ -141,7 +141,8 @@ command(void)
                 count = 0;
                 while (isdigit(ch))
                 {
-                    count = count * 10 + (ch - '0');
+                    if (count < 1000)
+                        count = count * 10 + (ch - '0');
                     ch = readcharw(cw);
                 }
                 repcommand = ch;
