@@ -1,0 +1,126 @@
+#
+# Makefile for building UltraRogue 1.0.7 with gcc or clang on Linux
+#
+# CFLAGS may be replaced, with a distribution's own flags for one.
+# REQUIRED comes after it, so that nothing in CFLAGS undoes it:
+#
+#   -std=gnu89
+#	The source is the ANSI C of 1993.  It calls strdup(), which
+#	strict C leaves undeclared.
+#   -fno-common
+#	Keep each file's variables together in that file's own data.
+#	Older compilers otherwise leave the ones with no initial
+#	value for the linker to place, apart from the rest, and a
+#	saved game takes the game's data to lie between its first
+#	file and its last.
+#   -fsigned-char
+#	The source keeps the characters of the map and of the keys
+#	typed in a char, and takes it that a char can be negative.
+#	On ARM and several other machines it cannot unless the
+#	compiler is told.
+#   -fwrapv
+#	The source takes it that signed arithmetic wraps around when
+#	it overflows.  gcc otherwise assumes that it never overflows.
+#   -fno-strict-aliasing
+#	At -O2 gcc assumes that pointers to different types never
+#	point at the same storage.  The source was written before
+#	that rule.
+#   -fno-lto
+#	Restoring a saved game reads it back over the game's
+#	variables.  Compiling a file at a time gcc cannot tell, but
+#	optimizing the whole program at once it can go on using
+#	values that the restore has replaced.  It is left out when
+#	linking.
+#
+# SCOREFILE says where the scores are kept.  It is
+# ~/.local/urogue1.07/scorefile unless it is given on the make line,
+# and make writes $(HOME) out when it builds, as fopen() does not know
+# ~.  Set it empty to keep "urogue.scr" in the directory the game is
+# started from.  'make -f Makefile.linux install' makes the directory
+# the score file is in.  A player can name another score file with
+# the score option.
+#
+# A saved game is an image of the game's data and can only be
+# restored by the same build of urogue that saved it.  vers.o must be
+# linked first and alloc.o last.  memory.o, dict.o and dictutil.o, the
+# storage checker, come before vers.o: what they keep belongs to the
+# game that is running, not to a saved one.
+#
+# MEMCHECK=1 builds a urogue that takes its storage through memory.c's
+# checker, which fences every block and stops the game when a fence is
+# overwritten.  It cannot save a game.
+#
+CC=	gcc
+CFLAGS=	-O2 -g
+SCOREFILE= $(HOME)/.local/urogue1.07/scorefile
+SF=	$(if $(SCOREFILE),-DSCOREFILE='"$(SCOREFILE)"')
+MC=	$(if $(MEMCHECK),-DMEMCHECK)
+REQUIRED= -std=gnu89 -fno-common -fsigned-char -fwrapv \
+	-fno-strict-aliasing -fno-lto $(MC) $(DEFS)
+CRLIB=	-lcurses
+OBJS=	memory.o dict.o dictutil.o \
+	vers.o armor.o artifact.o bag.o chase.o command.o daemon.o \
+	daemons.o encumb.o fight.o getplay.o ident.o init.o io.o list.o \
+	magic.o main.o maze.o misc.o monsdata.o monsters.o move.o \
+	newlvl.o options.o pack.o passages.o player.o potions.o random.o \
+	rings.o rip.o rogue.o rooms.o save.o scrolls.o status.o sticks.o \
+	things.o trader.o verify.o weapons.o wizard.o \
+	alloc.o
+
+urogue: $(OBJS)
+	$(CC) $(CFLAGS) $(filter-out -fno-lto,$(REQUIRED)) $(LDFLAGS) -o urogue $(OBJS) $(CRLIB)
+
+.c.o:
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(REQUIRED) -c $<
+
+main.o: main.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(REQUIRED) $(SF) -c main.c
+
+$(OBJS): rogue.h
+memory.o dict.o dictutil.o: dict.h dictutil.h
+memory.o: memory.h
+
+#
+# 'make -f Makefile.linux check' builds check/urogue with the address
+# sanitizer.  That urogue stops with a report on any read or write
+# outside an array and on any use of freed memory.  gcc defines
+# __SANITIZE_ADDRESS__ when the sanitizer is on, and save.c and
+# alloc.c go by it; clang may not, so it is defined here.
+#
+.PHONY: check
+check:
+	mkdir -p check
+	cd check && ln -sf ../*.c ../*.h ../Makefile.linux . && \
+	$(MAKE) -f Makefile.linux urogue \
+	    DEFS="-D__SANITIZE_ADDRESS__=1 -fsanitize=address \
+	    -fno-omit-frame-pointer"
+
+#
+# 'make -f Makefile.linux cover' builds cover/urogue to record which
+# lines are executed.  The counts build up in cover/*.gcda over every
+# game played with it that ends by itself (a killed game records
+# nothing).  'make -f Makefile.linux cover-report' then writes one
+# annotated listing per source file to cover/*.c.gcov, in which lines
+# never run are marked #####, and prints a summary.
+#
+.PHONY: cover cover-report
+cover:
+	mkdir -p cover
+	cd cover && ln -sf ../*.c ../*.h ../Makefile.linux . && \
+	$(MAKE) -f Makefile.linux urogue CFLAGS="-O0 -g --coverage"
+
+cover-report:
+	cd cover && gcov -f *.gcda > gcov.out 2>&1; \
+	awk -f ../cover.awk gcov.out
+
+#
+# 'make -f Makefile.linux install' makes the directory the score file
+# goes in.
+#
+.PHONY: install
+install:
+	$(if $(SCOREFILE),mkdir -p "$(dir $(SCOREFILE))")
+
+clean:
+	rm -f $(OBJS) urogue
+	rm -rf check cover
