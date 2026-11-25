@@ -143,6 +143,18 @@ main(int argc, char *argv[])
     init_materials();   /* Set up materials of wands */
     initscr();          /* Start up cursor package */
     refresh();
+
+    /*
+     * The level is laid out by LINES and COLS in windows that size. Have
+     * curses keep the size the screen has now, even if the terminal is
+     * resized.
+     */
+
+    sprintf(prbuf, "%d", LINES);
+    setenv("LINES", prbuf, 1);
+    sprintf(prbuf, "%d", COLS);
+    setenv("COLUMNS", prbuf, 1);
+
     init_names();       /* Set up names of scrolls */
     cbreak();
     crmode();           /* Cbreak mode */
