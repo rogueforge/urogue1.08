@@ -24,7 +24,7 @@ void
 prayer(void)
 {
     int chance, i, times;
-    char num_str[20];
+    char num_str[2 * LINELEN];
     int ch;
     struct linked_list  *item;
     struct thing    *tp;

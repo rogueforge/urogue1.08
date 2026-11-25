@@ -311,7 +311,8 @@ parse_opts(char *str)
                 else    /* string option */
                 {
                     char    *start;
-                    char    value[80];
+                    char    value[2 * LINELEN];
+                    int     n;
 
                     /* Skip to start of string value */
 
@@ -325,7 +326,13 @@ parse_opts(char *str)
                     for (sp = str + 1; *sp && *sp != ','; sp++)
                         continue;
 
-                    strncpy(start, str, sp - str);
+                    n = sp - str;
+
+                    if (n > (int) sizeof(value) - 1)
+                        n = sizeof(value) - 1;
+
+                    strncpy(start, str, n);
+                    start[n] = '\0';
 
                     /* Put the value into the option field */
 
