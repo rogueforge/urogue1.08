@@ -109,6 +109,7 @@ wear_ok(struct thing *wearee, struct object *obj, int print_message)
                     default:
                         break;
                 }
+                break;
 
             case C_THIEF:    /* cannot clank around */
             case C_ASSASIN:
@@ -126,6 +127,7 @@ wear_ok(struct thing *wearee, struct object *obj, int print_message)
                     default:
                         break;
                 }
+                break;
 
             case C_CLERIC:   /* cannot wear plate */
             case C_DRUID:
@@ -139,6 +141,7 @@ wear_ok(struct thing *wearee, struct object *obj, int print_message)
                     default:
                         break;
                 }
+                break;
 
             case C_FIGHTER: /* wear anything */
             case C_RANGER:
