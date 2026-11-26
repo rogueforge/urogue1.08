@@ -278,7 +278,7 @@ baf_increment(object *obj_p, bag_arg *count_p, int id)
 int
 baf_print_item(struct object *obj_p, bag_arg *type, int id)
 {
-    char inv_temp[3 * LINELEN];  /* plenty of space for paranoid programmers */
+    char inv_temp[4 * LINELEN + 4];  /* plenty of space for paranoid programmers */
 
     if (*type->iarg == 0)
         sprintf(inv_temp, "%c%c) %s", obj_p->o_type,

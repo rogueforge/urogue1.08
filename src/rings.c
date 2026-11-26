@@ -143,7 +143,8 @@ ring_on(void)
         mpos = 0;
         msg("What do you want to call it? ");
 
-        if (get_string(buf, cw) == NORM)
+        buf[0] = '\0';
+        if (get_string(buf, cw) == NORM && buf[0] != '\0')
         {
             guess_items[TYP_RING][obj->o_which] =
                 new_alloc(strlen(buf) + 1);
