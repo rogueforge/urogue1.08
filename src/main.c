@@ -72,6 +72,14 @@ main(int argc, char *argv[])
         argc -= (x - 1);
         argv += (x - 1);
     }
+    /*
+     * A file grown past its limit should make the write fail, not end
+     * the game in the middle of a save
+     */
+
+#ifdef SIGXFSZ
+    signal(SIGXFSZ, SIG_IGN);
+#endif
 
     /* Get default score file */
 
