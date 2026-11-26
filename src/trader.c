@@ -543,7 +543,7 @@ sell_it(void)
 {
     struct object *obj;
     struct linked_list  *item;
-    char buf[2 * LINELEN];
+    char buf[4 * LINELEN + 32];
 
     wclear(cw);
 
