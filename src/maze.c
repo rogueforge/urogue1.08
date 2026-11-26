@@ -4,6 +4,10 @@
 
 #include <stdlib.h>
 #include "rogue.h"
+/* The maze's work space is not kept: it comes from the C library */
+
+#undef malloc
+#undef free
 
 struct cell
 {
