@@ -1340,7 +1340,8 @@ call(int mark)
             if (guess_items[item_type][obj->o_which] != NULL)
                 ur_free(guess_items[item_type][obj->o_which]);
 
-            guess_items[item_type][obj->o_which] = new_alloc(strlen(prbuf) + 1);
+            guess_items[item_type][obj->o_which] =
+                new_alloc(strlen(prbuf) < sizeof(struct thing) ? sizeof(struct thing) : strlen(prbuf) + 1);
             strcpy(guess_items[item_type][obj->o_which], prbuf);
         }
     }
