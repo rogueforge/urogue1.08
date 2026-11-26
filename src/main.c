@@ -16,6 +16,9 @@
 #include <signal.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <stdlib.h>
 #include "rogue.h"
 
@@ -36,6 +39,7 @@ int
 main(int argc, char *argv[])
 {
     int x;
+    struct stat sbuf, sbuf2;
     char    *env;
     char    *seed;
     time_t lowtime;
@@ -94,10 +98,29 @@ main(int argc, char *argv[])
     if (x >= 3)
         close(x);
 
-    fd_score = fopen(score_file, "r+");
+    /*
+     * Keep scores only in a plain file with one link, and see that the
+     * file opened is the one looked at.  One that is not there yet is made
+     * new.
+     */
 
-    if (fd_score == NULL)
-        fd_score = fopen(score_file, "a+");
+    if (lstat(score_file, &sbuf) < 0)
+        x = (errno == ENOENT ? open(score_file, O_RDWR | O_CREAT | O_EXCL, 0644) : -1);
+    else if (!S_ISREG(sbuf.st_mode) || sbuf.st_nlink != 1)
+        x = -1;
+    else if ((x = open(score_file, O_RDWR)) >= 0 &&
+             (fstat(x, &sbuf2) < 0 || sbuf2.st_dev != sbuf.st_dev || sbuf2.st_ino != sbuf.st_ino))
+             {
+        close(x);
+        x = -1;
+    }
+    if (x < 0 || (fd_score = fdopen(x, "r+")) == NULL)
+    {
+        if (x >= 0)
+            close(x);
+
+        fd_score = NULL;
+    }
 
     if ((env = getenv("OPTIONS")) != NULL)
         parse_opts(env);
