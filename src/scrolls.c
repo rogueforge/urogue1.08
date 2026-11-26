@@ -1462,7 +1462,8 @@ monread(struct thing *reader, int which, int flags)
                     rm = rnd_room();
                     rnd_pos(&rooms[rm], &reader->t_pos);
                 }
-                while (winat(reader->t_pos.y, reader->t_pos.x) != FLOOR);
+                while (winat(reader->t_pos.y, reader->t_pos.x) != FLOOR ||
+                    ce(reader->t_pos, hero));
 
                 /* Put it there */
 

@@ -411,8 +411,8 @@ do_zap(struct thing *zapper, int which, unsigned long flags)
                             rm = rnd_room();
                             rnd_pos(&rooms[rm], &tp->t_pos);
                         }
-                        while (winat(tp->t_pos.y, tp->t_pos.x) !=
-                             FLOOR && i++ < 500);
+                        while ((winat(tp->t_pos.y, tp->t_pos.x) != FLOOR ||
+                            ce(tp->t_pos, hero)) && i++ < 500);
                     }
 
                     /* Now move the monster */

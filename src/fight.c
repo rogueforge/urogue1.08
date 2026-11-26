@@ -421,7 +421,8 @@ fight(coord *mp, struct object *weap, int thrown)
                         rm = rnd_room();
                         rnd_pos(&rooms[rm], &tp->t_pos);
                     }
-                    while (winat(tp->t_pos.y, tp->t_pos.x) != FLOOR);
+                    while (winat(tp->t_pos.y, tp->t_pos.x) != FLOOR ||
+                        ce(tp->t_pos, hero));
 
                     /* Put it there */
 

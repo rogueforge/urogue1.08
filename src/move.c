@@ -987,7 +987,8 @@ be_trapped(struct thing *th, coord tc)
                     rm = rnd_room();
                     rnd_pos(&rooms[rm], &th->t_pos);
                 }
-                while(winat(th->t_pos.y, th->t_pos.x) != FLOOR);
+                while(winat(th->t_pos.y, th->t_pos.x) != FLOOR ||
+                    ce(th->t_pos, hero));
 
                 /* Put it there */
 
