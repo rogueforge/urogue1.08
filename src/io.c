@@ -9,6 +9,8 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdarg.h>
+#include <errno.h>
+#include <fcntl.h>
 #include "rogue.h"
 
 char prbuf[4 * LINELEN];    /* Buffer for sprintfs                      */
@@ -198,9 +200,13 @@ readcharw(WINDOW *win)
     char ch;
     int c, cnt = 0;
 
-    while ((c = wgetch(win)) == ERR)
+    for (errno = 0; (c = wgetch(win)) == ERR; errno = 0)
         if (cnt++ > 100)    /* input has ended */
             auto_save();
+#ifdef O_NONBLOCK
+        else if (errno == EAGAIN)   /* a terminal left not to wait */
+            fcntl(0, F_SETFL, fcntl(0, F_GETFL, 0) & ~O_NONBLOCK);
+#endif
 
     ch = (char) c;
 
