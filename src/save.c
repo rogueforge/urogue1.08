@@ -246,8 +246,9 @@ restore(char *file)
     if (strcmp(file, "-r") == 0)
         file = strcpy(name, file_name);
 
-    if ((infd = open(file, O_RDONLY)) < 0 || fstat(infd, &sbuf) < 0)
-    {
+    if ((infd = open(file, O_RDONLY | O_NONBLOCK)) < 0 ||
+        fstat(infd, &sbuf) < 0)
+        {
         endwin();
         perror(file);
         return(FALSE);
