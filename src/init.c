@@ -899,16 +899,19 @@ init_fd(void)
 void
 init_colors(void)
 {
-    int   i;
-    char *str;
+    int   i, j;
+    char  used[NCOLORS];    /* colors already given to a potion */
+
+    memset(used, 0, sizeof(used));
 
     for (i = 0; i < maxpotions; i++)
     {
         do
-            str = rainbow[rnd(NCOLORS)];
-        while( !isupper(*str) );
+            j = rnd(NCOLORS);
+        while (used[j]);
 
-        p_colors[i]    = strdup(str);
+        used[j] = TRUE;
+        p_colors[i]    = strdup(rainbow[j]);
         p_colors[i][0] = (char) tolower(p_colors[i][0]);
 
         know_items[TYP_POTION][i]  = FALSE;
@@ -976,16 +979,19 @@ init_names(void)
 void
 init_stones(void)
 {
-    int   i;
-    char *str;
+    int   i, j;
+    char  used[NSTONES];    /* stones already given to a ring */
+
+    memset(used, 0, sizeof(used));
 
     for (i = 0; i < maxrings; i++)
     {
         do
-            str = stones[rnd(NSTONES)];
-        while(!isupper(*str));
+            j = rnd(NSTONES);
+        while (used[j]);
 
-        r_stones[i]    = strdup(str);
+        used[j] = TRUE;
+        r_stones[i]    = strdup(stones[j]);
         r_stones[i][0] = (char) tolower( r_stones[i][0] );
 
         know_items[TYP_RING][i]  = FALSE;
@@ -1006,29 +1012,42 @@ init_stones(void)
 void
 init_materials(void)
 {
-    int   i;
+    int   i, j;
     char *str;
+    char  used_metal[NMETAL], used_wood[NWOOD]; /* already given out */
+
+    memset(used_metal, 0, sizeof(used_metal));
+    memset(used_wood, 0, sizeof(used_wood));
 
     for (i = 0; i < maxsticks; i++)
     {
-        do
+        for (;;)
         {
             if (rnd(100) > 50)
             {
-                str = metal[rnd(NMETAL)];
+                j = rnd(NMETAL);
 
-                if (isupper(*str))
+                if (!used_metal[j])
+                {
+                    used_metal[j] = TRUE;
+                    str = metal[j];
                     ws_type[i] = "wand";
+                    break;
+                }
             }
             else
             {
-                str = wood[rnd(NWOOD)];
+                j = rnd(NWOOD);
 
-                if (isupper(*str))
+                if (!used_wood[j])
+                {
+                    used_wood[j] = TRUE;
+                    str = wood[j];
                     ws_type[i] = "staff";
+                    break;
+                }
             }
         }
-        while(!isupper(*str));
 
         ws_made[i] = strdup(str);
         ws_made[i][0] = (char) tolower( ws_made[i][0] );
