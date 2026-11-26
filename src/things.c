@@ -284,6 +284,7 @@ rem_obj(struct linked_list *item, int dis)
         
 	if (op->next_obj)
             objptr->next_obj->l_prev = NULL;
+        objptr->next_obj = NULL;
 
         y = op->o_pos.y;
         x = op->o_pos.x;
