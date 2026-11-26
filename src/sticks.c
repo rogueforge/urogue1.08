@@ -769,7 +769,10 @@ do_zap(struct thing *zapper, int which, unsigned long flags)
                             killed(&player, item, NOMESSAGE, POINTS);
                         }
                         else
+                        {
+                            tp->t_stats.s_hpt = mons_hpt;
                             seemsg("Wounds appear all over the %s.", mname);
+                        }
                     }
                     else
                         nothing_message(flags);
@@ -784,6 +787,7 @@ do_zap(struct thing *zapper, int which, unsigned long flags)
                         know_items[TYP_STICK][which] = TRUE;
 
                     mons_hpt = min(mons_hpt + hpt_gain, tp->maxstats.s_hpt);
+                    tp->t_stats.s_hpt = mons_hpt;
                     seemsg("The %s appears less wounded!", mname);
                 }
             }
