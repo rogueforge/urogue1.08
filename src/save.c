@@ -221,6 +221,8 @@ void
 auto_save(void)
 {
     FILE *savefd;
+    if (pstats.s_hpt <= 0)  /* the game is over */
+        file_name[0] = '\0';
 
     if (file_name[0] != '\0' && save_ok() &&
         (savefd = save_open()) != NULL && !save_file(savefd))
