@@ -221,6 +221,8 @@ fall(struct thing *tp, struct linked_list *item, int pr, int player_owned)
 
             if (rp != NULL)
                 rp->r_flags &= ~ISDARK;
+
+            discard(item);
         }
         else
         {
