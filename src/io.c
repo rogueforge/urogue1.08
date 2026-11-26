@@ -122,7 +122,7 @@ endmsg(void)
 void
 doadd(const char *fmt, va_list ap)
 {
-    vsprintf(&mbuf[newpos], fmt, ap);
+    vsnprintf(&mbuf[newpos], sizeof(mbuf) - newpos, fmt, ap);
     newpos = (int) strlen(mbuf);
 }
 
