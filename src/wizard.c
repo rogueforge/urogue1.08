@@ -110,7 +110,7 @@ teleport(void)
                 case 'n':   c.x++;
                             c.y++; break;
                 case '*':
-                    msg("Use h,j,k,l,y,u,b,n to position cursor, then hit"
+                    msg("Use h,j,k,l,y,u,b,n to position cursor, then hit "
                         "return.");
             }
 
