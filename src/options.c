@@ -296,7 +296,7 @@ parse_opts(char *str)
 
     while (*str)
     {
-        for (sp = str; isalpha(*sp); sp++)
+        for (sp = str; isalpha((unsigned char)*sp); sp++)
             continue;
 
         len = sp - str;
@@ -346,8 +346,8 @@ parse_opts(char *str)
 
                         len = strlen(value);
 
-                        if (isupper(value[0]))
-                            value[0] = (char) tolower(value[0]);
+                        if (isupper((unsigned char)value[0]))
+                            value[0] = (char) tolower((unsigned char)value[0]);
                         if (EQSTR(value, "overwrite",len))
                             *opt = INV_OVER;
                         if (EQSTR(value, "slow", len))
@@ -361,8 +361,8 @@ parse_opts(char *str)
 
                         len = strlen(value);
 
-                        if (isupper(value[0]))
-                            value[0] = (char) tolower(value[0]);
+                        if (isupper((unsigned char)value[0]))
+                            value[0] = (char) tolower((unsigned char)value[0]);
                         if (EQSTR(value, "fighter", len))
                             *opt = C_FIGHTER;
                         else if (EQSTR(value, "magic", min(len, 5)))
@@ -397,7 +397,7 @@ parse_opts(char *str)
 
         /* skip to start of next option name  */
 
-        while (*sp && !isalpha(*sp))
+        while (*sp && !isalpha((unsigned char)*sp))
             sp++;
 
         str = sp;
