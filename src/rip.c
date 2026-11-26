@@ -106,6 +106,7 @@ death(int monst)
                     obj->o_flags = flags;
                     next_item = next(item);
                     rem_pack(obj);
+                    item = make_item(obj);
 
                     if (obj->o_type == ARTIFACT)
                         has_artifact &= ~(1 << obj->o_which);

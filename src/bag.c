@@ -139,6 +139,7 @@ pop_bag(linked_list **bag_pp, object *obj_p)
         return (NULL);
 
     _detach(bag_pp, item_p);
+    ur_free(item_p);
 
     return (obj_p);
 }
