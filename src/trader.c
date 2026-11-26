@@ -458,6 +458,7 @@ buy_more:
 
         case TYP_RING:
             obj->o_ac = plus_or_minus;
+            obj->o_weight = things[which_type].mi_wght;
             break;
 
         case TYP_SCROLL:
