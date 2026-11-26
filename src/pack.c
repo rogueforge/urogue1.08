@@ -586,6 +586,8 @@ rem_pack(struct object *obj_p)
 {
     cur_null(obj_p);    /* check for current stuff */
     pop_bag(&pack, obj_p);
+    free_ident(obj_p);  /* its letter is free again */
+    identifier(obj_p) = 0;
     updpack();
     return;      /* tell caller an item has been removed */
 }
