@@ -14,6 +14,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <signal.h>
+#include <fcntl.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include "rogue.h"
 
@@ -84,6 +86,13 @@ main(int argc, char *argv[])
     /* Get default score file */
 
     strncpy(score_file, SCOREFILE, 2 * LINELEN - 1);
+    /* Keep the score file off stdin, stdout and stderr */
+
+    while ((x = open("/dev/null", O_RDWR)) >= 0 && x < 3)
+        continue;
+
+    if (x >= 3)
+        close(x);
 
     fd_score = fopen(score_file, "r+");
 
