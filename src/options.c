@@ -355,7 +355,7 @@ parse_opts(char *str)
                         if (EQSTR(value, "clear", len))
                             *opt = INV_CLEAR;
                     }
-                    else if (*op->o_opt.iarg == -1)
+                    else if (*op->o_opt.iarg == C_NOTSET)
                     {
                         int *opt = op->o_opt.iarg;
 
