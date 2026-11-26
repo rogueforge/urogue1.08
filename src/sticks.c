@@ -1247,6 +1247,7 @@ shoot_bolt(struct thing *shooter, coord start, coord dir, int get_points, int re
     coord   spotpos[BOLT_LENGTH + 1];
     int     ret_val = FALSE;/* True if breathing monster gets killed */
     struct linked_list  *item;
+    struct linked_list *shooter_item = NULL;
     struct thing    *tp;
     char    *mname;
     int bounced;    /* where along BOLT_LENGTH it hit a wall */
@@ -1610,7 +1611,12 @@ shoot_bolt(struct thing *shooter, coord start, coord dir, int get_points, int re
                         msg("The %s kills the %s.", name,
                             on(player, ISBLIND) ? "monster" : mname);
 
-                    killed(shooter, item, NOMESSAGE, get_points);
+
+                    if (tp == shooter)	/* it dies last */
+                        shooter_item = item;
+                    else
+                        killed(shooter, item, NOMESSAGE, get_points);
+
                     ret_val = TRUE;
                 }
                 else if (get_points)
@@ -1625,6 +1631,8 @@ shoot_bolt(struct thing *shooter, coord start, coord dir, int get_points, int re
                 mvwaddch(cw, spotpos[x].y, spotpos[x].x,
                      show(spotpos[x].y, spotpos[x].x));
         }
+        if (shooter_item != NULL)
+            killed(shooter, shooter_item, NOMESSAGE, get_points);
 
         if (take_that[BOLT_LENGTH] != 0)
         {
