@@ -231,6 +231,7 @@ restore(char *file)
     struct stat sbuf;
     int     y, x;
     FILE    *score = fd_score;  /* main()'s, not the saved game's */
+    int     owiz = wizard, ocan = canwizard;
 
     if (strcmp(file, "-r") == 0)
         file = strcpy(name, file_name);
@@ -303,6 +304,12 @@ restore(char *file)
     }
 
     fd_score = score;
+    /* The wizard is who this run says, not who the file says */
+
+    canwizard = ocan;
+
+    if ((wizard = owiz) != FALSE)
+        waswizard = TRUE;
 
     /*
      * The windows main() made are not the ones in the saved game,
