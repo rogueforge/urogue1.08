@@ -27,6 +27,7 @@ command(void)
     object  *obj;
     char     ch;
     int      ntimes = 1; /* Number of player moves */
+    int      an_after = FALSE; /* any of the moves took time */
     coord    nullcoord;
 
     nullcoord.x = nullcoord.y = 0;
@@ -49,7 +50,10 @@ command(void)
     }
 
     if (ntimes == 0)
+    {
+        after = FALSE;
         return;
+    }
 
     while (ntimes--)
     {
@@ -574,7 +578,16 @@ command(void)
                 show_floor();
         if (!running)
             door_stop = FALSE;
+
+        /*
+         * If after is true, mark an_after as true so that if
+         * we are hasted, the first "after" will be noted.
+         */
+        if (after)
+            an_after = TRUE;
     } /* end while */
+
+    after = an_after;
 }
 
 
