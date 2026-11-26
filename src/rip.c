@@ -102,6 +102,10 @@ death(int monst)
 
                     flags = obj->o_flags;
                     obj->o_flags &= ~ISCURSED;
+
+                    if (obj == cur_armor)
+                        cur_armor = NULL;
+
                     dropcheck(obj);
                     obj->o_flags = flags;
                     next_item = next(item);
