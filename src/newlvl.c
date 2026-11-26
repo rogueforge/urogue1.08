@@ -58,7 +58,12 @@ new_level(LEVTYPE ltype)
         killed(NULL, item, NOMESSAGE, NOPOINTS);
     }
 
-    free_list(lvl_obj); /* Free up previous objects (if any) */
+    /* Free up previous objects (if any), and what is stacked under them */
+
+    for (item = lvl_obj; item != NULL; item = next(item))
+        free_list(OBJPTR(item)->next_obj);
+
+    free_list(lvl_obj);
 
     wclear(cw);
     wclear(mw);
