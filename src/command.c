@@ -1324,8 +1324,6 @@ call(int mark)
         msg("Was called \"%s\".", elsewise);
         msg("What do you want to call it? ");
 
-        if (guess_items[item_type][obj->o_which] != NULL)
-            ur_free(guess_items[item_type][obj->o_which]);
 
         strcpy(prbuf, elsewise);
     }
@@ -1339,6 +1337,9 @@ call(int mark)
         }
         else
         {
+            if (guess_items[item_type][obj->o_which] != NULL)
+                ur_free(guess_items[item_type][obj->o_which]);
+
             guess_items[item_type][obj->o_which] = new_alloc(strlen(prbuf) + 1);
             strcpy(guess_items[item_type][obj->o_which], prbuf);
         }
