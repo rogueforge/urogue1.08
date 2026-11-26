@@ -356,9 +356,10 @@ score(long amount, int lvl, int flags, int monst) /*ARGSUSED*/
 			scp->sc_lvl = lvl;
 			scp->sc_gold = purse;
             scp->sc_score = amount;
-            strcpy(scp->sc_name, whoami);
-			strcat(scp->sc_name,", ");
-			strcat(scp->sc_name, which_class(player.t_ctype));
+            sprintf(buf, "%.*s, %s", (int) sizeof(scp->sc_name) - 20, whoami,
+                    which_class(player.t_ctype));
+            strncpy(scp->sc_name, buf, sizeof(scp->sc_name) - 1);
+            scp->sc_name[sizeof(scp->sc_name) - 1] = '\0';
             scp->sc_flags = flags;
 			
             if (flags == WINNER)
