@@ -14,6 +14,7 @@
 #include <time.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <sys/resource.h>
 #include "rogue.h"
 
 static struct sc_ent
@@ -234,6 +235,7 @@ score(long amount, int lvl, int flags, int monst) /*ARGSUSED*/
     int i;
     char    *killer;
     char buf[1024];
+    struct rlimit lim;
 
     static const char *reason[] =
     {
@@ -413,8 +415,11 @@ score(long amount, int lvl, int flags, int monst) /*ARGSUSED*/
         }
     }
 
-    if (sc2 != NULL)
-    {
+    /* Leave the table alone if a limit on the size of a file cuts it short */
+
+    if (sc2 != NULL &&
+        !(getrlimit(RLIMIT_FSIZE, &lim) == 0 && lim.rlim_cur < sizeof(top_ten)))
+        {
         fseek(fd_score, 0L, SEEK_SET);
         /* Update the list file */
         fwrite(top_ten, sizeof(top_ten), 1, fd_score);
