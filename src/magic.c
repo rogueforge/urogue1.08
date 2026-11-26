@@ -864,5 +864,5 @@ sort_spells(const void *a, const void *b)
     if (diff != 0)
         return(diff);
     else
-        return(strcmp(spell_name(sp1,spellbuf), spell_name(sp1,spellbuf2)));
+        return(strcmp(spell_name(sp1,spellbuf), spell_name(sp2,spellbuf2)));
 }
