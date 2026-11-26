@@ -987,7 +987,7 @@ do_major(void)
 
                 obj->o_flags &= ~ISCURSED;
                 dropcheck(obj);
-                del_bag(pack, obj);
+                discard_pack(obj);
 
             }
             break;
@@ -1009,7 +1009,7 @@ do_major(void)
 
                 obj->o_flags &= ~ISCURSED;
                 dropcheck(obj);
-                del_bag(pack, obj);
+                discard_pack(obj);
             }
             break;
 
