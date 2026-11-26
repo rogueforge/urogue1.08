@@ -256,10 +256,12 @@ restore(char *file)
     }
 
     fflush(stdout);
-    encread(buf, (long) strlen(version) + 1, infd);
+    buf[0] = '\0';
 
-    if (strcmp(buf, version) != 0)
-    {
+    if (encread(buf, (long) strlen(version) + 1, infd) !=
+        (int) strlen(version) + 1 || strcmp(buf, version) != 0)
+        {
+        buf[strlen(version)] = '\0';
         endwin();
         printf("Save Game Version: %s\nReal Game Version: %s\n", buf, version);
         printf("Sorry, saved game is out of date.\n");
