@@ -27,8 +27,8 @@ whatis(struct linked_list *what)
     {
         print_message = TRUE;
 
-        while ((what = get_item("identify", 0)) == NULL)
-            ;
+        if ((what = get_item("identify", 0)) == NULL)
+            return;
     }
 
     obj = OBJPTR(what);
