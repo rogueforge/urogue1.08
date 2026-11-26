@@ -754,10 +754,12 @@ do_zap(struct thing *zapper, int which, unsigned long flags)
         case WS_XENOHEALING:
         {
             int hpt_gain = roll(zapper->t_stats.s_lvl, (blessed ? 8 : 4));
-            int mons_hpt = tp->t_stats.s_hpt;
+            long mons_hpt;
 
             if (got_one)
             {
+                mons_hpt = tp->t_stats.s_hpt;
+
                 if (cursed)
                 {
                     if (!save_throw(VS_MAGIC, tp))
