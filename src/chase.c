@@ -238,8 +238,21 @@ do_chase(struct thing *th, int flee)
                 (obj->o_type == WEAPON || obj->o_type == ARMOR)) ||
                 (on(*th, CANCAST) && is_magic(obj))) 
 			{
+                struct linked_list *mitem;
+
                 rem_obj(top, FALSE);
-                attach(th->t_pack, top);
+
+                for (mitem = th->t_pack; mitem != NULL; mitem = next(mitem))
+                    if (obt->o_group > 0 && (OBJPTR(mitem))->o_group == obt->o_group)
+                        break;
+
+                if (mitem != NULL)
+                {
+                    (OBJPTR(mitem))->o_count += obt->o_count;
+                    discard(top);
+                }
+                else
+                    attach(th->t_pack, top);
             }
 			
 			top = node;
