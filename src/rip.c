@@ -381,6 +381,11 @@ score(long amount, int lvl, int flags, int monst) /*ARGSUSED*/
         if (scp->sc_score)
         {
 		    char lev[20];
+                        scp->sc_name[sizeof(scp->sc_name) - 1] = '\0';
+
+                        for (i = 0; scp->sc_name[i] != '\0'; i++)
+                            if (scp->sc_name[i] < ' ' || scp->sc_name[i] > '~')
+                                scp->sc_name[i] = '?';
 			
 			sprintf(lev, "%d+%ld", scp->sc_lvl, scp->sc_score);
             printf("%4d %15s %10ld %s:", (int) (scp - top_ten + 1), 
