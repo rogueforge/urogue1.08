@@ -755,8 +755,27 @@ unsummon(fuse_arg *monny)
 {
     struct linked_list *monst = monny->ll;
     struct linked_list  *sum_monst = (struct linked_list *) monst;
-    struct thing    *tp = THINGPTR(sum_monst);
-    char    *mname = monsters[tp->t_index].m_name;
+    struct linked_list  *item;
+    struct thing    *tp;
+    char    *mname;
+
+    /*
+     * The monster may have left the level or died some other way
+     * since it was summoned. Only send it back if it is still here.
+     */
+
+    for (item = mlist; item != NULL; item = next(item))
+        if (item == sum_monst && on(*THINGPTR(item), WASSUMMONED))
+            break;
+
+    if (item == NULL)
+    {
+        turn_off(player, HASSUMMONED);
+        return;
+    }
+
+    tp = THINGPTR(sum_monst);
+    mname = monsters[tp->t_index].m_name;
 
     turn_off(*tp, WASSUMMONED);
     turn_off(player, HASSUMMONED);
