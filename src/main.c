@@ -130,7 +130,7 @@ main(int argc, char *argv[])
     if (whoami[0] != '\0')    /* the name option has named the hero */
         ;
     else if (nm != NULL)
-        strcpy(whoami,nm);
+        strncpy(whoami, nm, 2 * LINELEN - 1);
     else
         strcpy(whoami,"anonymous");
 		
