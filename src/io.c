@@ -196,8 +196,13 @@ char
 readcharw(WINDOW *win)
 {
     char ch;
+    int c, cnt = 0;
 
-    ch = (char) wgetch(win);
+    while ((c = wgetch(win)) == ERR)
+        if (cnt++ > 100)    /* input has ended */
+            auto_save();
+
+    ch = (char) c;
 
     if ((ch == 3) || (ch == 0))
     {

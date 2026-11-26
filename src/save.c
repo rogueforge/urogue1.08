@@ -174,6 +174,25 @@ save_file(FILE *savefd)
     fclose(savefd);
 }
 
+/*
+    auto_save()
+        Input has ended: save the game under the name it was last saved
+        with, if it has one, and stop
+*/
+
+void
+auto_save(void)
+{
+    FILE *savefd;
+
+    if (file_name[0] != '\0' && save_ok() &&
+        (savefd = fopen(file_name, "w")) != NULL)
+        save_file(savefd);
+
+    endwin();
+    exit(1);
+}
+
 int
 restore(char *file)
 {
