@@ -327,7 +327,8 @@ command(void)
                 case 'o':
                     after = FALSE;
                     option();
-                    strcpy(fd_data[1].mi_name, fruit);
+                    free(fd_data[1].mi_name);
+                    fd_data[1].mi_name = strdup(fruit);
                     break;
                 case 12:    /* ctrl-l */
                 case 18:    /* ctrl-r */
