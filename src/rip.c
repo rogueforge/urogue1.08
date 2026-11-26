@@ -236,6 +236,7 @@ score(long amount, int lvl, int flags, int monst) /*ARGSUSED*/
     char    *killer;
     char buf[1024];
     struct rlimit lim;
+    sigset_t set, oset;
 
     static const char *reason[] =
     {
@@ -365,7 +366,18 @@ score(long amount, int lvl, int flags, int monst) /*ARGSUSED*/
     }
     /* Leave the table alone if a limit on the size of a file cuts it short */
 
-    if (sc2 != NULL &&
+    /*
+     * Leave the table alone if a limit on the size of a file cuts it
+     * short, and hold back the signals that would end the game while
+     * it is written
+     */
+
+    sigemptyset(&set);
+    sigaddset(&set, SIGINT);
+    sigaddset(&set, SIGHUP);
+    sigaddset(&set, SIGTERM);
+    sigaddset(&set, SIGQUIT);
+    sigprocmask(SIG_BLOCK, &set, &oset);if (sc2 != NULL &&
         !(getrlimit(RLIMIT_FSIZE, &lim) == 0 && lim.rlim_cur < sizeof(top_ten)))
         {
         fseek(fd_score, 0L, SEEK_SET);
@@ -375,6 +387,7 @@ score(long amount, int lvl, int flags, int monst) /*ARGSUSED*/
 
     fclose(fd_score);  /* which lets go of the lock */
     fd_score = NULL;
+    sigprocmask(SIG_SETMASK, &oset, NULL);
 
     if (flags != SCOREIT)
     {
