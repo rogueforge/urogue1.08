@@ -548,12 +548,12 @@ chase(struct thing *tp, coord *ee, int flee)
         shoot_bolt(tp, *er, *shootit_dir,
                (fam_ptr != NULL && tp == THINGPTR(fam_ptr)), tp->t_index, breath, roll(tp->t_stats.s_lvl, 6));
 
-        tp->t_nxtpos = *er;
-
-        dist = DISTANCE(tp->t_nxtpos, *ee);
 
         if (!curr_mons)
             return (TRUE);
+
+        tp->t_nxtpos = *er;
+        dist = DISTANCE(tp->t_nxtpos, *ee);
     }
     else if (shootit_dir && on(*tp, CANCAST) &&
          (off(player, ISDISGUISE) || (rnd(tp->t_stats.s_lvl) > 6)))
