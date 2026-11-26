@@ -296,7 +296,29 @@ score(long amount, int lvl, int flags, int monst) /*ARGSUSED*/
         hold_sc(fileno(fd_score));
 
     fseek(fd_score, 0L, SEEK_SET);
-    fread(top_ten, sizeof(top_ten), 1, fd_score);
+    i = fread(top_ten, 1, sizeof(top_ten), fd_score);
+
+    /*
+     * Keep the entries read whole that hold a score, one of the four
+     * flags and a killer the game knows, and take the rest for empty
+     */
+
+    for (scp = sc2 = top_ten; scp < &top_ten[10]; scp++)
+        if ((char *) (scp + 1) - (char *) top_ten <= i &&
+            scp->sc_score != 0 && scp->sc_flags >= 0 && scp->sc_flags <= 3 &&
+            scp->sc_monster >= D_CLUMSY && scp->sc_monster <= nummonst + 1)
+            {
+            scp->sc_name[sizeof(scp->sc_name) - 1] = '\0';
+            *sc2++ = *scp;
+        }
+    for (; sc2 < &top_ten[10]; sc2++)
+    {
+        sc2->sc_lvl = 0;
+        sc2->sc_score = 0;
+        sc2->sc_artifacts = 0;
+    }
+
+    sc2 = NULL;
 
     /* Insert player in list if need be */
 
