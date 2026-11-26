@@ -1047,6 +1047,7 @@ void
 badcheck(char *name, struct magic_item *magic, int bound)
 {
     struct magic_item  *end;
+    int ch;
 
     if (magic[bound - 1].mi_prob == 1000)
         return;
@@ -1059,6 +1060,6 @@ badcheck(char *name, struct magic_item *magic, int bound)
     printf("[Hit RETURN to continue]");
     fflush(stdout);
 
-    while ((readchar() & 0177) != '\n')
+    while ((ch = getchar()) != EOF && (ch & 0177) != '\n')
         continue;
 }
