@@ -114,14 +114,9 @@ missile(int ydelta, int xdelta, struct linked_list *item, struct thing *tp)
             discard(item);
         }
         else
-        {
-            unsigned long flags = obj->o_flags;
 
             fall(&player, item, TRUE, TRUE);
 
-            if (flags & CANRETURN)
-                msg("You have %s.", inv_name(obj, LOWERCASE));
-        }
     }
     else if (obj->o_flags & ISOWNED)
     {
