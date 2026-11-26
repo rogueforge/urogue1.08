@@ -346,6 +346,8 @@ add_line(const char *fmt, ...)
             mvwprintw(hw, line_cnt++, 0, "%s", tmpbuf);
         }
     }
+
+    va_end(ap);
 }
 
 /*
