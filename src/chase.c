@@ -1140,7 +1140,7 @@ get_hurl(struct thing *tp)
                 case    DAGGER:dagger = pitem; break;
                 case    SHURIKEN:shuriken = pitem; break;
                 case    MOLOTOV:oil = pitem; break;
-                case    GRENADE:shuriken = pitem; break;
+                case    GRENADE:grenade = pitem; break;
             }
 
     if (bow && silverarrow)
