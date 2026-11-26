@@ -120,8 +120,11 @@ missile(int ydelta, int xdelta, struct linked_list *item, struct thing *tp)
     }
     else if (obj->o_flags & ISOWNED)
     {
+        char buf[4 * LINELEN];
+
+        strcpy(buf, inv_name(obj, LOWERCASE));
         add_pack(item, NOMESSAGE);
-        msg("You have %s.", inv_name(obj, LOWERCASE));
+        msg("You have %s.", buf);
     }
     else
         discard(item);
@@ -197,8 +200,11 @@ fall(struct thing *tp, struct linked_list *item, int pr, int player_owned)
 
     if (player_owned && obj->o_flags & CANRETURN)
     {
+        char buf[4 * LINELEN];
+
+        strcpy(buf, inv_name(obj, LOWERCASE));
         add_pack(item, NOMESSAGE);
-        msg("You have %s.", inv_name(obj, LOWERCASE));
+        msg("You have %s.", buf);
         return;
     }
     else if (fallpos(obj->o_pos, &fpos))
