@@ -267,10 +267,12 @@ add_pack(struct linked_list *item, int print_message)
     {
         op->o_count += obj->o_count;    /* add it to the rest */
 
-        if (from_floor)
-            rem_obj(item, FALSE);
 
         pack_report(op, print_message, "You now have ");
+        if (from_floor)
+            rem_obj(item, TRUE);
+        else
+            discard(item);
 
         return(TRUE);
     }
