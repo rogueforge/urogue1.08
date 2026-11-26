@@ -317,6 +317,7 @@ restore(char *file)
     }
 
     fd_score = score;
+    ur_srandom((unsigned) getpid());    /* don't roll what the saved game would */
     /* The wizard is who this run says, not who the file says */
 
     canwizard = ocan;
