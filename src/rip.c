@@ -25,6 +25,7 @@ static struct sc_ent
     int   sc_artifacts;
     int   sc_monster;
 } top_ten[10];
+static void wait_return(void);
 
 
 static const char *rip[] =
@@ -57,7 +58,6 @@ death(int monst)
     struct tm   *lt;
     time_t  date;
     char    buf[80];
-	int c;
 
     if (is_wearing(R_RESURRECT) || rnd(wizard ? 3 : 67) == 0)
     {
@@ -146,6 +146,8 @@ death(int monst)
             return;
     }
 
+    signal(SIGHUP, SIG_IGN);    /* the score is still to be kept */
+
     time(&date);
     lt = localtime(&date);
     clear();
@@ -164,15 +166,29 @@ death(int monst)
     move(LINES - 1, 0);
 
     mvaddstr(LINES - 1, 0, retstr);
-
-    while ((c = readcharw(stdscr)) != '\n' && c != '\r')
-        continue;
+    wait_return();
     idenpack();
     wrefresh(cw);
     refresh();
 
     score(pstats.s_exp, pstats.s_lvl, KILLED, monst);
     byebye();
+}
+
+/*
+    wait_return()
+        Wait for return before going on with the scores, but give up
+        when input has ended, so that the score is still kept
+*/
+
+static void
+wait_return(void)
+{
+    int c, cnt = 0;
+
+    while ((c = getch()) != '\n' && c != '\r')
+        if (c == ERR && cnt++ > 100)
+            return;
 }
 
 /*
@@ -198,6 +214,7 @@ score(long amount, int lvl, int flags, int monst) /*ARGSUSED*/
 
     char    *packend;
     file_name[0] = '\0';   /* the game is over: nothing to save */
+    signal(SIGHUP, SIG_IGN);    /* and the score is still to be kept */
 
     if (flags != WINNER && flags != TOTAL && flags != SCOREIT)
     {
@@ -240,7 +257,7 @@ score(long amount, int lvl, int flags, int monst) /*ARGSUSED*/
         mvaddstr(LINES - 1, 0, retstr);
         refresh();
         fflush(stdout);
-        wait_for('\n');
+        wait_return();
     }
 
     fseek(fd_score, 0L, SEEK_SET);
