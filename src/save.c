@@ -23,6 +23,7 @@ static int  encread(char *start, long size, int infd);
 static int  putword(long word, int file);
 static long getword(int fd);
 static long save_size(void);
+static FILE *save_open(void);
 
 /*
  * A saved game is the game's variables from version to rg_edata and
@@ -139,7 +140,7 @@ save_game(void)
         wmove(hw, LINES - 1, 0);
         wrefresh(hw);
 
-        if ((savefd = fopen(file_name, "w")) == NULL)
+        if ((savefd = save_open()) == NULL)
             msg(strerror(errno));    /* fake perror() */
     }
     while (savefd == NULL);
@@ -148,6 +149,34 @@ save_game(void)
 
     save_file(savefd);
     return(TRUE);
+}
+
+/*
+    save_open()
+        Make the file the game is saved in, new and closed to everyone
+        else.  A regular file in the way is removed first; anything else
+        under that name, a link that could not be removed or something
+        that is not a regular file, is neither written to nor written
+        through.
+*/
+
+static FILE *
+save_open(void)
+{
+    struct stat sb;
+    int fd;
+    FILE *fp;
+
+    if (stat(file_name, &sb) >= 0 && S_ISREG(sb.st_mode))
+        unlink(file_name);
+
+    if ((fd = open(file_name, O_WRONLY | O_CREAT | O_EXCL, 0400)) < 0)
+        return(NULL);
+
+    if ((fp = fdopen(fd, "w")) == NULL)
+        close(fd);
+
+    return(fp);
 }
 
 /*
@@ -186,7 +215,7 @@ auto_save(void)
     FILE *savefd;
 
     if (file_name[0] != '\0' && save_ok() &&
-        (savefd = fopen(file_name, "w")) != NULL)
+        (savefd = save_open()) != NULL)
         save_file(savefd);
 
     endwin();
@@ -216,6 +245,12 @@ restore(char *file)
     {
         endwin();
         printf("Sorry, saved game is not yours.\n");
+        return(FALSE);
+    }
+    if ((sbuf.st_mode & 022) != 0)
+    {
+        endwin();
+        printf("Sorry, saved game can be written by others.\n");
         return(FALSE);
     }
 
