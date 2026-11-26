@@ -1968,7 +1968,6 @@ killed(struct thing *killer, struct linked_list *item, int print_message,
         msg("An incredible wave of sadness sweeps over you.");
     }
 
-    check_residue(tp);
 
     if (is_player)
     {
@@ -2042,6 +2041,9 @@ killed(struct thing *killer, struct linked_list *item, int print_message,
         else
             fall(killer, pitem, FALSE, FALSE);
     }
+    /* Not before the pack has fallen: fall() can wake this monster */
+
+    check_residue(tp);
 
     remove_monster(&tp->t_pos, item);
 }
