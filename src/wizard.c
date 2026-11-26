@@ -141,14 +141,25 @@ teleport(void)
 
     if (rand_position)
     {
+        int cnt = 0;
+        coord opos;
+
+        opos = hero;
+
         do
         {
             rm = rnd_room();
             rnd_pos(&rooms[rm], &hero);
         }
-        while (winat(hero.y, hero.x) != FLOOR);
+        while (winat(hero.y, hero.x) != FLOOR && ++cnt <= 500);
 
-        new_rp = &rooms[rm];
+        if (cnt > 500)
+        {
+            hero = opos;
+            new_rp = roomin(hero);
+        }
+        else
+            new_rp = &rooms[rm];
     }
 
     /* If hero gets moved, darken old room */

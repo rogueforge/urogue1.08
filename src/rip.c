@@ -76,7 +76,7 @@ death(int monst)
             struct linked_list  *item;
             struct linked_list  *next_item;
             struct object   *obj;
-            int rm, flags;
+            int rm, flags, cnt;
             coord   pos;
 
             die = FALSE;
@@ -110,13 +110,17 @@ death(int monst)
 
                     if (obj->o_type == ARTIFACT)
                         has_artifact &= ~(1 << obj->o_which);
+                    cnt = 0;
 
                     do
                     {
                         rm = rnd_room();
                         rnd_pos(&rooms[rm], &pos);
                     }
-                    while(winat(pos.y, pos.x) != FLOOR);
+                    while(winat(pos.y, pos.x) != FLOOR && ++cnt <= 500);
+
+                    if (cnt > 500)
+                        pos = hero;
 
                     obj->o_pos = pos;
                     add_obj(item, obj->o_pos.y, obj->o_pos.x);
