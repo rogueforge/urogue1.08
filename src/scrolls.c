@@ -42,12 +42,14 @@ read_scroll(struct thing *reader, int which, int flags)
         if (obj->o_type != SCROLL)
         {
             msg("It says 'Made in Yugoslavia'!");
+            ur_free(item);
             return;
         }
 
         if (on(player, ISBLIND))
         {
             msg("You can't see to read anything.");
+            ur_free(item);
             return;
         }
 
@@ -513,6 +515,7 @@ read_scroll(struct thing *reader, int which, int flags)
                 if ((nitem = get_item("remove the curse on", 0)) != NULL)
                 {
                     obj = OBJPTR(nitem);
+                    ur_free(nitem);
                     msg("Removed the curse from %s.", inv_name(obj, LOWERCASE));
                     obj->o_flags &= ~ISCURSED;
 
@@ -635,6 +638,7 @@ read_scroll(struct thing *reader, int which, int flags)
             if ((item = get_item("protect", 0)) != NULL)
             {
                 struct object   *lb = OBJPTR(item);
+                ur_free(item);
 
                 if (cursed)
                 {
@@ -836,7 +840,10 @@ read_scroll(struct thing *reader, int which, int flags)
                 mpos = 0;
 
                 if (lb != NULL)
+                {
+                    ur_free(ll);
                     msg("Enchanted %s.", inv_name(lb, LOWERCASE));
+                }
             }
         }
         break;
@@ -858,6 +865,7 @@ read_scroll(struct thing *reader, int which, int flags)
             if ((item = get_item("annoint", WEAPON)) != NULL)
             {
                 lb = OBJPTR(item);
+                ur_free(item);
 
                 if (blessed && !(lb->o_flags & ISSILVER))
                 {
@@ -901,6 +909,7 @@ read_scroll(struct thing *reader, int which, int flags)
             if ((ll = get_item("claim", 0)) != NULL)
             {
                 lb = OBJPTR(ll);
+                ur_free(ll);
 
                 if (cursed && lb->o_flags & (ISOWNED | CANRETURN))
                 {

@@ -22,6 +22,7 @@ ring_on(void)
         return;
 
     obj = OBJPTR(item);
+    ur_free(item);
 
     if (obj->o_type != RING)
     {
@@ -175,8 +176,9 @@ ring_off(void)
 
     mpos = 0;
     obj = OBJPTR(item);
+    ur_free(item);
 
-    if ((obj = OBJPTR(item)) == NULL)
+    if (obj == NULL)
         msg("You are not wearing that!");
 
     if (dropcheck(obj))

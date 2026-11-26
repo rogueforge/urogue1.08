@@ -28,7 +28,12 @@ missile(int ydelta, int xdelta, struct linked_list *item, struct thing *tp)
     obj = OBJPTR(item);
 
     if (!dropcheck(obj) || is_current(obj))
+    {
+        if (tp == &player)
+            ur_free(item);
+
         return;
+    }
 
     /*
      * Get rid of the thing. If it is a non-multiple item object, or if
@@ -50,6 +55,10 @@ missile(int ydelta, int xdelta, struct linked_list *item, struct thing *tp)
         obj = OBJPTR(nitem);
         *obj = *(OBJPTR(item));
         obj->o_count = 1;
+
+        if (tp == &player)
+            ur_free(item);
+
         item = nitem;
     }
 
@@ -364,6 +373,7 @@ wield(void)
     }
 
     obj = OBJPTR(item);
+    ur_free(item);
 
     if (is_current(obj))
     {

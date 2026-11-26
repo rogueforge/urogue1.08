@@ -32,6 +32,10 @@ whatis(struct linked_list *what)
     }
 
     obj = OBJPTR(what);
+
+    if (print_message)
+        ur_free(what);
+
     obj->o_flags |= ISKNOW;
 
     switch (obj->o_type)

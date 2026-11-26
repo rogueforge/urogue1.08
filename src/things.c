@@ -373,7 +373,10 @@ drop(struct linked_list *item)
     obj = OBJPTR(item);
 
     if (!dropcheck(obj))
+    {
+        ur_free(item);
         return(FALSE);
+    }
 
     /* Curse a dropped scare monster scroll */
 
@@ -395,6 +398,7 @@ drop(struct linked_list *item)
         obj = OBJPTR(nitem);
         *obj = *(OBJPTR(item));
         obj->o_count = 1;
+        ur_free(item);
         item = nitem;
     }
     else
