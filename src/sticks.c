@@ -367,22 +367,22 @@ do_zap(struct thing *zapper, int which, unsigned long flags)
                 }
                 else if (which == WS_CANCEL)
                 {
-                    tp->t_flags[0] &= CANC0MASK;
-                    tp->t_flags[1] &= CANC1MASK;
-                    tp->t_flags[2] &= CANC2MASK;
-                    tp->t_flags[3] &= CANC3MASK;
-                    tp->t_flags[4] &= CANC4MASK;
-                    tp->t_flags[5] &= CANC5MASK;
-                    tp->t_flags[6] &= CANC5MASK;
-                    tp->t_flags[7] &= CANC7MASK;
-                    tp->t_flags[8] &= CANC8MASK;
-                    tp->t_flags[9] &= CANC9MASK;
-                    tp->t_flags[10] &= CANCAMASK;
-                    tp->t_flags[11] &= CANCBMASK;
-                    tp->t_flags[12] &= CANCCMASK;
-                    tp->t_flags[13] &= CANCDMASK;
-                    tp->t_flags[14] &= CANCEMASK;
-                    tp->t_flags[15] &= CANCFMASK;
+                    tp->t_flags[0] &= CANC0MASK << 4;
+                    tp->t_flags[1] &= CANC1MASK << 4;
+                    tp->t_flags[2] &= CANC2MASK << 4;
+                    tp->t_flags[3] &= CANC3MASK << 4;
+                    tp->t_flags[4] &= CANC4MASK << 4;
+                    tp->t_flags[5] &= CANC5MASK << 4;
+                    tp->t_flags[6] &= CANC5MASK << 4;
+                    tp->t_flags[7] &= CANC7MASK << 4;
+                    tp->t_flags[8] &= CANC8MASK << 4;
+                    tp->t_flags[9] &= CANC9MASK << 4;
+                    tp->t_flags[10] &= CANCAMASK << 4;
+                    tp->t_flags[11] &= CANCBMASK << 4;
+                    tp->t_flags[12] &= CANCCMASK << 4;
+                    tp->t_flags[13] &= CANCDMASK << 4;
+                    tp->t_flags[14] &= CANCEMASK << 4;
+                    tp->t_flags[15] &= CANCFMASK << 4;
                 }
                 else    /* A teleport stick */
                 {
