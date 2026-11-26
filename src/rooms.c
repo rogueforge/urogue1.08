@@ -181,13 +181,16 @@ do_rooms(void)
 
                     /* If the monster is on a trap, trap it */
 
-                    if (isatrap(mvinch(pos.y, pos.x)))
-                        be_trapped(THINGPTR(nitem), mp);
 
                     if (on(*tp, ISFRIENDLY))
                         turn_on(*(THINGPTR(nitem)), ISFRIENDLY);
                     else
                         turn_off(*(THINGPTR(nitem)), ISFRIENDLY);
+
+                    /* If the monster is on a trap, trap it */
+
+                    if (isatrap(mvinch(pos.y, pos.x)))
+                        be_trapped(THINGPTR(nitem), pos);
                 }
             }
 
