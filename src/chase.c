@@ -815,7 +815,8 @@ chase(struct thing *tp, coord *ee, int flee)
     }
 
     if (off(*tp, ISFLEE) &&
-        !(!SAME_POS((tp->t_chasee->t_pos),hero) || off(player, ISINWALL) || on(*tp, CANINWALL)))
+        (!SAME_POS((tp->t_chasee->t_pos),hero) || off(player, ISINWALL) ||
+         on(*tp, CANINWALL)))
         return(dist != 0);
     else /* May actually hit here from a confused move */
         return(!ce(tp->t_nxtpos, hero));
